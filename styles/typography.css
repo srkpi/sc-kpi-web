@@ -1,0 +1,31 @@
+.font-h1 {
+  @apply text-h1 font-semibold;
+}
+
+.font-m-h1 {
+  @apply text-m-h1 font-semibold;
+}
+
+.font-p {
+  @apply text-p font-regular;
+}
+
+.font-m-p {
+  @apply text-m-p font-regular;
+}
+
+.font-p-light {
+  @apply text-m-p font-light;
+}
+
+.font-m-p-light {
+  @apply text-p-light font-light;
+}
+
+.font-button {
+  @apply text-p font-semibold;
+}
+
+.font-m-button {
+  @apply text-l-p font-semibold;
+}
