@@ -18,3 +18,8 @@
       @apply bg-background text-white;
     }
   }
+
+::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}

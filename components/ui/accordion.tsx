@@ -10,7 +10,7 @@ const Accordion = AccordionPrimitive.Root
 
 const FAQAccordion = () => {
     return (
-        <Accordion type="multiple" className='flex flex-col justify-evenly items-center gap-2'>
+        <Accordion type="multiple" className='flex flex-col justify-evenly items-center gap-2 w-screen max-w-screen-lg lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm'>
             <AccordionListItem itemValue="item-1" accordionTrigger="Не знаю де отримати необхідний документ" accordionContent="
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tristique lacus quis rhoncus molestie. Sed convallis consectetur metus. Phasellus nec interdum dui. Suspendisse scelerisque, sem." />
             <AccordionListItem itemValue="item-2" accordionTrigger="Не знаю де отримати необхідний документ" accordionContent="
@@ -53,7 +53,7 @@ const AccordionTrigger = React.forwardRef<
                 onClick={() => setIsCollapsed(!isCollapsed)}
                 ref={ref}
                 className={cn(
-                    "flex flex-1 w-screen max-w-screen-lg select-none items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 p-4",
+                    "flex flex-1 w-screen max-w-screen-lg lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm select-none justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 p-4",
                     className
                 )}
                 {...props}
