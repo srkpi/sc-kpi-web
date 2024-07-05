@@ -10,9 +10,11 @@ const Accordion = AccordionPrimitive.Root
 
 const FAQAccordion = () => {
     return (
-        <Accordion type="single" collapsible className='flex flex-col justify-evenly items-center gap-2'>
-            <AccordionListItem itemValue="item-1" accordionTrigger="Не знаю де отримати необхідний документ" accordionContent="Lorem ipsum dolor sit amet." />
-            <AccordionListItem itemValue="item-2" accordionTrigger="Не знаю де отримати необхідний документ" accordionContent="Lorem ipsum dolor sit amet." />
+        <Accordion type="multiple" className='flex flex-col justify-evenly items-center gap-2'>
+            <AccordionListItem itemValue="item-1" accordionTrigger="Не знаю де отримати необхідний документ" accordionContent="
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tristique lacus quis rhoncus molestie. Sed convallis consectetur metus. Phasellus nec interdum dui. Suspendisse scelerisque, sem." />
+            <AccordionListItem itemValue="item-2" accordionTrigger="Не знаю де отримати необхідний документ" accordionContent="
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tristique lacus quis rhoncus molestie. Sed convallis consectetur metus. Phasellus nec interdum dui. Suspendisse scelerisque, sem." />
         </Accordion>
     )
 }
@@ -32,7 +34,7 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <AccordionPrimitive.Item
         ref={ref}
-        className={cn("border rounded-s-xl rounded-e-xl", className)}
+        className={cn("border rounded-s-xl rounded-e-xl font-sans", className)}
         {...props}
     />
 ))
@@ -48,16 +50,15 @@ const AccordionTrigger = React.forwardRef<
     return (
         < AccordionPrimitive.Header className="flex" >
             <AccordionPrimitive.Trigger
-                onClick={isCollapsed => !isCollapsed}
+                onClick={() => setIsCollapsed(!isCollapsed)}
                 ref={ref}
                 className={cn(
-                    "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
+                    "flex flex-1 w-screen max-w-screen-lg select-none items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 p-4",
                     className
                 )}
                 {...props}
             >
                 {children}
-                { /* TODO: #25 The icon does not change from "+" to "-" based on isCollapsed value. */}
                 {isCollapsed ? <PlusIcon /> : <Minus />}
             </AccordionPrimitive.Trigger>
         </AccordionPrimitive.Header >
@@ -73,7 +74,7 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
     <AccordionPrimitive.Content
         ref={ref}
-        className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+        className="overflow-hidden max-w-screen-lg px-3 text-sm transition-all duration-500 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
         {...props}
     >
         <div className={cn("pb-4 pt-0", className)}>{children}</div>
