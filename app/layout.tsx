@@ -1,27 +1,30 @@
-import type { Metadata } from "next";
-import { Roboto as FontSans } from "next/font/google";
-import "./globals.css";
-import {cn} from "@/lib/cn";
+import type { Metadata } from 'next';
+import { Roboto as FontSans } from 'next/font/google';
+
+import { cn } from '@/lib/cn';
+
+import './globals.css';
 
 const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  subsets: ['latin'],
+  variable: '--font-sans',
   weight: ['300', '400', '700'],
 });
 
-const title = 'Студентська Рада | КПІ ім. Ігоря Сікорського'
-const description =  "Студентська рада КПІ — це ком'юніті згуртованих та ініціативних студентів, які роблять КПІ кращим."
+const title = 'Студентська Рада | КПІ ім. Ігоря Сікорського';
+const description =
+  "Студентська рада КПІ — це ком'юніті згуртованих та ініціативних студентів, які роблять КПІ кращим.";
 
 export const metadata: Metadata = {
   title,
   description,
-    openGraph: {
-      title,
-        description,
-        type: "website",
-        images: '',
-        url: 'https://sckpi.vercel.app/'
-    }
+  openGraph: {
+    title,
+    description,
+    type: 'website',
+    images: '',
+    url: 'https://sckpi.vercel.app/',
+  },
 };
 
 export default function RootLayout({
@@ -32,11 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-          className={cn(
-              "min-h-screen bg-background font-sans antialiased",
-            fontSans.variable
-          )}
-        >
+        className={cn(
+          'min-h-screen bg-background font-sans antialiased',
+          fontSans.variable,
+        )}
+      >
         {children}
       </body>
     </html>
