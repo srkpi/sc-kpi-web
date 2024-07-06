@@ -9,6 +9,9 @@ import { Minus, PlusIcon } from 'lucide-react'
 const Accordion = AccordionPrimitive.Root
 
 const MultipleAccordion: React.FC<any> = ({ trigger = [], content = [], itemValue = [] }: { trigger: React.ReactNode[], content: React.ReactNode[], itemValue: string[] }) => {
+    if (trigger.length != content.length) console.log("The lenght of the triggers list is not the same as the lenght of the content list.")
+    if (itemValue.length == 0 || itemValue.length == undefined) throw Error("The lenght of the itemValue list cannot be 0!")
+
     return (
         <Accordion type="multiple" className='flex flex-col justify-evenly items-center gap-2 w-screen max-w-screen-lg lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm'>
             {trigger.map((item, key) => (
