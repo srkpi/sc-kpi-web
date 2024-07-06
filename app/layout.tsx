@@ -11,8 +11,9 @@ const fontSans = FontSans({
   weight: ['300', '400', '700'],
 });
 
-const title = 'Студентська Рада | КПІ ім. Ігоря Сікорського'
-const description = "Студентська рада КПІ — це ком'юніті згуртованих та ініціативних студентів, які роблять КПІ кращим."
+const title = 'Студентська Рада | КПІ ім. Ігоря Сікорського';
+const description =
+  "Студентська рада КПІ — це ком'юніті згуртованих та ініціативних студентів, які роблять КПІ кращим.";
 
 export const metadata: Metadata = {
   title,
@@ -20,9 +21,9 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    type: "website",
+    type: 'website',
     images: '',
-    url: 'https://sckpi.vercel.app/'
+    url: 'https://sckpi.vercel.app/',
   },
 };
 
