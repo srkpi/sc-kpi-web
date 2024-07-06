@@ -18,11 +18,9 @@ const MultipleAccordion: React.FC<any> = ({
   itemValue: string[];
 }) => {
   if (trigger.length != content.length)
-    console.log(
-      'The lenght of the triggers list is not the same as the lenght of the content list.',
-    );
+    return 'The lenght of the triggers list is not the same as the lenght of the content list.';
   if (itemValue.length == 0 || itemValue.length == undefined)
-    throw Error('The lenght of the itemValue list cannot be 0!');
+    return 'The lenght of the itemValue list cannot be 0!';
 
   return (
     <Accordion
