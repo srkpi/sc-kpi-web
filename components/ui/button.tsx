@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-
 import { cn } from '@/lib/cn';
 
 const buttonVariants = cva(
@@ -9,7 +8,7 @@ const buttonVariants = cva(
     'font-sans',
     'font-bold text-p tracking-[0.02em]', // In font-button class is a potentially dangerous style with font-semibold (it is missing in configuration)
     // 'font-button', // if you want to use font-semibold uncomment this line
-    'inline-flex px-6 py-4 rounded-[0.375rem] md:h-15 md:px-16 md:py-5 md:rounded-[0.625rem] items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:bg-[#666] disabled:border-[#666] disabled:opacity-100',
+    'inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:bg-[#666] disabled:border-[#666] disabled:opacity-100',
   ),
   {
     variants: {
@@ -19,25 +18,30 @@ const buttonVariants = cva(
         outline:
           'leading-[19px] bg-transparent border-[1px] border-blue hover:bg-blue focus:bg-accent focus:border-accent',
       },
+      size: {
+        default: 'h-15 px-16 py-5 rounded-[0.625rem]',
+        sm: 'px-6 py-4 rounded-[0.375rem]',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      size: 'default',
     },
   },
 );
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
-        className={cn(buttonVariants({ variant, className }))}
+        className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />
