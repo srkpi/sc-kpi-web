@@ -35,11 +35,6 @@ export default function Home() {
           priority
         />
       </div>
-      <MultipleAccordion
-        trigger={[<b key={'key'}>Hallo</b>]}
-        content={[<b key={'key'}>Hallo</b>]}
-        itemValue={['item-1']}
-      />
     </main>
   );
 }
