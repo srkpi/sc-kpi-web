@@ -8,7 +8,14 @@ import { cn } from '@/lib/cn';
 
 const Accordion = AccordionPrimitive.Root;
 
-const MultipleAccordion: React.FC<any> = ({
+interface MultipleAccordionProps {
+  trigger: React.ReactNode[];
+  content: React.ReactNode[];
+  itemValue: string[];
+  children?: React.ReactNode[];
+}
+
+const MultipleAccordion: React.FC<MultipleAccordionProps> = ({
   trigger = [],
   content = [],
   itemValue = [],
@@ -18,9 +25,14 @@ const MultipleAccordion: React.FC<any> = ({
   itemValue: string[];
 }) => {
   if (trigger.length != content.length)
-    return 'The lenght of the triggers list is not the same as the lenght of the content list.';
+    return (
+      <>
+        The lenght of the triggers list is not the same as the lenght of the
+        content list.
+      </>
+    );
   if (itemValue.length == 0 || itemValue.length == undefined)
-    return 'The lenght of the itemValue list cannot be 0!';
+    return <>The lenght of the itemValue list cannot be 0!</>;
 
   return (
     <Accordion
@@ -37,16 +49,22 @@ const MultipleAccordion: React.FC<any> = ({
   );
 };
 
-const AccordionListItemTrigger: React.FC<any> = ({ children }) => {
+interface AccordionListeItemTriggerProps {
+  children: React.ReactNode;
+}
+
+const AccordionListItemTrigger: React.FC<AccordionListeItemTriggerProps> = ({
+  children,
+}) => {
   return <AccordionTrigger>{children}</AccordionTrigger>;
 };
 
-interface AccordionListItemInterface {
-  children: any;
+interface AccordionListItemProps {
+  children: React.ReactNode[];
   itemValue: string;
 }
 
-const AccordionListItem: React.FC<AccordionListItemInterface> = ({
+const AccordionListItem: React.FC<AccordionListItemProps> = ({
   children,
   ...props
 }) => {
