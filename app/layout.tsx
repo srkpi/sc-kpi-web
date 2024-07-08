@@ -6,9 +6,9 @@ import { cn } from '@/lib/cn';
 import './globals.css';
 
 const fontSans = FontSans({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   variable: '--font-sans',
-  weight: ['300', '400', '700'],
+  weight: ['300', '400', '500', '700'],
 });
 
 const title = 'Студентська Рада | КПІ ім. Ігоря Сікорського';
