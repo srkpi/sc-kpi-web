@@ -1,0 +1,21 @@
+.home-page-slider .slick-slide {
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.home-page-slider .slick-current {
+  opacity: 1;
+}
+
+.home-page-slider {
+  height: 100%;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+.slick-list,
+.slick-track {
+  height: 100%;
+}

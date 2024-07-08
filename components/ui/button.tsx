@@ -7,7 +7,7 @@ import { cn } from '@/lib/cn';
 const buttonVariants = cva(
   cn(
     'font-sans',
-    'font-bold text-p tracking-[0.02em]', // In font-button class is a potentially dangerous style with font-semibold (it is missing in configuration)
+    'font-bold text-m-p md:text-p tracking-[0.02em]', // In font-button class is a potentially dangerous style with font-semibold (it is missing in configuration)
     // 'font-button', // if you want to use font-semibold uncomment this line
     'inline-flex items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:bg-[#666] disabled:border-[#666] disabled:opacity-100',
   ),
