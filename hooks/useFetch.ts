@@ -12,7 +12,7 @@ const useFetch = <T>(url: string) => {
       try {
         const response = await axios.get<T>(url, {
           headers: {
-            'x-api-key': process.env.NEXT_PUBLIC_API_KEY,
+            'x-api-key': process.env.API_KEY,
           },
         });
         setData(response.data);
