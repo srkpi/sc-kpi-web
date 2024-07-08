@@ -69,13 +69,7 @@ const SliderDepartments = () => {
   };
 
   if (loading || !departments) {
-    return (
-      <div className="">
-        <div className="">
-          <SkeletonDepartmentCard />
-        </div>
-      </div>
-    );
+    return <SkeletonDepartmentCard />;
   }
 
   return (
