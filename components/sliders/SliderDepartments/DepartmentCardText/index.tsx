@@ -1,11 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 
+import ArrowLeft from '@/components/sliders/ArrowLeft';
+import ArrowRight from '@/components/sliders/ArrowRight';
 import { Button } from '@/components/ui/button';
 import { Department } from '@/types/departments';
-
-import ArrowLeft from '../ArrowLeft';
-import ArrowRight from '../ArrowRight';
 
 interface DepartmentCardTextProps {
   dep: Department;

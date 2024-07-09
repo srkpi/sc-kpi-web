@@ -1,7 +1,7 @@
 import { FileInputIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import SliderDepartments from '@/components/SliderDepartments';
+import SliderDepartments from '@/components/sliders/SliderDepartments';
 import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api';
 import { Department } from '@/types/departments';
