@@ -19,7 +19,7 @@ export const mainItems: Item[] = [
   },
   {
     name: 'Розклад',
-    href: '/schedule',
+    href: '/schedule-importer',
   },
   {
     name: 'Гуртки',
@@ -35,12 +35,12 @@ export const supportItems: Item[] = [
   },
   {
     name: '@suggestSRbot',
-    href: '#',
+    href: 'https://t.me/suggestSRbot',
     icon: <BotIcon size={20} />,
   },
   {
     name: 'studradakpi1998@gmail.com',
-    href: '#',
+    href: 'studradakpi1998@gmail.com',
     icon: <MailIcon size={20} />,
   },
 ];
@@ -63,15 +63,35 @@ export const otherItems: Item[] = [
 
 export const mediaItems: Item[] = [
   {
-    href: 'https://instagram.com/studradakpi',
-    icon: <InstagramIcon size={20} />,
+    href: 'https://t.me/sr_kpi',
+    icon: (
+      <img
+        src="/svgs/telegram.svg"
+        alt="telegram"
+        className="size-[15px] md:size-[20px]"
+      />
+    ),
   },
   {
-    href: 'https://facebook.com/studradakpi',
-    icon: <FacebookIcon size={20} />,
+    href: 'https://www.instagram.com/sr_kpi/',
+    icon: <InstagramIcon className="size-[15px] md:size-[20px]" />,
+  },
+  {
+    href: 'https://www.tiktok.com/@sr_kpi',
+    icon: (
+      <img
+        src="/svgs/tik-tok.svg"
+        alt="tik-tok"
+        className="size-[15px] md:size-[20px]"
+      />
+    ),
+  },
+  {
+    href: 'https://www.facebook.com/srkpi/',
+    icon: <FacebookIcon className="size-[15px] md:size-[20px]" />,
   },
   {
     href: 'https://github.com/srkpi',
-    icon: <GithubIcon size={20} />,
+    icon: <GithubIcon className="size-[15px] md:size-[20px]" />,
   },
 ];

@@ -12,11 +12,11 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="pt-[100px] px-[100px] pb-[77px]">
+    <footer className="p-[20px] md:p-[32px] lg:p-[64px] xl:p-[100px]">
       <div className="flex align-top justify-between flex-wrap">
-        <div>
+        <div className="w-screen xl:w-auto mb-[20px]">
           <Image
-            className="object-contain align-top"
+            className="object-cover align-top w-[67px] md:w-[100px] lg:w-[200px] h-auto"
             src="/images/Logo.png"
             alt="logo"
             width={200}
@@ -25,19 +25,21 @@ const Footer = () => {
         </div>
         <FooterColumn name="Основні сторінки" items={mainItems} />
         <FooterColumn name="Підтримка" items={supportItems} />
-        <div className="flex flex-col gap-[50px]">
+        <div className="hidden lg:flex lg:flex-col">
           <FooterColumn items={otherItems} />
           <FooterMedia items={mediaItems} />
         </div>
+        <FooterColumn className="block lg:hidden" items={otherItems} />
+        <FooterMedia className="block lg:hidden" items={mediaItems} />
         <Image
-          className="self-end"
+          className="md:self-end self-center size-[100px] md:size-[200px]"
           src="/images/qrcode.png"
           alt="qrcode"
           width={200}
           height={200}
         />
       </div>
-      <div className="flex gap-[9px] items-center">
+      <div className="flex gap-[9px] items-center mt-[10px]">
         <CopyrightIcon size={20} />
         <p className="font-p">2024 Студентська рада КПІ</p>
       </div>
