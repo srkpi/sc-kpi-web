@@ -2,24 +2,21 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 
-import { Department } from '@/types/departments';
+import ArrowLeft from '@/components/sliders/ArrowLeft';
+import ArrowRight from '@/components/sliders/ArrowRight';
+import { DepartmentProject } from '@/types/departments';
 
 import DepartmentCardPicture from './DepartmentCardPicture';
 import DepartmentCardText from './DepartmentCardText';
 import DepartmentMoblieCard from './DepartmentMobileCard';
+import IconBottomLeftCornerCur from './IconBottomLeftCornerCut';
 import SkeletonDepartmentCard from './SkeletonDepartmentCard';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import './styles.css';
+import '@/components/sliders/styles.css';
 
-interface SliderDepartmentsProps {
-  departments: Department[];
-}
-
-const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
-  departments,
-}) => {
+const SliderProjects = ({ projects }: { projects: DepartmentProject[] }) => {
   const [nav1, setNav1] = useState<Slider | null>(null);
   const [nav2, setNav2] = useState<Slider | null>(null);
 
@@ -54,7 +51,7 @@ const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
   };
 
   const settingsForSlider2 = {
-    className: 'home-page-slider',
+    className: 'main-slider',
     slidesToShow: 3,
     responsive: [
       {
@@ -66,11 +63,9 @@ const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
       },
     ],
   };
-
-  if (!departments.length) {
+  if (!projects.length) {
     return <SkeletonDepartmentCard />;
   }
-
   return (
     <div className="relative md:flex">
       <div className="md:w-[45%] 2xl:w-[40%] slider-container md:flex md:flex-col">
@@ -81,10 +76,15 @@ const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
           {...settingsForSlider1}
           className="flex-auto"
         >
-          {departments.map((dep: Department, index: number) => (
+          {projects.map((project: DepartmentProject, index: number) => (
             <React.Fragment key={index}>
-              <DepartmentCardText dep={dep} next={next} prev={previous} />
-              <DepartmentMoblieCard dep={dep} next={next} prev={previous} />
+              <DepartmentCardText project={project} index={index} />
+              <DepartmentMoblieCard
+                project={project}
+                next={next}
+                prev={previous}
+                index={index}
+              />
             </React.Fragment>
           ))}
         </Slider>
@@ -99,15 +99,23 @@ const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
           {...generalSettingsSlider}
           {...settingsForSlider2}
         >
-          {departments.map((dep: Department, index: number) => (
+          {projects.map((project: DepartmentProject, index: number) => (
             <React.Fragment key={index}>
-              <DepartmentCardPicture dep={dep} />
+              <DepartmentCardPicture project={project} />
             </React.Fragment>
           ))}
         </Slider>
+        <div className="flex gap-1 self-end absolute bottom-0 left-0 z-10 px-8 py-5 origin-bottom-left scale-90 lg:scale-100">
+          <ArrowLeft onClick={previous} />
+          <ArrowRight onClick={next} />
+          <div className="absolute bottom-[1px] left-[-3px]">
+            <IconBottomLeftCornerCur />
+          </div>
+        </div>
+        <div className="absolute h-full w-[2px] bg-dark bottom-0 left-[0px]"></div>
       </div>
     </div>
   );
 };
 
-export default SliderDepartments;
+export default SliderProjects;

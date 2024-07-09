@@ -1,9 +1,8 @@
 import React from 'react';
 
+import ArrowLeft from '@/components/sliders/ArrowLeft';
+import ArrowRight from '@/components/sliders/ArrowRight';
 import { Button } from '@/components/ui/button';
-
-import ArrowLeft from '../ArrowLeft';
-import ArrowRight from '../ArrowRight';
 
 const SkeletonDepartmentCard = () => {
   return (
