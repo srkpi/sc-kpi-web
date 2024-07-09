@@ -3,8 +3,12 @@ import Link from 'next/link';
 
 import SliderDepartments from '@/components/SliderDepartments';
 import { Button } from '@/components/ui/button';
+import { api } from '@/lib/api';
+import { Department } from '@/types/departments';
 
 export default async function Home() {
+  const { data: departments } = await api.get<Department[]>('/departments');
+
   return (
     <main className="pt-5 md:pt-8 lg:pt-12">
       <section className="_container">
@@ -107,7 +111,7 @@ export default async function Home() {
       </section>
       <section className="relative w-full mx-auto pb-[90px] md:pb-[200px] overflow-x-hidden">
         <div className="_container">
-          <SliderDepartments />
+          <SliderDepartments departments={departments} />
         </div>
       </section>
     </main>
