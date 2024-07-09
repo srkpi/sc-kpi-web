@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 
-import useFetch from '@/hooks/useFetch';
 import { Department } from '@/types/departments';
 
 import DepartmentCardPicture from './DepartmentCardPicture';
@@ -14,15 +13,15 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './styles.css';
 
-const SliderDepartments = () => {
+interface SliderDepartmentsProps {
+  departments: Department[];
+}
+
+const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
+  departments,
+}) => {
   const [nav1, setNav1] = useState<Slider | null>(null);
   const [nav2, setNav2] = useState<Slider | null>(null);
-
-  const URL_departments =
-    'https://sr-kpi-api-production.up.railway.app/departments';
-
-  const { data: departments, loading } =
-    useFetch<Department[]>(URL_departments);
 
   const next = () => {
     if (!nav1 || !nav2) return;
@@ -68,7 +67,7 @@ const SliderDepartments = () => {
     ],
   };
 
-  if (loading || !departments) {
+  if (!departments.length) {
     return <SkeletonDepartmentCard />;
   }
 
