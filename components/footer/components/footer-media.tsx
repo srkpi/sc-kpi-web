@@ -12,7 +12,9 @@ interface FooterMediaProps {
 const FooterMedia: FC<FooterMediaProps> = ({ items, className = '' }) => {
   return (
     <div className={cn(className, 'align-bottom self-start')}>
-      <p className="font-m-button mb-[20px] lg:hidden">Соціальні мережі</p>
+      <p className="font-m-button text-m-p mb-[20px] lg:hidden">
+        Соціальні мережі
+      </p>
       <div className="flex gap-[23px]">
         {items.map((item: Item) => (
           <Link

@@ -17,10 +17,18 @@ const FooterColumn: FC<FooterColumnProps> = ({
 }) => {
   return (
     <div className={cn(className, 'max-w-[371px] mb-[40px] lg:[50px]')}>
-      {name && <p className="font-m-button lg:font-button mb-[21px]">{name}</p>}
+      {name && (
+        <p className="font-m-button text-m-p md:text-p lg:font-button mb-[21px]">
+          {name}
+        </p>
+      )}
       <div className="flex flex-col gap-[15px]">
         {items.map((item: Item) => (
-          <Link className="flex" key={item.name} href={item.href}>
+          <Link
+            className="flex text-m-p md:text-p"
+            key={item.name}
+            href={item.href}
+          >
             {item.icon && <span className="mr-[10px]">{item.icon}</span>}
             {item.name}
           </Link>

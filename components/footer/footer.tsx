@@ -40,8 +40,8 @@ const Footer = () => {
         />
       </div>
       <div className="flex gap-[9px] items-center mt-[10px]">
-        <CopyrightIcon size={20} />
-        <p className="font-p">2024 Студентська рада КПІ</p>
+        <CopyrightIcon className="size-[15px] md:size-[20px]" />
+        <p className="font-p text-m-p md:text-p">2024 Студентська рада КПІ</p>
       </div>
     </footer>
   );

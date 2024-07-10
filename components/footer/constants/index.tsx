@@ -31,17 +31,17 @@ export const supportItems: Item[] = [
   {
     name: 'Часті питання',
     href: '/faq',
-    icon: <CableIcon size={20} />,
+    icon: <CableIcon className="size-[15px] md:size-[20px]" />,
   },
   {
     name: '@suggestSRbot',
     href: 'https://t.me/suggestSRbot',
-    icon: <BotIcon size={20} />,
+    icon: <BotIcon className="size-[15px] md:size-[20px]" />,
   },
   {
     name: 'studradakpi1998@gmail.com',
     href: 'studradakpi1998@gmail.com',
-    icon: <MailIcon size={20} />,
+    icon: <MailIcon className="size-[15px] md:size-[20px]" />,
   },
 ];
 
@@ -52,12 +52,12 @@ export const otherItems: Item[] = [
       '03056, Україна, м. Київ\n' +
       'Берестейський проспект, 37, корп. 1, ауд. 165',
     href: '#',
-    icon: <MapPinIcon size={20} />,
+    icon: <MapPinIcon className="size-[15px] md:size-[20px]" />,
   },
   {
     name: 'Політика конфіденційності',
     href: '/privacy',
-    icon: <ShieldCheckIcon size={20} />,
+    icon: <ShieldCheckIcon className="size-[15px] md:size-[20px]" />,
   },
 ];
 
@@ -66,7 +66,7 @@ export const mediaItems: Item[] = [
     href: 'https://t.me/sr_kpi',
     icon: (
       <img
-        src="/svgs/telegram.svg"
+        src="/icons/telegram.png"
         alt="telegram"
         className="size-[15px] md:size-[20px]"
       />
@@ -80,7 +80,7 @@ export const mediaItems: Item[] = [
     href: 'https://www.tiktok.com/@sr_kpi',
     icon: (
       <img
-        src="/svgs/tik-tok.svg"
+        src="/icons/tik-tok.png"
         alt="tik-tok"
         className="size-[15px] md:size-[20px]"
       />
