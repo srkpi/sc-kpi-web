@@ -8,67 +8,88 @@ import { cn } from '@/lib/cn';
 
 const Accordion = AccordionPrimitive.Root;
 
-interface MultipleAccordionProps {
-  trigger: React.ReactNode[];
-  content: React.ReactNode[];
-  itemValue: string[];
-  children?: React.ReactNode[];
-}
-
-const MultipleAccordion: React.FC<MultipleAccordionProps> = ({
-  trigger = [],
-  content = [],
-  itemValue = [],
-}: {
-  trigger: React.ReactNode[];
-  content: React.ReactNode[];
-  itemValue: string[];
-}) => {
-  if (trigger.length != content.length)
-    return (
-      <>
-        The lenght of the triggers list is not the same as the lenght of the
-        content list.
-      </>
-    );
-  if (itemValue.length == 0 || itemValue.length == undefined)
-    return <>The lenght of the itemValue list cannot be 0!</>;
-
+const MultipleAccordion = () => {
   return (
     <Accordion
       type="multiple"
-      className="flex flex-col justify-evenly items-center gap-2 w-screen max-w-screen-lg lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm"
+      className="flex flex-1 flex-col gap-2 lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm lg:text-xl text-center"
     >
-      {trigger.map((item, key) => (
-        <AccordionListItem key={key} itemValue={itemValue[key]}>
-          <AccordionListItemTrigger>{trigger[key]}</AccordionListItemTrigger>
-          <AccordionContent>{content[key]}</AccordionContent>
-        </AccordionListItem>
-      ))}
+      <AccordionItem value={'where-to-find-required-document'}>
+        <AccordionTrigger>
+          Не знаю де отримати необхідний документ
+        </AccordionTrigger>
+        <AccordionContent>
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi
+          odio necessitatibus hic? Quas quia sit doloribus dolore maxime,
+          blanditiis dicta quasi at eos necessitatibus quo quaerat, sed a
+          architecto vitae?
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value={'conflict-with-professeur'}>
+        <AccordionTrigger>
+          Виникла конфліктна ситуація з викладачем, не знаю до кого звернутися
+        </AccordionTrigger>
+        <AccordionContent>
+          Звернися до студентської ради підрозділу (лінк на канали СР
+          підрозділів). Якщо не знаєш де це, пиши до нас (лінк на саппорт)
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value={'do-not-understand'}>
+        <AccordionTrigger>
+          Не розумію, що мається на увазі в положенні
+        </AccordionTrigger>
+        <AccordionContent>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo debitis
+          exercitationem mollitia nihil expedita quos ad. Voluptas et, commodi
+          dignissimos nostrum cumque eum unde, maiores nulla molestiae quo
+          ratione enim.
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value={'cannot-find-info'}>
+        <AccordionTrigger>
+          Не можу знайти необхідну інформацію щодо освітнього процесу
+        </AccordionTrigger>
+        <AccordionContent>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero minus
+          natus omnis temporibus repellendus aperiam consequatur molestiae at id
+          fugiat odio quaerat et quam fuga sunt corrupti excepturi, quae quo?
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value={'how-to-join-clubs'}>
+        <AccordionTrigger>
+          Як можна долучитися до студентських клубів та організацій?
+        </AccordionTrigger>
+        <AccordionContent>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos
+          voluptatem deleniti, placeat molestiae corporis beatae qui quaerat
+          illo adipisci autem neque delectus, dolor, nulla tenetur repudiandae
+          laborum facere laudantium minus!
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value={'how-to-be-in-touch'}>
+        <AccordionTrigger>
+          Як дізнатися про зміни в розкладі занять?
+        </AccordionTrigger>
+        <AccordionContent>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis
+          vitae unde at ratione laboriosam praesentium non impedit eos accusamus
+          libero debitis tempore, voluptatum ipsam, molestiae perferendis, nisi
+          distinctio temporibus corporis?
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value={'what-documents-are-required'}>
+        <AccordionTrigger>
+          Які документи потрібні для отримання стипендії?
+        </AccordionTrigger>
+        <AccordionContent>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime
+          dolorem quae nulla reiciendis, est dolorum recusandae omnis quam
+          necessitatibus totam. Quis mollitia perspiciatis incidunt? Fuga eius
+          soluta repudiandae excepturi tempore!
+        </AccordionContent>
+      </AccordionItem>
     </Accordion>
   );
-};
-
-interface AccordionListeItemTriggerProps {
-  children: React.ReactNode;
-}
-
-const AccordionListItemTrigger: React.FC<AccordionListeItemTriggerProps> = ({
-  children,
-}) => {
-  return <AccordionTrigger>{children}</AccordionTrigger>;
-};
-
-interface AccordionListItemProps {
-  children: React.ReactNode[];
-  itemValue: string;
-}
-
-const AccordionListItem: React.FC<AccordionListItemProps> = ({
-  children,
-  ...props
-}) => {
-  return <AccordionItem value={props.itemValue}>{children}</AccordionItem>;
 };
 
 const AccordionItem = React.forwardRef<
@@ -96,13 +117,17 @@ const AccordionTrigger = React.forwardRef<
         onClick={() => setIsCollapsed(!isCollapsed)}
         ref={ref}
         className={cn(
-          'flex flex-1 w-screen max-w-screen-lg lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm select-none justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 p-4',
+          'flex flex-1 w-screen max-w-screen-lg lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm select-none justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 p-8 lg:text-xl lg:p-4 sm:text-3xl text-center',
           className,
         )}
         {...props}
       >
         {children}
-        {isCollapsed ? <PlusIcon /> : <Minus />}
+        {isCollapsed ? (
+          <PlusIcon className="sm:scale-150 lg:scale-100 md:scale-105" />
+        ) : (
+          <Minus className="sm:scale-150 lg:scale-100 md:scale-105" />
+        )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
@@ -117,10 +142,10 @@ const AccordionContent = React.forwardRef<
   return (
     <AccordionPrimitive.Content
       ref={ref}
-      className="overflow-hidden max-w-screen-lg px-3 text-sm transition-all duration-500 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      className="p-1 w-full transition-all duration-500 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down sm:text-3xl lg:text-lg"
       {...props}
     >
-      <div className={cn('pb-4 pt-0', className)}>{children}</div>
+      <div className={cn('mb-4 mt-0', className)}>{children}</div>
     </AccordionPrimitive.Content>
   );
 });
