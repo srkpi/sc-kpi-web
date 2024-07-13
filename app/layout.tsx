@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Roboto as FontSans } from 'next/font/google';
 
-import Footer from '@/components/footer/footer';
 import { cn } from '@/lib/cn';
 
 import './globals.css';
@@ -42,7 +41,6 @@ export default function RootLayout({
         )}
       >
         {children}
-        <Footer />
       </body>
     </html>
   );
