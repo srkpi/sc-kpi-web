@@ -8,11 +8,11 @@ import { cn } from '@/lib/cn';
 
 const Accordion = AccordionPrimitive.Root;
 
-const MultipleAccordion = () => {
+const FAQAccordion = () => {
   return (
     <Accordion
       type="multiple"
-      className="flex flex-1 flex-col gap-2 lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm lg:text-xl text-center"
+      className="flex flex-1 flex-col gap-1 w-full max-w-screen lg:max-w-screen-xl md:max-w-screen-lg sm:max-w-screen-sm text-center"
     >
       <AccordionItem value={'where-to-find-required-document'}>
         <AccordionTrigger>
@@ -117,17 +117,13 @@ const AccordionTrigger = React.forwardRef<
         onClick={() => setIsCollapsed(!isCollapsed)}
         ref={ref}
         className={cn(
-          'flex flex-1 w-screen max-w-screen-lg lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-screen-sm select-none justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 p-8 lg:text-xl lg:p-4 sm:text-3xl text-center',
+          'flex flex-1 lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-xs select-none justify-between font-medium hover:underline [&[data-state=open]>svg]:rotate-180 lg:text-lg md:text-xl sm:text-2xl p-2 text-center',
           className,
         )}
         {...props}
       >
         {children}
-        {isCollapsed ? (
-          <PlusIcon className="sm:scale-150 lg:scale-100 md:scale-105" />
-        ) : (
-          <Minus className="sm:scale-150 lg:scale-100 md:scale-105" />
-        )}
+        {isCollapsed ? <PlusIcon /> : <Minus />}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
@@ -142,14 +138,14 @@ const AccordionContent = React.forwardRef<
   return (
     <AccordionPrimitive.Content
       ref={ref}
-      className="p-1 w-full transition-all duration-500 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down sm:text-3xl lg:text-lg"
+      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
       {...props}
     >
-      <div className={cn('mb-4 mt-0', className)}>{children}</div>
+      <div className={cn('p-2', className)}>{children}</div>
     </AccordionPrimitive.Content>
   );
 });
 
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
-export default MultipleAccordion;
+export default FAQAccordion;
