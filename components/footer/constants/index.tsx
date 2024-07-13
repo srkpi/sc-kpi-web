@@ -40,7 +40,7 @@ export const supportItems: Item[] = [
   },
   {
     name: 'studradakpi1998@gmail.com',
-    href: 'studradakpi1998@gmail.com',
+    href: 'mailto:studradakpi1998@gmail.com',
     icon: <MailIcon className="size-[15px] md:size-[20px]" />,
   },
 ];
@@ -51,7 +51,7 @@ export const otherItems: Item[] = [
       'Студентська рада КПІ ім. Ігоря Сікорського\n' +
       '03056, Україна, м. Київ\n' +
       'Берестейський проспект, 37, корп. 1, ауд. 165',
-    href: '#',
+    href: 'https://maps.app.goo.gl/uvPEXUy7zWFx7Zyn6',
     icon: <MapPinIcon className="size-[15px] md:size-[20px]" />,
   },
   {
