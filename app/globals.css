@@ -1,23 +1,35 @@
-@import "../styles/typography.css";
+@import '../styles/typography.css';
 
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
-  @layer base {
-    :root {
-      --background: #101820;
-      --accent: #1323E9;
-      --blue: #374FFA;
-      --white: #ECEDF8;
-    }
+@layer base {
+  :root {
+    --dark: #101820;
+    --accent: #1323e9;
+    --blue: #374ffa;
+    --white: #ecedf8;
   }
+}
 
-  @layer base {
-    body {
-      @apply bg-background text-white;
-    }
+@layer base {
+  body {
+    @apply bg-dark text-white;
   }
+}
+
+@layer components {
+  :root {
+    --max-width-container: 1720px;
+  }
+  ._container {
+    max-width: var(--max-width-container);
+    box-sizing: content-box;
+    margin: 0 auto;
+    @apply px-3.5 md:px-8 lg:px-16 2xl:px-24;
+  }
+}
 
 ::-webkit-scrollbar {
   width: 0;

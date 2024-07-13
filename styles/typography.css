@@ -1,5 +1,9 @@
 .font-h1 {
-  @apply text-h1 font-semibold;
+  @apply text-h1 font-semibold leading-10;
+}
+
+.font-h3 {
+  @apply text-h3 font-medium leading-6;
 }
 
 .font-m-h1 {
@@ -7,7 +11,7 @@
 }
 
 .font-p {
-  @apply text-p font-regular;
+  @apply text-p font-regular leading-5;
 }
 
 .font-m-p {

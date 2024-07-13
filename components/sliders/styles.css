@@ -1,0 +1,22 @@
+.main-slider .slick-slide {
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.main-slider .slick-current {
+  opacity: 1;
+}
+
+.main-slider {
+  height: 100%;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+.slick-list,
+.slick-track {
+  height: 100%;
+}
+
