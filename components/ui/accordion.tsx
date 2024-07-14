@@ -12,7 +12,7 @@ const FAQAccordion = () => {
   return (
     <Accordion
       type="multiple"
-      className="flex flex-1 flex-col gap-1 w-full max-w-screen lg:max-w-screen-xl md:max-w-screen-lg sm:max-w-screen-sm text-center"
+      className="flex flex-1 flex-col gap-1 w-full max-w-screen lg:max-w-screen-xl md:max-w-screen-lg sm:max-w-screen-sm text-left not-italic font-normal leading-normal text-base"
     >
       <AccordionItem value={'where-to-find-required-document'}>
         <AccordionTrigger>
@@ -117,13 +117,17 @@ const AccordionTrigger = React.forwardRef<
         onClick={() => setIsCollapsed(!isCollapsed)}
         ref={ref}
         className={cn(
-          'flex flex-1 lg:max-w-screen-2xl md:max-w-screen-md sm:max-w-xs select-none justify-between font-medium hover:underline [&[data-state=open]>svg]:rotate-180 lg:text-lg md:text-xl sm:text-2xl p-2 text-center',
+          'flex flex-1 lg:max-w-screen-2xl md:max-w-screen-xl select-none justify-between hover:underline [&[data-state=open]>svg]:rotate-180 lg:text-lg md:text-xl sm:text-2xl p-4 text-left',
           className,
         )}
         {...props}
       >
         {children}
-        {isCollapsed ? <PlusIcon /> : <Minus />}
+        {isCollapsed ? (
+          <PlusIcon className="w-10 max-w-16" />
+        ) : (
+          <Minus className="w-10 max-w-16" />
+        )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
@@ -138,14 +142,20 @@ const AccordionContent = React.forwardRef<
   return (
     <AccordionPrimitive.Content
       ref={ref}
-      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden"
       {...props}
     >
-      <div className={cn('p-2', className)}>{children}</div>
+      <div className={cn('px-4 pb-4 pt-0', className)}>{children}</div>
     </AccordionPrimitive.Content>
   );
 });
 
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
-export default FAQAccordion;
+export {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  FAQAccordion,
+};
