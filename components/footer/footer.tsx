@@ -4,15 +4,15 @@ import Image from 'next/image';
 import FooterColumn from '@/components/footer/components/footer-column';
 import FooterMedia from '@/components/footer/components/footer-media';
 import {
-  mainItems,
   mediaItems,
   otherItems,
   supportItems,
 } from '@/components/footer/constants';
+import { mainItems } from '@/constants/link-items';
 
 const Footer = () => {
   return (
-    <footer className="p-[20px] md:p-[32px] lg:p-[64px] xl:p-[100px]">
+    <footer className="p-[14px] md:p-[32px] lg:p-[64px] xl:p-[100px]">
       <div className="flex align-top justify-between flex-wrap">
         <div className="w-screen xl:w-auto mb-[20px]">
           <Image

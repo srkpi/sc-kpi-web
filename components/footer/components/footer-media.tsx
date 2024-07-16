@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import Link from 'next/link';
 
-import { Item } from '@/components/footer/types';
 import { cn } from '@/lib/cn';
+import { LinkItem } from '@/types/link-item';
 
 interface FooterMediaProps {
-  items: Item[];
+  items: LinkItem[];
   className?: string;
 }
 
@@ -16,7 +16,7 @@ const FooterMedia: FC<FooterMediaProps> = ({ items, className = '' }) => {
         Соціальні мережі
       </p>
       <div className="flex gap-[23px]">
-        {items.map((item: Item) => (
+        {items.map((item: LinkItem) => (
           <Link
             className="size-[15px] md:size-[20px]"
             key={item.href}
