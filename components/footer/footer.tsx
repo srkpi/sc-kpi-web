@@ -8,7 +8,7 @@ import {
   otherItems,
   supportItems,
 } from '@/components/footer/constants';
-import { mainItems } from '@/constants/link-items';
+import { linkItems } from '@/constants/link-items';
 
 const Footer = () => {
   return (
@@ -23,7 +23,7 @@ const Footer = () => {
             height={73}
           />
         </div>
-        <FooterColumn name="Основні сторінки" items={mainItems} />
+        <FooterColumn name="Основні сторінки" items={linkItems} />
         <FooterColumn name="Підтримка" items={supportItems} />
         <div className="hidden lg:flex lg:flex-col">
           <FooterColumn items={otherItems} />

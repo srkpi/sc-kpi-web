@@ -10,7 +10,7 @@ export default async function Home() {
   const { data: departments } = await api.get<Department[]>('/departments');
 
   return (
-    <main className="pt-5 md:pt-8 lg:pt-12">
+    <div className="pt-5 md:pt-8 lg:pt-12">
       <section className="_container">
         <div className="flex flex-col lg:flex-row justify-between w-full gap-x-5 gap-y-12 pb-[60px] md:pb-[200px]">
           <div className="lg:w-[45%] flex flex-col gap-8 md:gap-16">
@@ -114,6 +114,6 @@ export default async function Home() {
           <SliderDepartments departments={departments} />
         </div>
       </section>
-    </main>
+    </div>
   );
 }

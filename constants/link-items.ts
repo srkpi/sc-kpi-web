@@ -1,6 +1,6 @@
 import { LinkItem } from '@/types/link-item';
 
-export const mainItems: LinkItem[] = [
+export const linkItems: LinkItem[] = [
   {
     name: 'Головна',
     href: '/',

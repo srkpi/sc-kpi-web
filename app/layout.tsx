@@ -9,6 +9,7 @@ const fontSans = FontSans({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-sans',
   weight: ['300', '400', '500', '700'],
+  display: 'auto',
 });
 
 const title = 'Студентська Рада | КПІ ім. Ігоря Сікорського';
