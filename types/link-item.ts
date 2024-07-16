@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface Item {
+export interface LinkItem {
   name?: string;
   href: string;
   icon?: ReactNode;

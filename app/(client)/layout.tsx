@@ -1,6 +1,7 @@
 import { Roboto as FontSans } from 'next/font/google';
 
 import Footer from '@/components/footer/footer';
+import Header from '@/components/header/header';
 import { cn } from '@/lib/cn';
 
 const fontSans = FontSans({
@@ -22,7 +23,8 @@ export default function ClientLayout({
           fontSans.variable,
         )}
       >
-        {children}
+        <Header />
+        <main className="pt-[28px] lg:pt-[50px]">{children}</main>
         <Footer />
       </body>
     </html>

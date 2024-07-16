@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import Link from 'next/link';
 
-import { Item } from '@/components/footer/types';
 import { cn } from '@/lib/cn';
+import { LinkItem } from '@/types/link-item';
 
 interface FooterColumnProps {
   name?: string;
-  items: Item[];
+  items: LinkItem[];
   className?: string;
 }
 
@@ -23,7 +23,7 @@ const FooterColumn: FC<FooterColumnProps> = ({
         </p>
       )}
       <div className="flex flex-col gap-[15px]">
-        {items.map((item: Item) => (
+        {items.map((item: LinkItem) => (
           <Link
             className="flex text-m-p md:text-p"
             key={item.name}

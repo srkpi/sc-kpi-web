@@ -10,24 +10,9 @@ import {
   ShieldCheckIcon,
 } from 'lucide-react';
 
-import { Item } from '@/components/footer/types';
+import { LinkItem } from '@/types/link-item';
 
-export const mainItems: Item[] = [
-  {
-    name: 'Головна',
-    href: '/',
-  },
-  {
-    name: 'Розклад',
-    href: '/schedule-importer',
-  },
-  {
-    name: 'Гуртки',
-    href: '/clubs',
-  },
-];
-
-export const supportItems: Item[] = [
+export const supportItems: LinkItem[] = [
   {
     name: 'Часті питання',
     href: '/faq',
@@ -45,7 +30,7 @@ export const supportItems: Item[] = [
   },
 ];
 
-export const otherItems: Item[] = [
+export const otherItems: LinkItem[] = [
   {
     name:
       'Студентська рада КПІ ім. Ігоря Сікорського\n' +
@@ -61,7 +46,7 @@ export const otherItems: Item[] = [
   },
 ];
 
-export const mediaItems: Item[] = [
+export const mediaItems: LinkItem[] = [
   {
     href: 'https://t.me/sr_kpi',
     icon: (
