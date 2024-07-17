@@ -13,6 +13,7 @@ interface DepartmentCardTextProps {
 }
 
 const DepartmentCardText = ({ dep, next, prev }: DepartmentCardTextProps) => {
+  console.log(dep);
   return (
     <div className="hidden w-full md:flex flex-col h-full pr-8">
       <div className="max-w-[550px] flex-auto pb-3">
@@ -20,9 +21,9 @@ const DepartmentCardText = ({ dep, next, prev }: DepartmentCardTextProps) => {
         <p className="department-card__description pb-5 lg:pb-9">
           {dep.shortDescription}
         </p>
-        <Link href={dep.buttonLink}>
+        <Link href={`/departments/${dep.id}`}>
           <Button size="sm" className="min-w-[200px] w-full max-w-[300px]">
-            Вступити
+            Дізнатись більше
           </Button>
         </Link>
       </div>
