@@ -37,9 +37,9 @@ const DepartmentMoblieCard = ({
       <p className="text-center font-m-p text-m-p sm:text-p">
         {dep.shortDescription}
       </p>
-      <Link href={dep.buttonLink}>
+      <Link href={`/departments/${dep.id}`}>
         <Button size="sm" className="min-w-[270px] sm:min-w-[290px]">
-          Вступити
+          Дізнатись більше
         </Button>
       </Link>
     </div>
