@@ -45,6 +45,7 @@ const config = {
         transparent: 'transparent',
         current: 'currentColor',
         white: 'var(--white)',
+        gray: 'rgba(236, 237, 248, 0.10)',
         dark: 'var(--dark)',
         accent: 'var(--accent)',
         blue: 'var(--blue)',

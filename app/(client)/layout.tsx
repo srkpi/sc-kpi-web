@@ -8,6 +8,7 @@ const fontSans = FontSans({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-sans',
   weight: ['300', '400', '500', '700'],
+  display: 'auto',
 });
 
 export default function ClientLayout({
@@ -24,7 +25,7 @@ export default function ClientLayout({
         )}
       >
         <Header />
-        <main className="pt-[28px] lg:pt-[50px]">{children}</main>
+        <main className="pt-[52.6px] lg:pt-[84px]">{children}</main>
         <Footer />
       </body>
     </html>
