@@ -12,26 +12,28 @@ import { Button } from '@/components/ui/button';
 
 export default function FAQ() {
   return (
-    <header className="w-full flex flex-col">
-      <Breadcrumbs />
-      <main className="flex lg:flex-row md:flex-col sm:flex-col justify-evenly just">
+    <>
+      <header className="w-full flex flex-col justify-around">
+        <Breadcrumbs />
+      </header>
+      <main className="flex xsm:flex-col sm:flex-col md:flex-col lg:flex-row p-1 gap-2">
         <AsideCategories />
         <FAQAccordion />
       </main>
-    </header>
+    </>
   );
 }
 
 const Breadcrumbs = () => {
   return (
-    <Breadcrumb className="w-1/10 h-20 flex flex-row">
+    <Breadcrumb className="h-20 flex flex-row w-full mx-3">
       <BreadcrumbList>
         <BreadcrumbItem>
           <Layers /> Головна
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink>
+          <BreadcrumbLink className="flex flex-row xsm:items-center gap-1">
             <Cable /> Часті питання
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -42,13 +44,13 @@ const Breadcrumbs = () => {
 
 const AsideCategories = () => {
   return (
-    <aside className="w-1/11 h-screen flex">
+    <aside className="w-1/11 flex">
       <ul className="w-full flex flex-col gap-1">
         <li>
           <Button
             variant={'outline'}
             size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base"
+            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
           >
             Загальні питання
           </Button>
@@ -57,7 +59,7 @@ const AsideCategories = () => {
           <Button
             variant={'outline'}
             size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base"
+            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
           >
             Отримати документи
           </Button>
@@ -66,7 +68,7 @@ const AsideCategories = () => {
           <Button
             variant={'outline'}
             size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base"
+            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
           >
             Головна інформація
           </Button>
@@ -75,7 +77,7 @@ const AsideCategories = () => {
           <Button
             variant={'outline'}
             size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base"
+            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
           >
             Питання до студради
           </Button>
@@ -84,7 +86,7 @@ const AsideCategories = () => {
           <Button
             variant={'outline'}
             size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base "
+            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
           >
             Питання студентам
           </Button>
@@ -93,7 +95,7 @@ const AsideCategories = () => {
           <Button
             variant={'outline'}
             size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base "
+            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
           >
             Поширенні запитання
           </Button>
@@ -102,7 +104,7 @@ const AsideCategories = () => {
           <Button
             variant={'outline'}
             size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base"
+            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
           >
             Питання про вступ
           </Button>
@@ -111,7 +113,7 @@ const AsideCategories = () => {
           <Button
             variant={'outline'}
             size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base "
+            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
           >
             Організаційні питання
           </Button>
