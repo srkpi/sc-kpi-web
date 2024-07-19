@@ -24,18 +24,22 @@ interface ScheduleTableProps {
 const ScheduleTable: FC<ScheduleTableProps> = ({ eventsData }) => {
   const { toast } = useToast();
   const searchParams = useSearchParams();
+
   const storedEvents =
     typeof window !== 'undefined' ? localStorage.getItem('schedule') : null;
   const [events, setEvents] = useState<EventsData>(
     storedEvents ? JSON.parse(storedEvents) : eventsData,
   );
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
+
   const thRefs = useRef<(HTMLTableCellElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
   const week = searchParams.get('week') as WeekType;
   const scheduleWeek =
     week === 'first' ? events.scheduleFirstWeek : events.scheduleSecondWeek;
   const groupName = searchParams.get('name');
+
   const table = createEventsTable(scheduleWeek);
 
   useEffect(() => {
@@ -58,6 +62,7 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsData }) => {
         } catch (error) {
           if (isAxiosError(error)) {
             toast({
+              variant: 'destructive',
               title: 'Помилка створення розкладу',
             });
           }

@@ -39,6 +39,32 @@ export default function Privacy() {
           <a className="text underline" href="https://github.com/srkpi/">
             https://github.com/srkpi/
           </a>
+          <br />
+          <br />
+          Використовуючи Сайт, Ви підтверджуєте, що ознайомилися з{' '}
+          <a
+            className="text underline"
+            href="https://policies.google.com/privacy"
+          >
+            Політикою конфіденційності Google
+          </a>{' '}
+          і погоджуєтеся дотримуватися її. Використання і передача даних,
+          отриманих із Google API, до будь-якого застосунку здійснюється
+          відповідно до{' '}
+          <a
+            className="text underline"
+            href="https://developers.google.com/terms/api-services-user-data-policy"
+          >
+            Політики щодо даних користувачів служб Google API
+          </a>
+          , включаючи{' '}
+          <a
+            className="text underline"
+            href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes"
+          >
+            вимоги обмеженого використання
+          </a>
+          .
         </p>
         <p className="font-regular text-m-p leading-4 sm:text-p sm:leading-5">
           <span className="font-m-p font-semibold md:text-m-h1">
