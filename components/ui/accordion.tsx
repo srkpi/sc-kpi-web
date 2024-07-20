@@ -13,8 +13,12 @@ const FAQAccordion = () => {
     <Accordion
       type="multiple"
       className="flex flex-1 flex-col gap-1 w-full max-w-screen lg:max-w-screen-xl md:max-w-screen-lg sm:max-w-screen-sm text-left not-italic font-normal leading-normal text-base"
+      id="faq-accordion"
     >
-      <AccordionItem value={'where-to-find-required-document'}>
+      <AccordionItem
+        id="where-to-find-required-document"
+        value={'where-to-find-required-document'}
+      >
         <AccordionTrigger>
           Не знаю де отримати необхідний документ
         </AccordionTrigger>
@@ -25,7 +29,10 @@ const FAQAccordion = () => {
           architecto vitae?
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value={'conflict-with-professeur'}>
+      <AccordionItem
+        id="conflict-with-professeur"
+        value={'conflict-with-professeur'}
+      >
         <AccordionTrigger>
           Виникла конфліктна ситуація з викладачем, не знаю до кого звернутися
         </AccordionTrigger>
@@ -34,7 +41,7 @@ const FAQAccordion = () => {
           підрозділів). Якщо не знаєш де це, пиши до нас (лінк на саппорт)
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value={'do-not-understand'}>
+      <AccordionItem id="do-not-understand" value={'do-not-understand'}>
         <AccordionTrigger>
           Не розумію, що мається на увазі в положенні
         </AccordionTrigger>
@@ -45,7 +52,7 @@ const FAQAccordion = () => {
           ratione enim.
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value={'cannot-find-info'}>
+      <AccordionItem id="cannot-find-info" value={'cannot-find-info'}>
         <AccordionTrigger>
           Не можу знайти необхідну інформацію щодо освітнього процесу
         </AccordionTrigger>
@@ -55,7 +62,7 @@ const FAQAccordion = () => {
           fugiat odio quaerat et quam fuga sunt corrupti excepturi, quae quo?
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value={'how-to-join-clubs'}>
+      <AccordionItem id="how-to-join-clubs" value={'how-to-join-clubs'}>
         <AccordionTrigger>
           Як можна долучитися до студентських клубів та організацій?
         </AccordionTrigger>
@@ -66,7 +73,7 @@ const FAQAccordion = () => {
           laborum facere laudantium minus!
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value={'how-to-be-in-touch'}>
+      <AccordionItem id="how-to-be-in-touch" value={'how-to-be-in-touch'}>
         <AccordionTrigger>
           Як дізнатися про зміни в розкладі занять?
         </AccordionTrigger>
@@ -77,7 +84,10 @@ const FAQAccordion = () => {
           distinctio temporibus corporis?
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value={'what-documents-are-required'}>
+      <AccordionItem
+        id="what-documents-are-required"
+        value={'what-documents-are-required'}
+      >
         <AccordionTrigger>
           Які документи потрібні для отримання стипендії?
         </AccordionTrigger>

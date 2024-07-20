@@ -1,3 +1,4 @@
+'use client';
 import { Cable, Layers } from 'lucide-react';
 
 import { FAQAccordion } from '@/components/ui/accordion';
@@ -26,7 +27,7 @@ export default function FAQ() {
 
 const Breadcrumbs = () => {
   return (
-    <Breadcrumb className="h-20 flex flex-row w-full mx-3">
+    <Breadcrumb className="h-20 flex flex-row mx-3">
       <BreadcrumbList>
         <BreadcrumbItem>
           <Layers /> Головна
@@ -42,81 +43,97 @@ const Breadcrumbs = () => {
   );
 };
 
+function ToggleAccordionItems(value: string) {
+  const ids: string[] = [];
+
+  // For which button value which accordion items with according ids should be displayed. If id is not present
+  // in the dictionary - hide.
+  const toggle_ids: { [value: string]: string[] } = {
+    general: ['how-to-join-clubs', 'how-to-be-in-touch'],
+    documents: [
+      'where-to-find-required-document',
+      'what-documents-are-required',
+    ],
+    info: ['cannot-find-info'],
+    studrad: ['how-to-join-clubs'],
+    students: [
+      'conflict-with-professeur',
+      'cannot-find-info',
+      'how-to-be-in-touch',
+    ],
+    common: [
+      'what-documents-are-required',
+      'how-to-be-in-touch',
+      'how-to-join-clubs',
+      'cannot-find-info',
+      'do-not-understand',
+      'conflict-with-professeur',
+      'where-to-find-required-document',
+    ],
+    admission: [],
+    org: [],
+  };
+
+  if (value in toggle_ids) {
+    if (document) {
+      const children = document.getElementById('faq-accordion')!.childNodes;
+
+      for (let index = 0; index < children.length; index++) {
+        const child = children[index] as HTMLElement;
+        ids.push(child.id);
+
+        child.classList.remove('hidden');
+        if (!toggle_ids[value].includes(child.id)) {
+          child.classList.add('hidden');
+        }
+      }
+    }
+  }
+}
+
+const ToggleButton = ({ text, value }: { text: string; value: string }) => {
+  return (
+    <Button
+      variant={'outline'}
+      size={'sm'}
+      className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
+      value={value}
+      onClick={event => {
+        ToggleAccordionItems(event.currentTarget.value);
+      }}
+    >
+      {text}
+    </Button>
+  );
+};
+
 const AsideCategories = () => {
   return (
     <aside className="w-1/11 flex">
       <ul className="w-full flex flex-col gap-1">
         <li>
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
-          >
-            Загальні питання
-          </Button>
+          <ToggleButton text="Загальні питання" value="general" />
         </li>
         <li>
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
-          >
-            Отримати документи
-          </Button>
+          <ToggleButton text="Отримати документи" value="documents" />
         </li>
         <li>
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
-          >
-            Головна інформація
-          </Button>
+          <ToggleButton text="Головна інформація" value="info" />
         </li>
         <li>
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
-          >
-            Питання до студради
-          </Button>
+          <ToggleButton text="Питання до студради" value="studrad" />
         </li>
         <li>
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
-          >
-            Питання студентам
-          </Button>
+          <ToggleButton text="Питання студентам" value="students" />
         </li>
         <li>
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
-          >
-            Поширенні запитання
-          </Button>
+          <ToggleButton text="Поширенні запитання" value="common" />
         </li>
         <li>
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
-          >
-            Питання про вступ
-          </Button>
+          <ToggleButton text="Питання про вступ" value="admission" />
         </li>
         <li>
-          <Button
-            variant={'outline'}
-            size={'sm'}
-            className="w-full not-italic font-normal leading-normal text-base sm:text-xl xsm:text-xl"
-          >
-            Організаційні питання
-          </Button>
+          <ToggleButton text="Організаційні питання" value="org" />
         </li>
       </ul>
     </aside>
