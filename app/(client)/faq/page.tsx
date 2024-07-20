@@ -17,7 +17,7 @@ export default function FAQ() {
       <header className="w-full flex flex-col justify-around">
         <Breadcrumbs />
       </header>
-      <main className="flex xsm:flex-col sm:flex-col md:flex-col lg:flex-row p-1 gap-2">
+      <main className="flex xsm:flex-col sm:flex-col md:flex-col lg:flex-row min-[390px]:flex-col max-[390px]:flex-col p-1 gap-2">
         <AsideCategories />
         <FAQAccordion />
       </main>
