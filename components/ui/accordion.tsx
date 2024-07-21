@@ -8,100 +8,6 @@ import { cn } from '@/lib/cn';
 
 const Accordion = AccordionPrimitive.Root;
 
-const FAQAccordion = () => {
-  return (
-    <Accordion
-      type="multiple"
-      className="flex flex-1 flex-col gap-1 w-full max-w-screen lg:max-w-screen-xl md:max-w-screen-lg sm:max-w-screen-sm text-left not-italic font-normal leading-normal text-base"
-      id="faq-accordion"
-    >
-      <AccordionItem
-        id="where-to-find-required-document"
-        value={'where-to-find-required-document'}
-      >
-        <AccordionTrigger>
-          Не знаю де отримати необхідний документ
-        </AccordionTrigger>
-        <AccordionContent>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi
-          odio necessitatibus hic? Quas quia sit doloribus dolore maxime,
-          blanditiis dicta quasi at eos necessitatibus quo quaerat, sed a
-          architecto vitae?
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem
-        id="conflict-with-professeur"
-        value={'conflict-with-professeur'}
-      >
-        <AccordionTrigger>
-          Виникла конфліктна ситуація з викладачем, не знаю до кого звернутися
-        </AccordionTrigger>
-        <AccordionContent>
-          Звернися до студентської ради підрозділу (лінк на канали СР
-          підрозділів). Якщо не знаєш де це, пиши до нас (лінк на саппорт)
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem id="do-not-understand" value={'do-not-understand'}>
-        <AccordionTrigger>
-          Не розумію, що мається на увазі в положенні
-        </AccordionTrigger>
-        <AccordionContent>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo debitis
-          exercitationem mollitia nihil expedita quos ad. Voluptas et, commodi
-          dignissimos nostrum cumque eum unde, maiores nulla molestiae quo
-          ratione enim.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem id="cannot-find-info" value={'cannot-find-info'}>
-        <AccordionTrigger>
-          Не можу знайти необхідну інформацію щодо освітнього процесу
-        </AccordionTrigger>
-        <AccordionContent>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vero minus
-          natus omnis temporibus repellendus aperiam consequatur molestiae at id
-          fugiat odio quaerat et quam fuga sunt corrupti excepturi, quae quo?
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem id="how-to-join-clubs" value={'how-to-join-clubs'}>
-        <AccordionTrigger>
-          Як можна долучитися до студентських клубів та організацій?
-        </AccordionTrigger>
-        <AccordionContent>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos
-          voluptatem deleniti, placeat molestiae corporis beatae qui quaerat
-          illo adipisci autem neque delectus, dolor, nulla tenetur repudiandae
-          laborum facere laudantium minus!
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem id="how-to-be-in-touch" value={'how-to-be-in-touch'}>
-        <AccordionTrigger>
-          Як дізнатися про зміни в розкладі занять?
-        </AccordionTrigger>
-        <AccordionContent>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis
-          vitae unde at ratione laboriosam praesentium non impedit eos accusamus
-          libero debitis tempore, voluptatum ipsam, molestiae perferendis, nisi
-          distinctio temporibus corporis?
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem
-        id="what-documents-are-required"
-        value={'what-documents-are-required'}
-      >
-        <AccordionTrigger>
-          Які документи потрібні для отримання стипендії?
-        </AccordionTrigger>
-        <AccordionContent>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime
-          dolorem quae nulla reiciendis, est dolorum recusandae omnis quam
-          necessitatibus totam. Quis mollitia perspiciatis incidunt? Fuga eius
-          soluta repudiandae excepturi tempore!
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
-};
-
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
@@ -162,10 +68,4 @@ const AccordionContent = React.forwardRef<
 
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
-export {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  FAQAccordion,
-};
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };
