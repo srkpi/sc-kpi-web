@@ -6,10 +6,11 @@ import Link from 'next/link';
 
 import Links from '@/components/header/components/links';
 import { Button } from '@/components/ui/button';
+import useAuth from '@/hooks/useAuth';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-
+  const { loggedIn, logout } = useAuth();
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -28,11 +29,19 @@ const Header = () => {
             height={38}
           />
         </Link>
-        <div className="hidden sm:flex">
+        <div className="hidden sm:flex sm:gap-[40px] md:gap-[60px] lg:gap-[100px]">
           <Links />
-          <Button variant="outline" size="sm">
-            Увійти
-          </Button>
+          {loggedIn ? (
+            <Button variant="outline" onClick={() => logout()} size="sm">
+              Вийти
+            </Button>
+          ) : (
+            <Link href="/login">
+              <Button variant="outline" size="sm">
+                Увійти
+              </Button>
+            </Link>
+          )}
         </div>
         {open ? (
           <X className={iconClassName} onClick={handleOpen} />
@@ -42,13 +51,26 @@ const Header = () => {
       </div>
       {open && (
         <div className="sm:hidden flex-col items-center gap-5 pt-[8px] pb-[30px] sm:[15px] lg:py-[23px] px-[14px] md:px-[32px] lg:px-[64px] xl:px-[100px]">
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full font-regular mb-[30px]"
-          >
-            Увійти
-          </Button>
+          {loggedIn ? (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => logout()}
+              className="w-full font-regular mb-[30px]"
+            >
+              Вийти
+            </Button>
+          ) : (
+            <Link href="/login">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full font-regular mb-[30px]"
+              >
+                Увійти
+              </Button>
+            </Link>
+          )}
           <Links />
         </div>
       )}
