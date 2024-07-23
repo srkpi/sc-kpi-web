@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Roboto as FontSans } from 'next/font/google';
 
@@ -43,6 +44,7 @@ export default function RootLayout({
       >
         {children}
       </body>
+      <GoogleAnalytics gaId={process.env.GA_ID ?? ''} />
     </html>
   );
 }

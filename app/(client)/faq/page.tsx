@@ -28,30 +28,30 @@ export default function FAQ() {
   return (
     <div className="ml-0 m-0 lg:ml-12 xsm:ml-0">
       <div className="w-full flex flex-col justify-around">
-        <Breadcrumb className="h-20 flex flex-row mx-3">
+        <Breadcrumb className="h-20 flex flex-row mx-12 max-[1280px]:mx-3">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink
                 href="/"
-                className="flex flex-row xsm:items-center gap-3"
+                className="flex flex-row xsm:items-center gap-3 items-center"
               >
-                <Layers className="scale-110" /> Головна
+                <Layers className="scale-125" /> Головна
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink className="flex flex-row xsm:items-center gap-3">
-                <Cable className="scale-110" /> Часті питання
+              <BreadcrumbLink className="flex flex-row xsm:items-center gap-3 items-center">
+                <Cable className="scale-125" /> Часті питання
               </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <main className="flex xsm:flex-col sm:gap-2 xsm:gap-2 lg:gap-44 sm:flex-col md:flex-col lg:flex-row min-[390px]:flex-col max-[390px]:flex-col p-1 ">
+      <main className="flex xsm:flex-col sm:gap-2 xsm:gap-2 lg:gap-32 sm:flex-col md:flex-col lg:flex-row min-[390px]:flex-col max-[390px]:flex-col px-12 max-[1280px]:px-3">
         <AsideCategories />
         <FAQAccordion />
       </main>
-      <div className="w-full h-48 mb-3">
+      <div className="w-full h-48 mb-12">
         <TextBot />
       </div>
     </div>
@@ -106,39 +106,7 @@ function ToggleAccordionItems(value: string) {
   }
 }
 
-const ToggleButton = ({ text, value }: { text: string; value: string }) => {
-  return (
-    <Button
-      variant={'outline'}
-      size={'sm'}
-      className="w-full not-italic font-normal leading-normal text-base p-1"
-      value={value}
-      onClick={event => {
-        ToggleAccordionItems(event.currentTarget.value);
-      }}
-    >
-      {text}
-    </Button>
-  );
-};
-
 const AsideCategories = () => {
-  let windowInitialWidth: number = 0;
-
-  if (typeof window !== 'undefined') {
-    windowInitialWidth = -window.screenLeft;
-  }
-
-  const [windowWidth, setWindowWidth] = React.useState(windowInitialWidth);
-
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', () => {
-        setWindowWidth(window.innerWidth);
-      });
-    }
-  });
-
   const textValue: { [text: string]: string } = {
     'Загальні питання': 'general',
     'Отримати документи': 'documents',
@@ -149,14 +117,14 @@ const AsideCategories = () => {
     'Організаційні питання': 'org',
   };
 
-  const CarouselButtonsList = () => {
+  const SelectButtonsList = () => {
     return (
       <Select
         onValueChange={function (e) {
           ToggleAccordionItems(e);
         }}
       >
-        <SelectTrigger className="w-3/5">
+        <SelectTrigger className="w-full border-blue">
           <SelectValue placeholder="Обрати категорію" />
         </SelectTrigger>
         <SelectContent>
@@ -166,7 +134,7 @@ const AsideCategories = () => {
                 key={key}
                 value={textValue[key]}
                 id={textValue[key]}
-                className="bg-[#16191E] z-10 select-none"
+                className="bg-dark z-10 select-none"
               >
                 {key}
               </SelectItem>
@@ -183,7 +151,17 @@ const AsideCategories = () => {
         {Object.keys(textValue).map(key => {
           return (
             <li key={key}>
-              <ToggleButton text={key} value={textValue[key]} />
+              <Button
+                variant={'outline'}
+                size={'sm'}
+                className="w-full not-italic font-normal leading-normal text-base p-1"
+                value={textValue[key]}
+                onClick={event => {
+                  ToggleAccordionItems(event.currentTarget.value);
+                }}
+              >
+                {key}
+              </Button>
             </li>
           );
         })}
@@ -193,23 +171,28 @@ const AsideCategories = () => {
 
   return (
     <aside className="h-full w-full max-w-full lg:max-w-64 xsm:max-w-screen-xsm flex mb-3">
-      {windowWidth <= 360 ? <CarouselButtonsList /> : <ButtonsList />}
+      <div className="hidden min-[360px]:block min-[1024px]:hidden">
+        <SelectButtonsList />
+      </div>
+      <div className="hidden min-[1024px]:block">
+        <ButtonsList />
+      </div>
     </aside>
   );
 };
 
 const TextBot = () => {
   return (
-    <div className="w-full h-full flex self-end justify-end items-center pr-12 pt-24">
-      <div className="rounded-3xl bg-gradient-to-b from-[#1323E9] to-[#101820]">
-        <div className="bg-[#101820] rounded-3xl m-0.5 p-8 flex flex-col justify-between items-center h-36">
+    <div className="w-full h-full flex self-end justify-end items-center pr-24 pt-24 max-[1280px]:p-3">
+      <div className="rounded-3xl bg-gradient-to-b from-accent to-dark max-[1023px]:w-full">
+        <div className="bg-dark rounded-3xl m-0.5 p-8 flex flex-col justify-between items-center h-36">
           <p className="text-base">Залишилися питання?</p>
           <Button
             className="select-none font-normal"
             variant={'outline'}
             size={'sm'}
           >
-            Пиши в <span className="text-[#374FFA] ml-1">@suggestSRbot</span>
+            Пиши в <span className="text-blue ml-1">@suggestSRbot</span>
           </Button>
         </div>
       </div>
@@ -221,7 +204,7 @@ const FAQAccordion = () => {
   return (
     <Accordion
       type="multiple"
-      className="flex flex-1 flex-col gap-1 w-full max-w-screen lg:max-w-screen-xl md:max-w-screen-lg sm:max-w-screen-sm text-left not-italic font-normal leading-normal text-base"
+      className="flex flex-1 flex-col gap-2 w-full max-w-screen lg:max-w-screen-xl md:max-w-screen-lg sm:max-w-screen-sm text-left not-italic font-normal leading-normal text-base"
       id="faq-accordion"
     >
       <AccordionItem
