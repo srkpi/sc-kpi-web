@@ -12,7 +12,7 @@ import { resetPassword } from '@/lib/api/api.auth';
 import { ResetPasswordFormData, resetPasswordSchema } from './_validation';
 
 const ResetPassword = () => {
-  const { token } = useParams();
+  const { token } = useParams() as unknown as { token: string | string[] };
   const router = useRouter();
   const {
     register,
