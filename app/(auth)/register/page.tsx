@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import useSWR from 'swr';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -18,16 +18,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import useAuth from '@/hooks/useAuth';
+import { fetcher } from '@/lib/swr/fetcher';
 import { IFacultyData } from '@/types/faculty.interface';
-import { IGroupData } from '@/types/group.interface';
+import { IGroupData, IGroupsResponse } from '@/types/group.interface';
 
 import { RegisterFormData, registerSchema } from './validation';
 
 const RegisterPage = () => {
-  const [faculties, setFaculties] = useState<IFacultyData[]>([]);
   const [groups, setGroups] = useState<IGroupData[]>([]);
   const [generalError, setGeneralError] = useState<null | string>(null);
-  const [selectedFaculty, setSelectedFaculty] = useState<string>('');
+  const [selectedFaculty, setSelectedFaculty] = useState('');
   const { register: registerAuth } = useAuth();
   const router = useRouter();
   const {
@@ -40,42 +40,28 @@ const RegisterPage = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  useEffect(() => {
-    const fetchFaculties = async () => {
-      try {
-        const response = await axios.get(
-          'https://api.campus.kpi.ua/subdivision/faculty',
-        );
-        setFaculties(response.data);
-      } catch (error) {
-        console.error('Error fetching faculties:', error);
-      }
-    };
-    setTimeout(() => {
-      fetchFaculties();
-    }, 500);
-  }, []);
+  const { data: faculties } = useSWR<IFacultyData[]>(
+    'https://api.campus.kpi.ua/subdivision/faculty',
+    fetcher,
+    {
+      fallbackData: [],
+      revalidateOnFocus: false,
+    },
+  );
+  const { data: allGroups } = useSWR<IGroupsResponse>(
+    ['https://api.campus.kpi.ua/schedule/groups'],
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    },
+  );
 
   useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        const response = await axios.get(
-          'https://api.campus.kpi.ua/schedule/groups',
-        );
-        const filteredGroups =
-          response.data.data.filter((group: IGroupData) => {
-            return group.faculty === selectedFaculty;
-          }) || [];
+    const filteredGroups =
+      allGroups?.data.filter(group => group.faculty === selectedFaculty) || [];
 
-        setGroups(filteredGroups);
-      } catch (error) {
-        console.error('Error fetching groups:', error);
-      }
-    };
-    setTimeout(() => {
-      fetchGroups();
-    }, 500);
-  }, [selectedFaculty]);
+    setGroups(filteredGroups);
+  }, [selectedFaculty, allGroups]);
 
   const handleFacultyChange = (facultyName: string) => {
     setSelectedFaculty(facultyName);
@@ -201,7 +187,7 @@ const RegisterPage = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {faculties.map(faculty => (
+                        {faculties?.map(faculty => (
                           <SelectItem
                             key={faculty.id}
                             value={faculty.nameShort}

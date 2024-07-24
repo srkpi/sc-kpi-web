@@ -1,9 +1,15 @@
 'use client';
-import React, { createContext, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
+import { api } from '@/lib/api';
 import { errorHandler } from '@/lib/api/api.helpers';
-import { getAccessToken, setAccessToken } from '@/services/auth/auth.helper';
 import { LoginDto, RegisterDto } from '@/types/auth';
 
 import { refreshToken, signIn, signOut, signUp } from '../lib/api/api.auth';
@@ -29,20 +35,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
   useEffect(() => {
-    setToken(getAccessToken());
     const initAuth = async () => {
       try {
         const access_token = await refreshToken();
         setToken(access_token);
       } catch (error) {
         setToken(null);
-        setAccessToken(null);
       }
     };
     if (!token) {
       initAuth();
     }
   }, [token]);
+
+  useLayoutEffect(() => {
+    const authInterceptor = api.interceptors.request.use(config => {
+      if (config.headers && token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    });
+
+    return () => {
+      api.interceptors.request.eject(authInterceptor);
+    };
+  }, [token]);
+
+  useLayoutEffect(() => {
+    api.interceptors.response.use(
+      response => {
+        return response;
+      },
+      async function (error) {
+        const originalRequest = error.config;
+        if (error.response.status === 403 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          const access_token = await refreshToken();
+          axios.defaults.headers.common['Authorization'] =
+            'Bearer ' + access_token;
+          return api(originalRequest);
+        }
+        return Promise.reject(error);
+      },
+    );
+  });
 
   const login = async (credentials: LoginDto) => {
     try {
