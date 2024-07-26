@@ -34,21 +34,31 @@ const AuthContext = createContext<
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
+  const [isRefreshingToken, setIsRefreshingToken] = useState<boolean>(false);
+  const [refreshError, setRefreshError] = useState<string | null>(null);
+
   useEffect(() => {
     const initAuth = async () => {
       try {
+        setIsRefreshingToken(true);
         const access_token = await refreshToken();
         setToken(access_token);
+        setRefreshError(null);
       } catch (error) {
         setToken(null);
+        setRefreshError(errorHandler(error));
+      } finally {
+        setIsRefreshingToken(false);
       }
     };
-    if (!token) {
+
+    if (!token && !isRefreshingToken && !refreshError) {
       initAuth();
     }
-  }, [token]);
+  }, [token, isRefreshingToken, refreshError]);
 
   useLayoutEffect(() => {
+    if (refreshError) return;
     const authInterceptor = api.interceptors.request.use(config => {
       if (config.headers && token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -59,26 +69,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       api.interceptors.request.eject(authInterceptor);
     };
-  }, [token]);
+  }, [token, refreshError]);
 
   useLayoutEffect(() => {
-    api.interceptors.response.use(
+    const responseInterceptor = api.interceptors.response.use(
       response => {
         return response;
       },
       async function (error) {
         const originalRequest = error.config;
-        if (error.response.status === 403 && !originalRequest._retry) {
+        if (
+          error.response.status === 403 &&
+          !originalRequest._retry &&
+          !isRefreshingToken
+        ) {
           originalRequest._retry = true;
-          const access_token = await refreshToken();
-          axios.defaults.headers.common['Authorization'] =
-            'Bearer ' + access_token;
-          return api(originalRequest);
+          setIsRefreshingToken(true);
+          try {
+            const access_token = await refreshToken();
+            setToken(access_token);
+            axios.defaults.headers.common['Authorization'] =
+              'Bearer ' + access_token;
+            return api(originalRequest);
+          } catch (refreshError) {
+            setRefreshError(errorHandler(refreshError));
+            return Promise.reject(refreshError);
+          } finally {
+            setIsRefreshingToken(false);
+          }
         }
         return Promise.reject(error);
       },
     );
-  });
+
+    return () => {
+      api.interceptors.response.eject(responseInterceptor);
+    };
+  }, [isRefreshingToken]);
 
   const login = async (credentials: LoginDto) => {
     try {
