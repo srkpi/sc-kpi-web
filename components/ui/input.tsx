@@ -25,7 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div className="relative min-w-[200px]">
+      <div className="relative min-w-[150px]">
         {type === 'password' && iconPosition === 'start' ? (
           <div
             onClick={togglePasswordVisibility}

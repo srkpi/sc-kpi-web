@@ -2,6 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Roboto as FontSans } from 'next/font/google';
 
+import { AuthProvider } from '@/contexts/AuthContext';
 import { cn } from '@/lib/cn';
 
 import './globals.css';
@@ -42,7 +43,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
       <GoogleAnalytics gaId={process.env.GA_ID ?? ''} />
     </html>
