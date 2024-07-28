@@ -5,9 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'static.vecteezy.com',
-        port: '',
-        pathname: '/system/resources/previews/**',
+        hostname: '**',
       },
     ],
   },
