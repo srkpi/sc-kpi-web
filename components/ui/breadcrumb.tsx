@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FC } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { ArrowRight, MoreHorizontal } from 'lucide-react';
 
@@ -110,6 +111,41 @@ const BreadcrumbEllipsis = ({
 );
 BreadcrumbEllipsis.displayName = 'BreadcrumbEllipsis';
 
+export type BreadcrumbItemType = {
+  icon: React.ElementType;
+  href: string;
+  label: string;
+};
+
+const Breadcrumbs: FC<{ items: BreadcrumbItemType[]; className?: string }> = ({
+  items,
+  className,
+}) => {
+  const isLastItem = (index: number) => index < items.length - 1;
+  return (
+    <Breadcrumb className={className}>
+      <BreadcrumbList>
+        {items.map((item, index) => (
+          <React.Fragment key={index}>
+            <BreadcrumbItem className="flex items-center">
+              {item.icon && (
+                <item.icon className="w-[15px] h-[13px] md:w-[20px] md:h-[20px]" />
+              )}
+              <BreadcrumbLink
+                className={`${isLastItem(index) && 'no-underline hover:no-underline'}`}
+                href={item.href}
+              >
+                {item.label}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            {isLastItem(index) && <BreadcrumbSeparator />}
+          </React.Fragment>
+        ))}
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+};
+
 export {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -117,5 +153,6 @@ export {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
+  Breadcrumbs,
   BreadcrumbSeparator,
 };
