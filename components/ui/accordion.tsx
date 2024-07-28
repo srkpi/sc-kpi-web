@@ -14,7 +14,10 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn('border rounded-s-xl rounded-e-xl font-sans', className)}
+    className={cn(
+      'border rounded-[10px] min-h-[40px] md:min-h-[60px]',
+      className,
+    )}
     {...props}
   />
 ));
@@ -33,16 +36,16 @@ const AccordionTrigger = React.forwardRef<
         onClick={() => setIsCollapsed(!isCollapsed)}
         ref={ref}
         className={cn(
-          'flex flex-1 lg:max-w-screen-2xl md:max-w-screen-xl select-none justify-between hover:underline [&[data-state=open]>svg]:rotate-180 lg:text-lg md:text-xl sm:text-2xl p-4 text-left',
+          'flex flex-1 min-h-[40px] md:min-h-[60px] select-none justify-between hover:underline font-m-p md:text-base md:font-medium py-[13px] px-[10px] md:p-5 text-left',
           className,
         )}
         {...props}
       >
         {children}
         {isCollapsed ? (
-          <PlusIcon className="w-10 max-w-16" />
+          <PlusIcon className="w-[15px] md:w-[24px] h-[15px] md:h-[24px]" />
         ) : (
-          <Minus className="w-10 max-w-16" />
+          <Minus className="w-[15px] md:w-[24px] h-[15px] md:h-[24px]" />
         )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
@@ -61,7 +64,14 @@ const AccordionContent = React.forwardRef<
       className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden"
       {...props}
     >
-      <div className={cn('px-4 pb-4 pt-0', className)}>{children}</div>
+      <div
+        className={cn(
+          'pt-0 font-m-p md:text-base md:font-medium pb-[13px] px-[10px] md:p-5 md:pt-0',
+          className,
+        )}
+      >
+        {children}
+      </div>
     </AccordionPrimitive.Content>
   );
 });

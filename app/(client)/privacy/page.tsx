@@ -1,37 +1,25 @@
 import { FileCheck2, Layers } from 'lucide-react';
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+import { BreadcrumbItemType, Breadcrumbs } from '@/components/ui/breadcrumb';
+
+const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
+  {
+    icon: Layers,
+    href: '/',
+    label: 'Головна',
+  },
+  {
+    icon: FileCheck2,
+    href: '/privacy',
+    label: 'Політика конфіденційності',
+  },
+];
 
 export default function Privacy() {
   return (
     <main className="pt-5 md:pt-8 lg:pt-12 p-[14px] sm:p-12 md:p-24">
       <div className="w-full flex flex-col md:flex-row md:justify-start md:items-center">
-        <Breadcrumb>
-          <BreadcrumbList className="flex items-center">
-            <BreadcrumbItem>
-              <Layers className="w-[15px] h-[13px] md:w-[20px] md:h-[20px]" />
-              <BreadcrumbLink
-                className="no-underline hover:no-underline"
-                href="/"
-              >
-                Головна
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <FileCheck2 className="w-[15px] h-[13px] md:w-[20px] md:h-[20px]" />
-              <BreadcrumbLink href="/privacy">
-                Політика конфіденційності
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <Breadcrumbs items={BREADCRUMBS_ITEMS} />
         <h1 className="md:ml-40 md:block md:text-h1 mt-[30px] md:mt-0 text-m-h1 font-semibold text-center">
           Політика конфіденційності
         </h1>
