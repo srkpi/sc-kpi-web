@@ -26,6 +26,7 @@ const config = {
     extend: {
       fontSize: {
         h1: '36px',
+        h2: '24px',
         h3: '20px',
         'm-h1': '18px',
         p: '16px',
@@ -46,6 +47,7 @@ const config = {
         current: 'currentColor',
         white: 'var(--white)',
         gray: 'rgba(236, 237, 248, 0.10)',
+        greyBlue: '#5C6FCF',
         dark: 'var(--dark)',
         accent: 'var(--accent)',
         blue: 'var(--blue)',
