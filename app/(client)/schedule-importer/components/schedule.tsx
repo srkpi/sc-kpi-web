@@ -4,18 +4,15 @@ import { FC, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import GroupsDropdown from '@/app/(client)/schedule-importer/components/groups-dropdown';
-import ScheduleCard from '@/app/(client)/schedule-importer/components/schedule-card';
 import { WeekType } from '@/app/(client)/schedule-importer/types';
 import { Button } from '@/components/ui/button';
-import { Event } from '@/types/event';
 import { Group } from '@/types/group';
 
 interface ScheduleProps {
   groups: Group[];
-  events: Event[];
 }
 
-const Schedule: FC<ScheduleProps> = ({ groups, events }) => {
+const Schedule: FC<ScheduleProps> = ({ groups }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -64,11 +61,6 @@ const Schedule: FC<ScheduleProps> = ({ groups, events }) => {
         group={group}
         setGroup={setGroup}
       />
-      <div className="mt-[20px]">
-        {events.map((event, index) => (
-          <ScheduleCard key={index} event={event} />
-        ))}
-      </div>
     </div>
   );
 };

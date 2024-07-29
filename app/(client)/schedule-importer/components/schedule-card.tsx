@@ -13,7 +13,7 @@ const ScheduleCard: FC<ScheduleCardProps> = ({ event }) => {
   const eventType = type.split(' ').at(0) as string;
   const eventColor = getEventColor(eventType);
   return (
-    <div className="relative bg-gray p-[10px] w-[170px] lg:w-[260px] h-[120px] lg:h-[170px] rounded-[10px]">
+    <div className="relative bg-gray p-[10px] w-full h-[120px] lg:h-[170px] rounded-[10px]">
       <Plus
         size={20}
         className="absolute m-[8px] cursor-pointer rotate-[-45deg] right-0 top-0"

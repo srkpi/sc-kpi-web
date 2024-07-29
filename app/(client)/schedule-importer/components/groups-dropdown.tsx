@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Dispatch, FC, memo, SetStateAction } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { WeekType } from '@/app/(client)/schedule-importer/types';
 import { Button } from '@/components/ui/button';
@@ -61,7 +61,7 @@ const GroupsDropdown: FC<GroupsDropdownProps> = memo(
                   <CommandItem
                     key={curGroup.id}
                     value={curGroup.name}
-                    onSelect={currentValue => {
+                    onSelect={(currentValue: string) => {
                       const selectedGroup = groups.find(
                         group => group.name === currentValue,
                       );

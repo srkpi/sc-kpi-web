@@ -1,18 +1,19 @@
 import Schedule from '@/app/(client)/schedule-importer/components/schedule';
+import ScheduleTable from '@/app/(client)/schedule-importer/components/schedule-table';
 import {
   EventsResponse,
   GroupsResponse,
+  ScheduleWeek,
   WeekType,
 } from '@/app/(client)/schedule-importer/types';
 import { campusApi } from '@/lib/api';
-import { Event } from '@/types/event';
 
 export default async function ScheduleImporter({
   searchParams,
 }: {
   searchParams: { id: string; name: string; week: WeekType };
 }) {
-  let events: Event[] = [];
+  let eventsDays: ScheduleWeek[] = [];
   const { data: groups } =
     await campusApi.get<GroupsResponse>('/schedule/groups');
 
@@ -28,17 +29,16 @@ export default async function ScheduleImporter({
     );
     const eventsData = eventsResponse?.data;
     if (searchParams.week === 'first') {
-      events = eventsData.scheduleFirstWeek?.at(0)?.pairs as Event[];
+      eventsDays = eventsData.scheduleFirstWeek as ScheduleWeek[];
     } else {
-      events = eventsData.scheduleSecondWeek?.at(0)?.pairs as Event[];
+      eventsDays = eventsData.scheduleSecondWeek as ScheduleWeek[];
     }
   }
 
-  console.log(events);
-
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between pt-[20px] lg:pt-[40px]">
-      <Schedule groups={groups.data} events={events} />
+    <div className="flex min-h-screen gap-[20px] flex-col items-center pl-[100px] pr-[40px] pt-[20px] lg:pt-[40px]">
+      <Schedule groups={groups.data} />
+      <ScheduleTable eventsDays={eventsDays} />
     </div>
   );
 }
