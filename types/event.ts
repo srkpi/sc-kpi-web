@@ -1,8 +1,9 @@
 export interface Event {
-  id: string;
-  name: string;
-  type: 'LECTURE' | 'PRACTICE' | 'LAB';
   teacherName: string;
-  startDate: Date;
-  endDate: Date;
+  lecturerId: string;
+  type: string;
+  time: string;
+  name: string;
+  place: string;
+  tag: string;
 }
