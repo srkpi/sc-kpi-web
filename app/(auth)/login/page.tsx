@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -9,12 +9,14 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import useAuth from '@/hooks/useAuth';
+import { forgetMe, getRememberedEmail, rememberMe } from '@/lib/utils/auth';
 
 import { LoginFormData, loginSchema } from './_validation';
 
 const LoginPage = () => {
   const { login } = useAuth();
   const router = useRouter();
+  const [isRememberMe, setIsRememberMe] = useState(false);
   const {
     register,
     handleSubmit,
@@ -37,6 +39,7 @@ const LoginPage = () => {
       });
       return;
     }
+    isRememberMe ? rememberMe(data.email) : forgetMe();
     router.push('/');
   };
 
@@ -73,6 +76,7 @@ const LoginPage = () => {
                   {...register('email')}
                   type="email"
                   placeholder="Пошта"
+                  defaultValue={getRememberedEmail() ?? ''}
                   className={`${errors.email && 'border-red-500 focus-visible:border-red-500'}`}
                 />
                 {errors.email && (
@@ -100,7 +104,11 @@ const LoginPage = () => {
                 htmlFor="remember"
                 className="flex items-center gap-3 cursor-pointer select-none"
               >
-                <Checkbox id="remember" />
+                <Checkbox
+                  id="remember"
+                  defaultChecked={isRememberMe}
+                  onCheckedChange={(value: boolean) => setIsRememberMe(value)}
+                />
                 <span className="text-m-p font-light">Запам'ятати мене</span>
               </label>
               <Link className="text-m-p font-light" href="/reset-password">

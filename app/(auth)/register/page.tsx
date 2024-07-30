@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/select';
 import useAuth from '@/hooks/useAuth';
 import { fetcher } from '@/lib/swr/fetcher';
+import { forgetMe, rememberMe } from '@/lib/utils/auth';
 import { IFacultyData } from '@/types/faculty.interface';
 import { IGroupData, IGroupsResponse } from '@/types/group.interface';
 
@@ -28,6 +29,7 @@ const RegisterPage = () => {
   const [groups, setGroups] = useState<IGroupData[]>([]);
   const [generalError, setGeneralError] = useState<null | string>(null);
   const [selectedFaculty, setSelectedFaculty] = useState('');
+  const [isRememberMe, setIsRememberMe] = useState(false);
   const { register: registerAuth } = useAuth();
   const router = useRouter();
   const {
@@ -104,6 +106,7 @@ const RegisterPage = () => {
       }
       return;
     }
+    isRememberMe ? rememberMe(data.email) : forgetMe();
     router.push('/');
   };
 
@@ -271,7 +274,11 @@ const RegisterPage = () => {
                 htmlFor="remember"
                 className="flex items-center gap-3 cursor-pointer select-none"
               >
-                <Checkbox id="remember" />
+                <Checkbox
+                  id="remember"
+                  defaultChecked={isRememberMe}
+                  onCheckedChange={(value: boolean) => setIsRememberMe(value)}
+                />
                 <span className="text-m-p font-light">Запам'ятати мене</span>
               </label>
             </div>
