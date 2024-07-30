@@ -49,43 +49,47 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
   console.log(scheduleWeek);
 
   return (
-    <table className="w-full border-separate border-spacing-x-[2px]">
-      <thead>
-        <tr className="w-full min-h-[120px] max-h-[120px]">
-          <th></th>
-          {days.map((day, index) => (
-            <th
-              className="text-left text-p font-semibold border-b border-white border-dashed pb-[10px]"
-              key={day}
-            >
-              {DAYS[index]}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {TIMES.map((time, rowIndex) => (
-          <tr className="h-[180px]" key={time}>
-            <td className="align-text-top text-p pr-[30px]">{time}</td>
-            {table[rowIndex].map((pairs, colIndex) => (
-              <td
-                className="min-w-[184px] max-w-[260px] align-top pr-[30px] border-b border-white border-dashed pb-[10px]"
-                key={colIndex}
+    <div className="overflow-x-auto max-w-full pl-[14px] md:pl-[32px] lg:pl-[64px] xl:pl-[100px] pr-[40px] no-scrollbar">
+      <table className=" border-separate border-spacing-x-[2px]">
+        <thead>
+          <tr className="w-full min-h-[120px] max-h-[120px]">
+            <th></th>
+            {days.map((day, index) => (
+              <th
+                className="text-left text-m-p lg:text-p font-semibold border-b border-white border-dashed pb-[10px]"
+                key={day}
               >
-                {pairs?.map((pair, index) => (
-                  <div key={index} className="mb-[2px]">
-                    <ScheduleCard
-                      event={pair}
-                      onDelete={() => handleDelete(pair)}
-                    />
-                  </div>
-                ))}
-              </td>
+                {DAYS[index]}
+              </th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {TIMES.map((time, rowIndex) => (
+            <tr className="h-[180px]" key={time}>
+              <td className="align-text-top text-m-p lg:text-p font-semibold pr-[10px] sm:pr-[20px] lg:pr-[30px]">
+                {time}
+              </td>
+              {table[rowIndex].map((pairs, colIndex) => (
+                <td
+                  className="min-w-[184px] max-w-[260px] h-fit align-middle lg:align-top pr-[14px] lg:pr-[30px] border-b border-white border-dashed pb-0 lg:pb-[10px]"
+                  key={colIndex}
+                >
+                  {pairs?.map((pair, index) => (
+                    <div key={index} className="mb-[2px]">
+                      <ScheduleCard
+                        event={pair}
+                        onDelete={() => handleDelete(pair)}
+                      />
+                    </div>
+                  ))}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

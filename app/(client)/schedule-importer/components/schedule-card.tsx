@@ -14,7 +14,7 @@ const ScheduleCard: FC<ScheduleCardProps> = ({ event, onDelete }) => {
   const eventType = type.split(' ').at(0) as string;
   const eventColor = getEventColor(eventType);
   return (
-    <div className="relative bg-gray p-[10px] w-full h-[120px] lg:h-[170px] rounded-[10px]">
+    <div className="relative bg-gray p-[10px] w-full max-w-[170px] lg:max-w-[260px] h-[120px] lg:h-[170px] rounded-[10px]">
       <Plus
         onClick={() => onDelete(event)}
         size={20}
@@ -29,7 +29,9 @@ const ScheduleCard: FC<ScheduleCardProps> = ({ event, onDelete }) => {
       <p className="line-clamp-2 text-ellipsis text-m-p lg:text-p mb-[5px]">
         {name}
       </p>
-      <p className="text-m-p lg:text-p text-gray-500 mb-[5px]">{teacherName}</p>
+      <p className="line-clamp-1 lg:line-clamp-2 text-ellipsis text-m-p lg:text-p text-gray-500 mb-[5px]">
+        {teacherName}
+      </p>
       <p className="font-light text-p-light lg:text-m-p">{time}</p>
     </div>
   );

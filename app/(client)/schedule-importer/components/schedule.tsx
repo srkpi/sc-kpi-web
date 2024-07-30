@@ -30,7 +30,7 @@ const Schedule: FC<ScheduleProps> = ({ groups }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col px-[20px] sm:px-[50px] lg:px-[100px] justify-center items-center">
       <h1 className="text-m-h1 lg:text-h1 font-semibold mb-[30px]">
         Імпортер розкладу занять КПІ
       </h1>

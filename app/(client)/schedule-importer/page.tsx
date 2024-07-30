@@ -17,7 +17,8 @@ export default async function ScheduleImporter({
   const { data: groups } =
     await campusApi.get<GroupsResponse>('/schedule/groups');
 
-  if (searchParams.name && searchParams.id) {
+  const isGroupSelected = searchParams.id && searchParams.name;
+  if (isGroupSelected) {
     const { data: eventsResponse } = await campusApi.get<EventsResponse>(
       '/schedule/lessons',
       {
@@ -36,14 +37,12 @@ export default async function ScheduleImporter({
   }
 
   return (
-    <div className="flex min-h-screen gap-[20px] flex-col items-center pl-[100px] pr-[40px] pt-[20px] lg:pt-[40px]">
+    <div className="flex min-h-screen gap-[20px] flex-col items-center pt-[20px] lg:pt-[40px]">
       <Schedule groups={groups.data} />
       {eventsDays.length > 0 ? (
-        <>
-          <ScheduleTable eventsDays={eventsDays} />
-        </>
+        <ScheduleTable eventsDays={eventsDays} />
       ) : (
-        <p className="w-[500px] text-center">
+        <p className="max-w-[500px] text-center px-[24px]">
           Виберіть групу у випадаючому списку. Надайте застосунку необхідні
           дозволи, та через декілька хвилин насолоджуйтесь розкладом у Google
           Calendar
