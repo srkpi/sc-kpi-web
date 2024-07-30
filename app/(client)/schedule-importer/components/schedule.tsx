@@ -20,9 +20,14 @@ const Schedule: FC<ScheduleProps> = ({ groups }) => {
     group => group.id === searchParams.get('id'),
   );
   const [group, setGroup] = useState(initialGroup || null);
-  const week = (searchParams.get('week') || 'first') as WeekType;
+  const week = searchParams.get('week') as WeekType;
   const groupId = searchParams.get('id');
   const groupName = searchParams.get('name');
+
+  const handleWeekChange = (week: WeekType) => {
+    if (!groupId || !groupName) return;
+    router.replace(`${pathname}?id=${groupId}&name=${groupName}&week=${week}`);
+  };
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -34,11 +39,7 @@ const Schedule: FC<ScheduleProps> = ({ groups }) => {
           variant={week === 'first' ? 'default' : 'outline'}
           style={{ borderRadius: '6px 0px 0px 6px' }}
           size="sm"
-          onClick={() => {
-            router.replace(
-              `${pathname}?id=${groupId}&name=${groupName}&week=first`,
-            );
-          }}
+          onClick={() => handleWeekChange('first')}
         >
           Перший тиждень
         </Button>
@@ -46,11 +47,7 @@ const Schedule: FC<ScheduleProps> = ({ groups }) => {
           variant={week === 'second' ? 'default' : 'outline'}
           style={{ borderRadius: '0px 6px 6px 0px' }}
           size="sm"
-          onClick={() => {
-            router.replace(
-              `${pathname}?id=${groupId}&name=${groupName}&week=second`,
-            );
-          }}
+          onClick={() => handleWeekChange('second')}
         >
           Другий тиждень
         </Button>

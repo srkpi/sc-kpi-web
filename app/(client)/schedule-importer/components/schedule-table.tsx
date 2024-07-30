@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+'use client';
+import React, { FC, useEffect, useState } from 'react';
 
 import ScheduleCard from '@/app/(client)/schedule-importer/components/schedule-card';
 import { DAYS, TIMES } from '@/app/(client)/schedule-importer/constants';
@@ -12,6 +13,12 @@ interface ScheduleTableProps {
 }
 
 const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
+  const [scheduleWeek, setScheduleWeek] = useState<ScheduleWeek[]>(eventsDays);
+
+  useEffect(() => {
+    setScheduleWeek(eventsDays);
+  }, [eventsDays]);
+
   const table: (Event[] | null)[][] = Array(TIMES.length)
     .fill(null)
     .map(() =>
@@ -20,7 +27,7 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
         .map(() => []),
     );
 
-  eventsDays.forEach(({ day, pairs }) => {
+  scheduleWeek.forEach(({ day, pairs }) => {
     const dayIndex = days.indexOf(day);
     pairs.forEach(pair => {
       const normalizedTime = pair.time.replace('.', ':');
@@ -30,6 +37,16 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
       }
     });
   });
+
+  const handleDelete = (eventToDelete: Event) => {
+    const updatedSchedule = scheduleWeek.map(({ day, pairs }) => ({
+      day,
+      pairs: pairs.filter(pair => pair !== eventToDelete),
+    }));
+    setScheduleWeek(updatedSchedule);
+  };
+
+  console.log(scheduleWeek);
 
   return (
     <table className="w-full border-separate border-spacing-x-[2px]">
@@ -57,7 +74,10 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
               >
                 {pairs?.map((pair, index) => (
                   <div key={index} className="mb-[2px]">
-                    <ScheduleCard event={pair} />
+                    <ScheduleCard
+                      event={pair}
+                      onDelete={() => handleDelete(pair)}
+                    />
                   </div>
                 ))}
               </td>

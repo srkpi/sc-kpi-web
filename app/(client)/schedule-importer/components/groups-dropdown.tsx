@@ -34,6 +34,15 @@ const GroupsDropdown: FC<GroupsDropdownProps> = memo(
     const [open, setOpen] = React.useState(false);
     const router = useRouter();
 
+    const handleChooseGroup = (curGroup: string) => {
+      const selectedGroup = groups.find(group => group.name === curGroup);
+      setGroup(selectedGroup || null);
+      setOpen(false);
+      router.replace(
+        `/schedule-importer?id=${selectedGroup?.id}&name=${selectedGroup?.name}&week=${week || 'first'}`,
+      );
+    };
+
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
@@ -61,16 +70,7 @@ const GroupsDropdown: FC<GroupsDropdownProps> = memo(
                   <CommandItem
                     key={curGroup.id}
                     value={curGroup.name}
-                    onSelect={(currentValue: string) => {
-                      const selectedGroup = groups.find(
-                        group => group.name === currentValue,
-                      );
-                      setGroup(selectedGroup || null);
-                      setOpen(false);
-                      router.replace(
-                        `/schedule-importer?id=${selectedGroup?.id}&name=${selectedGroup?.name}&week=${week}`,
-                      );
-                    }}
+                    onSelect={() => handleChooseGroup(curGroup.name)}
                   >
                     {curGroup?.name}
                   </CommandItem>

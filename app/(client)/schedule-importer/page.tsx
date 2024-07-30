@@ -18,7 +18,7 @@ export default async function ScheduleImporter({
     await campusApi.get<GroupsResponse>('/schedule/groups');
 
   if (searchParams.name && searchParams.id) {
-    let { data: eventsResponse } = await campusApi.get<EventsResponse>(
+    const { data: eventsResponse } = await campusApi.get<EventsResponse>(
       '/schedule/lessons',
       {
         params: {
@@ -38,7 +38,17 @@ export default async function ScheduleImporter({
   return (
     <div className="flex min-h-screen gap-[20px] flex-col items-center pl-[100px] pr-[40px] pt-[20px] lg:pt-[40px]">
       <Schedule groups={groups.data} />
-      <ScheduleTable eventsDays={eventsDays} />
+      {eventsDays.length > 0 ? (
+        <>
+          <ScheduleTable eventsDays={eventsDays} />
+        </>
+      ) : (
+        <p className="w-[500px] text-center">
+          Виберіть групу у випадаючому списку. Надайте застосунку необхідні
+          дозволи, та через декілька хвилин насолоджуйтесь розкладом у Google
+          Calendar
+        </p>
+      )}
     </div>
   );
 }
