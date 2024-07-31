@@ -1,5 +1,6 @@
 'use client';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import ScheduleCard from '@/app/(client)/schedule-importer/components/schedule-card';
 import { DAYS, TIMES } from '@/app/(client)/schedule-importer/constants';
@@ -14,6 +15,9 @@ interface ScheduleTableProps {
 
 const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
   const [scheduleWeek, setScheduleWeek] = useState<ScheduleWeek[]>(eventsDays);
+  const [currentDayIndex, setCurrentDayIndex] = useState(0);
+  const thRefs = useRef<(HTMLTableCellElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setScheduleWeek(eventsDays);
@@ -46,16 +50,52 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
     setScheduleWeek(updatedSchedule);
   };
 
-  console.log(scheduleWeek);
+  const handleChevronClick = (direction: 'left' | 'right') => {
+    let newIndex = currentDayIndex;
+    if (direction === 'left' && currentDayIndex > 0) {
+      newIndex -= 1;
+    } else if (direction === 'right' && currentDayIndex < days.length - 1) {
+      newIndex += 1;
+    }
+    setCurrentDayIndex(newIndex);
+
+    const scrollToElement = thRefs.current[newIndex];
+    const containerElement = containerRef.current;
+
+    if (scrollToElement && containerElement) {
+      const containerRect = containerElement.getBoundingClientRect();
+      const elementRect = scrollToElement.getBoundingClientRect();
+      const offset = elementRect.left - containerRect.left - 45;
+      containerElement.scrollBy({
+        left: offset,
+        behavior: 'smooth',
+      });
+    }
+  };
 
   return (
-    <div className="overflow-x-auto max-w-full pl-[14px] md:pl-[32px] lg:pl-[64px] xl:pl-[100px] pr-[40px] no-scrollbar">
-      <table className=" border-separate border-spacing-x-[2px]">
+    <div ref={containerRef} className="overflow-x-auto max-w-full no-scrollbar">
+      <div className="absolute transform translate-y-[2px] w-full flex justify-between px-[14px] md:px-[32px] lg:px-[64px] lg:hidden">
+        <ChevronLeft
+          size={15}
+          className="cursor-pointer"
+          onClick={() => handleChevronClick('left')}
+        />
+        <ChevronRight
+          size={15}
+          className="cursor-pointer"
+          onClick={() => handleChevronClick('right')}
+        />
+      </div>
+      <table className="border-separate border-spacing-x-[2px] px-[14px] md:px-[32px] lg:px-[64px] xl:pl-[100px] xl:pr-[40px]">
         <thead>
           <tr className="w-full min-h-[120px] max-h-[120px]">
             <th></th>
             {days.map((day, index) => (
               <th
+                ref={el => {
+                  thRefs.current[index] = el;
+                }}
                 className="text-left text-m-p lg:text-p font-semibold border-b border-white border-dashed pb-[10px]"
                 key={day}
               >
@@ -67,7 +107,7 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
         <tbody>
           {TIMES.map((time, rowIndex) => (
             <tr className="h-[180px]" key={time}>
-              <td className="align-text-top text-m-p lg:text-p font-semibold pr-[10px] sm:pr-[20px] lg:pr-[30px]">
+              <td className="sticky lg:static left-[14px] md:left-[32px] lg:left-[64px] align-text-top text-m-p lg:text-p font-semibold pr-[10px] sm:pr-[20px] lg:pr-[30px]">
                 {time}
               </td>
               {table[rowIndex].map((pairs, colIndex) => (

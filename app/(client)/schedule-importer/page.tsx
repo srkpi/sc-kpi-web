@@ -37,7 +37,7 @@ export default async function ScheduleImporter({
   }
 
   return (
-    <div className="flex min-h-screen gap-[20px] flex-col items-center pt-[20px] lg:pt-[40px]">
+    <div className="flex gap-[20px] flex-col items-center pt-[20px] lg:pt-[40px]">
       <Schedule groups={groups.data} />
       {eventsDays.length > 0 ? (
         <ScheduleTable eventsDays={eventsDays} />

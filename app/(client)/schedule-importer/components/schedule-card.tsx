@@ -13,6 +13,7 @@ const ScheduleCard: FC<ScheduleCardProps> = ({ event, onDelete }) => {
   const { name, type, teacherName, time } = event;
   const eventType = type.split(' ').at(0) as string;
   const eventColor = getEventColor(eventType);
+
   return (
     <div className="relative bg-gray p-[10px] w-full max-w-[170px] lg:max-w-[260px] h-[120px] lg:h-[170px] rounded-[10px]">
       <Plus
