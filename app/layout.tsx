@@ -2,6 +2,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Roboto as FontSans } from 'next/font/google';
 
+import { Toaster } from '@/components/ui/toast/toaster';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { cn } from '@/lib/cn';
 
@@ -44,6 +45,7 @@ export default function RootLayout({
         )}
       >
         <AuthProvider>{children}</AuthProvider>
+        <Toaster />
       </body>
       <GoogleAnalytics gaId={process.env.GA_ID ?? ''} />
     </html>
