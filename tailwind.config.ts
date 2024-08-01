@@ -51,6 +51,7 @@ const config = {
         dark: 'var(--dark)',
         accent: 'var(--accent)',
         blue: 'var(--blue)',
+        destructive: '#DA5757',
       },
       borderRadius: {
         lg: 'var(--radius)',
