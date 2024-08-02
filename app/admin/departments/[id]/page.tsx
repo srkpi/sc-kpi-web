@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
 import { ArrowDownToLine, Plus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -13,6 +14,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
 import { Department, DepartmentProject } from '@/types/departments';
 
@@ -29,6 +31,8 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
     Partial<Department>
   >({});
 
+  const { toast } = useToast();
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -36,7 +40,13 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         setDepartment(response.data);
         setProjects(response.data.projects || []);
       } catch (error) {
-        console.error('Error fetching department data:', error);
+        if (error instanceof AxiosError) {
+          toast({
+            variant: 'destructive',
+            title: 'Не вдалося отримати дані департаменту',
+            description: error.message,
+          });
+        }
       }
     };
 
@@ -48,7 +58,13 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
       await api.delete(`/departments/projects/${projectId}`);
       setProjects(projects.filter(project => project.id !== projectId));
     } catch (error) {
-      console.error('Error deleting project:', error);
+      if (error instanceof AxiosError) {
+        toast({
+          variant: 'destructive',
+          title: 'Сталася помилка при видаленні проєкту',
+          description: error.message,
+        });
+      }
     }
   };
 
@@ -64,9 +80,18 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         id: department.id,
         ...updatedDepartment,
       });
-      console.log('Department updated successfully');
+
+      toast({
+        title: 'Департамент успішно оновлений',
+      });
     } catch (error) {
-      console.error('Error updating department:', error);
+      if (error instanceof AxiosError) {
+        toast({
+          variant: 'destructive',
+          title: 'Сталася помилка при оновленні проєкту',
+          description: error.message,
+        });
+      }
     }
   };
 
@@ -85,10 +110,10 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
 
       <div className="flex gap-[24px] font-medium">
         <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-          <h2 className="text-h2 mb-[19px]">Назва відділу</h2>
+          <h2 className="text-h2 mb-[19px]">Назва департаменту</h2>
           <Textarea
             className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-            placeholder="Назва відділу"
+            placeholder="Назва департаменту"
             defaultValue={department?.name || ''}
             onChange={e => handleChange('name', e.target.value)}
           ></Textarea>
@@ -113,7 +138,9 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         </div>
       </div>
       <div className="flex flex-col items-center justify-center w-[1272px] h-[264px] bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] mt-[24px]">
-        <h2 className="text-h2 mb-[10px]">Завантажте сюди картинку відділу</h2>
+        <h2 className="text-h2 mb-[10px]">
+          Завантажте сюди картинку департаменту
+        </h2>
         <p className="text-p mb-[20px] text-center font-light">
           Розмір та формат картинки, яка найкраще підійде для завантаження:
           25MB, JPG, PNG, JPEG.
@@ -121,10 +148,10 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         <ArrowDownToLine size={67} color="white" />
       </div>
       <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-        <h2 className="text-h2 font-medium">Опис відділу</h2>
+        <h2 className="text-h2 font-medium">Опис департаменту</h2>
         <Textarea
           className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-          placeholder="Введіть опис відділу тут..."
+          placeholder="Введіть опис департаменту тут..."
           defaultValue={department?.description || ''}
           onChange={e => handleChange('description', e.target.value)}
         />

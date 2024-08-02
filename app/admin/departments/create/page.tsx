@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
+import { AxiosError } from 'axios';
 import { ArrowDownToLine } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
 
 export default function CreateDepartments() {
@@ -18,6 +20,8 @@ export default function CreateDepartments() {
     description: '',
   });
   const router = useRouter();
+
+  const { toast } = useToast();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -35,7 +39,10 @@ export default function CreateDepartments() {
     e.preventDefault();
 
     if (!file) {
-      console.error('No file selected');
+      toast({
+        variant: 'destructive',
+        title: 'Картинку не обрано',
+      });
       return;
     }
 
@@ -51,7 +58,13 @@ export default function CreateDepartments() {
       });
       router.push(`/departments/${response.data.id}`);
     } catch (error) {
-      console.error('Error:', error);
+      if (error instanceof AxiosError) {
+        toast({
+          variant: 'destructive',
+          title: 'Сталася помилка',
+          description: error.response?.data.message,
+        });
+      }
     }
   };
 
@@ -70,7 +83,7 @@ export default function CreateDepartments() {
         </div>
         <div className="flex gap-[24px] font-medium">
           <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-            <h2 className="text-h2 mb-[19px]">Назва відділу</h2>
+            <h2 className="text-h2 mb-[19px]">Назва департаменту</h2>
             <Textarea
               className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
               placeholder="Тут має бути назва"
@@ -103,7 +116,7 @@ export default function CreateDepartments() {
         <div className="flex flex-col items-center justify-center w-[1272px] h-[264px] bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] mt-[24px] relative cursor-pointer">
           <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
             <h2 className="text-h2 mb-[10px]">
-              Завантажте сюди картинку відділу
+              Завантажте сюди картинку департаменту
             </h2>
             <p className="text-p mb-[20px] text-center font-light">
               Розмір та формат картинки, яка найкраще підійде для завантаження:
@@ -120,10 +133,10 @@ export default function CreateDepartments() {
         </div>
 
         <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px] mb-[145px]">
-          <h2 className="text-h2 font-medium">Опис відділу</h2>
+          <h2 className="text-h2 font-medium">Опис департаменту</h2>
           <Textarea
             className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-            placeholder="Введіть опис відділу тут..."
+            placeholder="Введіть опис департаменту тут..."
             name="description"
             value={jsonData.description}
             onChange={handleInputChange}

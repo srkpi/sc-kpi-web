@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
 import { Plus, Search } from 'lucide-react';
 import Link from 'next/link';
 
@@ -13,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
 import { Department } from '@/types/departments';
 
@@ -20,13 +22,18 @@ export default function AdminDepartment() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const { toast } = useToast();
+
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
         const response = await api.get<Department[]>('/departments');
         setDepartments(response.data);
       } catch (error) {
-        console.error('Failed to fetch departments:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Не вдалося отримати департаменти',
+        });
       }
     };
 
@@ -36,11 +43,21 @@ export default function AdminDepartment() {
   const handleDelete = async (id: number) => {
     try {
       await api.delete(`/departments/${id}`);
-      console.log(`Department with ID ${id} deleted successfully`);
+
+      toast({
+        title: `Департамент успішно видалений`,
+      });
+
       const response = await api.get<Department[]>('/departments');
       setDepartments(response.data);
     } catch (error) {
-      console.error(`Failed to delete department with ID ${id}:`, error);
+      if (error instanceof AxiosError) {
+        toast({
+          variant: 'destructive',
+          title: `Стался помилка при видаленні департаменту`,
+          description: error.message,
+        });
+      }
     }
   };
 
