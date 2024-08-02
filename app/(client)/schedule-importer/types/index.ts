@@ -36,3 +36,14 @@ export interface ScheduleWeek {
   day: string;
   pairs: Event[];
 }
+
+export interface ScheduleAuthResponse {
+  authUrl: string;
+}
+
+export interface ScheduleCreateRequest {
+  groupName: string;
+  courseIdentifier: string;
+  scheduleFirstWeek: ScheduleWeek[];
+  scheduleSecondWeek: ScheduleWeek[];
+}

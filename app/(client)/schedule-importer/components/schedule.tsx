@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import GroupsDropdown from '@/app/(client)/schedule-importer/components/groups-dropdown';
@@ -28,6 +28,14 @@ const Schedule: FC<ScheduleProps> = ({ groups }) => {
     if (!groupId || !groupName) return;
     router.replace(`${pathname}?id=${groupId}&name=${groupName}&week=${week}`);
   };
+
+  useEffect(() => {
+    const selectedParams = localStorage.getItem('params');
+    if (selectedParams) {
+      router.replace(`${pathname}?${JSON.parse(selectedParams)}`);
+      localStorage.removeItem('params');
+    }
+  }, []);
 
   return (
     <div className="flex flex-col px-[20px] sm:px-[50px] lg:px-[100px] justify-center items-center">

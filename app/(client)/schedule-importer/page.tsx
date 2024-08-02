@@ -1,9 +1,9 @@
 import Schedule from '@/app/(client)/schedule-importer/components/schedule';
 import ScheduleTable from '@/app/(client)/schedule-importer/components/schedule-table';
 import {
+  EventsData,
   EventsResponse,
   GroupsResponse,
-  ScheduleWeek,
   WeekType,
 } from '@/app/(client)/schedule-importer/types';
 import { campusApi } from '@/lib/api';
@@ -13,7 +13,7 @@ export default async function ScheduleImporter({
 }: {
   searchParams: { id: string; name: string; week: WeekType };
 }) {
-  let eventsDays: ScheduleWeek[] = [];
+  let eventsData: EventsData | null = null;
   const { data: groups } =
     await campusApi.get<GroupsResponse>('/schedule/groups');
 
@@ -28,19 +28,14 @@ export default async function ScheduleImporter({
         },
       },
     );
-    const eventsData = eventsResponse?.data;
-    if (searchParams.week === 'first') {
-      eventsDays = eventsData.scheduleFirstWeek as ScheduleWeek[];
-    } else {
-      eventsDays = eventsData.scheduleSecondWeek as ScheduleWeek[];
-    }
+    eventsData = eventsResponse?.data;
   }
 
   return (
     <div className="flex gap-[20px] flex-col items-center pt-[20px] lg:pt-[40px]">
       <Schedule groups={groups.data} />
-      {eventsDays.length > 0 ? (
-        <ScheduleTable eventsDays={eventsDays} />
+      {eventsData ? (
+        <ScheduleTable eventsData={eventsData} />
       ) : (
         <p className="max-w-[500px] text-center px-[24px]">
           Виберіть групу у випадаючому списку. Надайте застосунку необхідні

@@ -1,53 +1,52 @@
 'use client';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 import ScheduleCard from '@/app/(client)/schedule-importer/components/schedule-card';
-import { DAYS, TIMES } from '@/app/(client)/schedule-importer/constants';
-import { ScheduleWeek } from '@/app/(client)/schedule-importer/types';
+import ScheduleImport from '@/app/(client)/schedule-importer/components/schedule-import';
+import { DAYS, days, TIMES } from '@/app/(client)/schedule-importer/constants';
+import { EventsData, WeekType } from '@/app/(client)/schedule-importer/types';
+import createEventsTable from '@/app/(client)/schedule-importer/utils/createEventsTable';
 import { Event } from '@/types/event';
 
-const days = ['Пн', 'Вв', 'Ср', 'Чт', 'Пт', 'Сб'];
-
 interface ScheduleTableProps {
-  eventsDays: ScheduleWeek[];
+  eventsData: EventsData;
 }
 
-const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
-  const [scheduleWeek, setScheduleWeek] = useState<ScheduleWeek[]>(eventsDays);
+const ScheduleTable: FC<ScheduleTableProps> = ({ eventsData }) => {
+  const searchParams = useSearchParams();
+  const storedEvents = localStorage.getItem('schedule');
+  const week = searchParams.get('week') as WeekType;
+  const [events, setEvents] = useState<EventsData>(
+    storedEvents ? JSON.parse(storedEvents) : eventsData,
+  );
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const thRefs = useRef<(HTMLTableCellElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const scheduleWeek =
+    week === 'first' ? events.scheduleFirstWeek : events.scheduleSecondWeek;
+
+  const table = createEventsTable(scheduleWeek);
 
   useEffect(() => {
-    setScheduleWeek(eventsDays);
-  }, [eventsDays]);
-
-  const table: (Event[] | null)[][] = Array(TIMES.length)
-    .fill(null)
-    .map(() =>
-      Array(days.length)
-        .fill(null)
-        .map(() => []),
-    );
-
-  scheduleWeek.forEach(({ day, pairs }) => {
-    const dayIndex = days.indexOf(day);
-    pairs.forEach(pair => {
-      const normalizedTime = pair.time.replace('.', ':');
-      const timeIndex = TIMES.indexOf(normalizedTime);
-      if (dayIndex !== -1 && timeIndex !== -1) {
-        table[timeIndex][dayIndex]?.push(pair);
-      }
-    });
-  });
+    if (storedEvents) {
+      setEvents(JSON.parse(storedEvents));
+      localStorage.removeItem('schedule');
+    }
+  }, []);
 
   const handleDelete = (eventToDelete: Event) => {
     const updatedSchedule = scheduleWeek.map(({ day, pairs }) => ({
       day,
       pairs: pairs.filter(pair => pair !== eventToDelete),
     }));
-    setScheduleWeek(updatedSchedule);
+
+    if (week === 'first') {
+      setEvents({ ...events, scheduleFirstWeek: updatedSchedule });
+    } else {
+      setEvents({ ...events, scheduleSecondWeek: updatedSchedule });
+    }
   };
 
   const handleChevronClick = (direction: 'left' | 'right') => {
@@ -74,62 +73,68 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsDays }) => {
   };
 
   return (
-    <div ref={containerRef} className="overflow-x-auto max-w-full no-scrollbar">
-      <div className="absolute transform translate-y-[2px] w-full flex justify-between px-[14px] md:px-[32px] lg:px-[64px] lg:hidden">
-        <ChevronLeft
-          size={15}
-          className="cursor-pointer"
-          onClick={() => handleChevronClick('left')}
-        />
-        <ChevronRight
-          size={15}
-          className="cursor-pointer"
-          onClick={() => handleChevronClick('right')}
-        />
-      </div>
-      <table className="border-separate border-spacing-x-[2px] px-[14px] md:px-[32px] lg:px-[64px] xl:pl-[100px] xl:pr-[40px]">
-        <thead>
-          <tr className="w-full min-h-[120px] max-h-[120px]">
-            <th></th>
-            {days.map((day, index) => (
-              <th
-                ref={el => {
-                  thRefs.current[index] = el;
-                }}
-                className="text-left text-m-p lg:text-p font-semibold border-b border-white border-dashed pb-[10px]"
-                key={day}
-              >
-                {DAYS[index]}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {TIMES.map((time, rowIndex) => (
-            <tr className="h-[180px]" key={time}>
-              <td className="sticky lg:static left-[14px] md:left-[32px] lg:left-[64px] align-text-top text-m-p lg:text-p font-semibold pr-[10px] sm:pr-[20px] lg:pr-[30px]">
-                {time}
-              </td>
-              {table[rowIndex].map((pairs, colIndex) => (
-                <td
-                  className="min-w-[184px] max-w-[260px] h-fit align-middle lg:align-top pr-[14px] lg:pr-[30px] border-b border-white border-dashed pb-0 lg:pb-[10px]"
-                  key={colIndex}
+    <>
+      <div
+        ref={containerRef}
+        className="overflow-x-auto max-w-full no-scrollbar"
+      >
+        <div className="absolute transform translate-y-[2px] w-full flex justify-between px-[14px] md:px-[32px] lg:px-[64px] lg:hidden">
+          <ChevronLeft
+            size={15}
+            className="cursor-pointer"
+            onClick={() => handleChevronClick('left')}
+          />
+          <ChevronRight
+            size={15}
+            className="cursor-pointer"
+            onClick={() => handleChevronClick('right')}
+          />
+        </div>
+        <table className="border-separate border-spacing-x-[2px] px-[14px] md:px-[32px] lg:px-[64px] xl:pl-[100px] xl:pr-[40px]">
+          <thead>
+            <tr className="w-full min-h-[120px] max-h-[120px]">
+              <th></th>
+              {days.map((day, index) => (
+                <th
+                  ref={el => {
+                    thRefs.current[index] = el;
+                  }}
+                  className="text-left text-m-p lg:text-p font-semibold border-b border-white border-dashed pb-[10px]"
+                  key={day}
                 >
-                  {pairs?.map((pair, index) => (
-                    <div key={index} className="mb-[2px]">
-                      <ScheduleCard
-                        event={pair}
-                        onDelete={() => handleDelete(pair)}
-                      />
-                    </div>
-                  ))}
-                </td>
+                  {DAYS[index]}
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {TIMES.map((time, rowIndex) => (
+              <tr className="h-[180px]" key={time}>
+                <td className="sticky z-10 lg:static left-[14px] md:left-[32px] lg:left-[64px] align-text-top text-m-p lg:text-p font-semibold pr-[10px] sm:pr-[20px] lg:pr-[30px]">
+                  {time}
+                </td>
+                {table[rowIndex].map((pairs, colIndex) => (
+                  <td
+                    className="min-w-[184px] z-0 max-w-[260px] h-fit align-middle lg:align-top pr-[14px] lg:pr-[30px] border-b border-white border-dashed pb-0 lg:pb-[10px]"
+                    key={colIndex}
+                  >
+                    {pairs?.map((pair, index) => (
+                      <div key={index} className="mb-[2px]">
+                        <ScheduleCard
+                          event={pair}
+                          onDelete={() => handleDelete(pair)}
+                        />
+                      </div>
+                    ))}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <ScheduleImport events={events} />
+    </>
   );
 };
 
