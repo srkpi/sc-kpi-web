@@ -113,7 +113,9 @@ const FaqContainer: FC<FaqPagerops> = ({ categories, faqs }) => {
               value={faq.id.toString()}
             >
               <AccordionTrigger>{faq.question}</AccordionTrigger>
-              <AccordionContent>{faq.answer}</AccordionContent>
+              <AccordionContent>
+                <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
