@@ -6,11 +6,12 @@ import React, {
   useState,
 } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 
 import { api } from '@/lib/api';
 import { errorHandler } from '@/lib/api/api.helpers';
-import { LoginDto, RegisterDto } from '@/types/auth';
+import { DecodedTokenType, LoginDto, RegisterDto, Role } from '@/types/auth';
 
 import { refreshToken, signIn, signOut, signUp } from '../lib/api/api.auth';
 
@@ -27,6 +28,7 @@ const AuthContext = createContext<
       logout: () => Promise<ReponseAuthType>;
       loggedIn: boolean;
       refresh: () => Promise<ReponseAuthType>;
+      isAdmin: () => boolean;
     }
   | undefined
 >(undefined);
@@ -79,6 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       async function (error) {
         const originalRequest = error.config;
         if (
+          error.response &&
           error.response.status === 403 &&
           !originalRequest._retry &&
           !isRefreshingToken
@@ -153,6 +156,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const isAdmin = () => {
+    try {
+      if (!token) return false;
+      const decoded = jwtDecode<DecodedTokenType>(token);
+      return decoded.role.toLowerCase() === Role.ADMIN;
+    } catch (error) {
+      return false;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -162,6 +175,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         register,
         loggedIn: !!token,
         refresh,
+        isAdmin,
       }}
     >
       {children}
