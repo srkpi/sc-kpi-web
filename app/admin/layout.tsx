@@ -2,6 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import ProtectedAdminRoute from '@/components/auth/ProtectedAdminRoute';
+
 import { navbarLinks } from './constants';
 
 export default function AdminLayout({
@@ -10,7 +12,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
+    <ProtectedAdminRoute>
       <div className="flex items-center h-[120px] pl-16">
         <Link href="/">
           <Image width={130} height={47} src="/images/Logo.png" alt="Логотип" />
@@ -35,6 +37,6 @@ export default function AdminLayout({
         </ul>
         {children}
       </div>
-    </>
+    </ProtectedAdminRoute>
   );
 }

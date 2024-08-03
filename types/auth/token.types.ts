@@ -1,7 +1,9 @@
+import { Role } from './';
+
 export type DecodedTokenType = {
   sub: number;
   email: string;
-  role: string;
+  role: Role;
   iat: number;
   exp: number;
 };
