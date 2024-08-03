@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
 import { ArrowDownToLine } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -11,21 +12,33 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
 
-export default function CreateDepartments() {
+const CreateDepartments: FC = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [jsonData, setJsonData] = useState({
     name: '',
     shortDescription: '',
     buttonLink: '',
     description: '',
   });
+  const imageRef = useRef<HTMLImageElement>(null);
   const router = useRouter();
 
   const { toast } = useToast();
 
+  useEffect(() => {
+    if (imageRef.current && previewImage) {
+      imageRef.current.onload = () => {
+        // Handle image loading if needed
+      };
+    }
+  }, [previewImage]);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    setFile(selectedFile || null);
+    if (selectedFile) {
+      setFile(selectedFile);
+      setPreviewImage(URL.createObjectURL(selectedFile));
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -56,7 +69,7 @@ export default function CreateDepartments() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      router.push(`/departments/${response.data.id}`);
+      router.push(`/admin/departments/${response.data.id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -113,36 +126,56 @@ export default function CreateDepartments() {
             />
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center w-[1272px] h-[264px] bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] mt-[24px] relative cursor-pointer">
-          <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-            <h2 className="text-h2 mb-[10px]">
-              Завантажте сюди картинку департаменту
-            </h2>
-            <p className="text-p mb-[20px] text-center font-light">
-              Розмір та формат картинки, яка найкраще підійде для завантаження:
-              25MB, JPG, PNG, JPEG.
-            </p>
-            <ArrowDownToLine size={67} color="white" />
-            <Input
-              className="absolute inset-0 opacity-0 cursor-pointer"
-              type="file"
-              accept="image/jpeg, image/png"
-              onChange={handleFileChange}
-            />
-          </label>
+        <div className="flex gap-[24px] mt-[24px]">
+          {previewImage && (
+            <div className="w-[624px]">
+              <Image
+                width={624}
+                height={264}
+                src={previewImage}
+                alt="Department Image"
+                className="rounded-[18px]"
+                ref={imageRef}
+              />
+            </div>
+          )}
+          <div
+            className={`flex flex-col items-center justify-center ${previewImage ? 'w-[624px]' : 'w-full'} bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer`}
+          >
+            <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+              <h2 className="text-h2 mb-[10px]">
+                {previewImage
+                  ? 'Завантажте нову картинку відділу'
+                  : 'Завантажте сюди картинку відділу'}
+              </h2>
+              <p className="text-p mb-[20px] text-center font-light">
+                Розмір та формат картинки, яка найкраще підійде для
+                завантаження: 25MB, JPG, PNG, JPEG.
+              </p>
+              <ArrowDownToLine size={67} color="white" />
+              <Input
+                className="absolute inset-0 opacity-0 cursor-pointer"
+                type="file"
+                accept="image/jpeg, image/png"
+                onChange={handleFileChange}
+              />
+            </label>
+          </div>
         </div>
 
-        <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px] mb-[145px]">
-          <h2 className="text-h2 font-medium">Опис департаменту</h2>
+        <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
+          <h2 className="text-h2 font-medium">Опис відділу</h2>
           <Textarea
             className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-            placeholder="Введіть опис департаменту тут..."
+            placeholder="Введіть опис відділу тут..."
             name="description"
-            value={jsonData.description}
+            defaultValue={jsonData.description}
             onChange={handleInputChange}
           />
         </div>
       </div>
     </form>
   );
-}
+};
+
+export default CreateDepartments;
