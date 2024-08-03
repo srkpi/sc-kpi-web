@@ -2,10 +2,11 @@
 
 import { FC, useEffect, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
-import { ArrowDownToLine, Plus } from 'lucide-react';
+import { ArrowDownToLine } from 'lucide-react';
 import Image from 'next/image';
 
-import CreateModal from '@/components/admin/create-modal';
+import CreateModal from '@/components/admin/create-project-modal';
+import EditModal from '@/components/admin/edit-project-modal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -36,8 +37,6 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
     Partial<Department>
   >({});
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const imageRef = useRef<HTMLImageElement>(null);
 
   const { toast } = useToast();
@@ -66,6 +65,10 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
     try {
       await api.delete(`/departments/projects/${projectId}`);
       setProjects(projects.filter(project => project.id !== projectId));
+
+      toast({
+        title: 'Проєкт успішно видалений',
+      });
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -97,15 +100,17 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         id: department.id,
         ...updatedDepartment,
       });
+
       const formData = new FormData();
       if (file) {
         formData.append('image', file);
+
+        await api.patch(`/departments/image/${params.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
       }
-      await api.patch(`/departments/image/${params.id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
 
       toast({
         title: 'Департамент успішно оновлений',
@@ -142,7 +147,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
             placeholder="Назва департаменту"
             defaultValue={department?.name || ''}
             onChange={e => handleChange('name', e.target.value)}
-          ></Textarea>
+          />
         </div>
         <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
           <h2 className="text-h2 mb-[19px]">Стислий опис</h2>
@@ -151,7 +156,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
             placeholder="Тут має бути стислий опис"
             defaultValue={department?.shortDescription || ''}
             onChange={e => handleChange('shortDescription', e.target.value)}
-          ></Textarea>
+          />
         </div>
         <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
           <h2 className="text-h2 mb-[19px]">Посилання на вступ</h2>
@@ -160,7 +165,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
             placeholder="Тут має бути посилання на вступ"
             defaultValue={department?.buttonLink || ''}
             onChange={e => handleChange('buttonLink', e.target.value)}
-          ></Textarea>
+          />
         </div>
       </div>
 
@@ -197,10 +202,10 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         </div>
       </div>
       <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-        <h2 className="text-h2 font-medium">Опис відділу</h2>
+        <h2 className="text-h2 font-medium">Опис департаменту</h2>
         <Textarea
           className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-          placeholder="Введіть опис відділу тут..."
+          placeholder="Введіть опис департаменту тут..."
           defaultValue={department?.description || ''}
           onChange={e => handleChange('description', e.target.value)}
         />
@@ -222,9 +227,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
                 <TableCell>{project.description}</TableCell>
                 <TableCell>
                   <div className="flex space-x-4">
-                    <Button variant="default" className="w-[110px] h-[35px]">
-                      Змінити
-                    </Button>
+                    <EditModal project={project} />
                     <Button
                       variant="outline"
                       className="w-[110px] h-[35px]"
@@ -240,18 +243,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         </Table>
       </div>
 
-      <Button
-        className="bg-white h-[58px] gap-3 hover:bg-white text-blue mb-[20px]"
-        onClick={() => setIsModalOpen(true)}
-      >
-        <Plus color="#374FFA" size={26}></Plus>
-        Додати проєкт
-      </Button>
-      <CreateModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        id={params.id}
-      />
+      <CreateModal id={params.id} />
     </div>
   );
 };

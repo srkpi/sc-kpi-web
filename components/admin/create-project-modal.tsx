@@ -1,22 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { AxiosError } from 'axios';
-import { ArrowDownToLine, X } from 'lucide-react';
+import { ArrowDownToLine, Plus, X } from 'lucide-react';
 import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { api } from '@/lib/api';
 
 import { useToast } from '../ui/toast/use-toast';
 
-interface CreateModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface CreateProjectModalProps {
   id: string;
 }
 
-const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onClose, id }) => {
+const CreateProjectModal: FC<CreateProjectModalProps> = ({ id }) => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [inputKey, setInputKey] = useState<number>(0);
@@ -28,14 +32,7 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onClose, id }) => {
 
   const { toast } = useToast();
 
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isOpen]);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
@@ -88,17 +85,16 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onClose, id }) => {
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="relative w-[1283px] h-[868px] bg-dark shadow-lg p-6 overflow-y-auto">
-        <X
-          size={48}
-          onClick={onClose}
-          className="absolute top-4 right-4 cursor-pointer"
-        />
-        <div className="flex flex-col gap-[45px] mt-[146px]">
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="bg-white h-[58px] gap-3 hover:bg-white text-blue mb-[20px]">
+          <Plus color="#374FFA" size={26}></Plus>
+          Додати проєкт
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-[1300px] bg-dark border-0 justify-center items-center">
+        <div className="flex flex-col gap-[45px] mt-[70px]">
           <Input
             type="text"
             name="name"
@@ -110,19 +106,20 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onClose, id }) => {
           <Textarea
             name="description"
             placeholder="Опис проєкту"
-            className="flex w-[1048px] h-[80px] p-[8px_12px] items-start gap-[10px] flex-shrink-0 border rounded-[6px]"
+            className="flex w-full h-[80px] p-[8px_12px] items-start gap-[10px] flex-shrink-0 border rounded-[6px]"
             value={jsonData.description}
             onChange={handleInputChange}
           />
-          <div className="flex gap-[24px] mt-[24px]">
+          <div className="flex gap-[24px] mt-[24px] h-[311px]">
             {previewImage && (
-              <div className="relative w-[624px]">
+              <div className="relative w-[516px] h-[311px]">
                 <Image
-                  width={624}
-                  height={264}
+                  width={516}
+                  height={311}
+                  objectFit="cover"
                   src={previewImage}
-                  alt="Department Image"
-                  className="rounded-[18px]"
+                  alt="Project Image"
+                  className="rounded-[18px] h-[311px]"
                 />
                 <X
                   onClick={handleRemoveImage}
@@ -133,7 +130,7 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onClose, id }) => {
               </div>
             )}
             <div
-              className={`flex flex-col items-center justify-center ${previewImage ? 'w-[624px]' : 'w-full'} bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer`}
+              className={`flex flex-col items-center justify-center ${previewImage ? 'w-[624px]' : 'w-[1048px]'} bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer`}
             >
               <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
                 <h2 className="text-h2 mb-[10px]">
@@ -156,15 +153,15 @@ const CreateModal: React.FC<CreateModalProps> = ({ isOpen, onClose, id }) => {
               </label>
             </div>
           </div>
-          <div className="flex flex-col gap-[45px]">
-            <Button className="w-[141px] h-[51px]" onClick={handleSave}>
-              Зберегти
-            </Button>
-          </div>
         </div>
-      </div>
-    </div>
+        <DialogFooter>
+          <Button className="w-[141px] h-[51px]" onClick={handleSave}>
+            Зберегти
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default CreateModal;
+export default CreateProjectModal;

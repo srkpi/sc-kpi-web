@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
 import { ArrowDownToLine } from 'lucide-react';
 import Image from 'next/image';
@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
 
-const CreateDepartments: FC = () => {
+const CreateDepartmentPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [jsonData, setJsonData] = useState({
@@ -26,13 +26,6 @@ const CreateDepartments: FC = () => {
 
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (imageRef.current && previewImage) {
-      imageRef.current.onload = () => {
-        // Handle image loading if needed
-      };
-    }
-  }, [previewImage]);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
@@ -145,8 +138,8 @@ const CreateDepartments: FC = () => {
             <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
               <h2 className="text-h2 mb-[10px]">
                 {previewImage
-                  ? 'Завантажте нову картинку відділу'
-                  : 'Завантажте сюди картинку відділу'}
+                  ? 'Завантажте нову картинку департаменту'
+                  : 'Завантажте сюди картинку департаменту'}
               </h2>
               <p className="text-p mb-[20px] text-center font-light">
                 Розмір та формат картинки, яка найкраще підійде для
@@ -164,12 +157,12 @@ const CreateDepartments: FC = () => {
         </div>
 
         <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-          <h2 className="text-h2 font-medium">Опис відділу</h2>
+          <h2 className="text-h2 font-medium">Опис департаменту</h2>
           <Textarea
             className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-            placeholder="Введіть опис відділу тут..."
+            placeholder="Введіть опис департаменту тут..."
             name="description"
-            defaultValue={jsonData.description}
+            value={jsonData.description}
             onChange={handleInputChange}
           />
         </div>
@@ -178,4 +171,4 @@ const CreateDepartments: FC = () => {
   );
 };
 
-export default CreateDepartments;
+export default CreateDepartmentPage;
