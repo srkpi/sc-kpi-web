@@ -12,7 +12,7 @@ const EditorComponent: FC<EditorComponentProps> = ({
 }) => {
   return (
     <Editor
-      apiKey={process.env.TINYMCE_API_KEY}
+      apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
       initialValue={initialValue}
       onChange={e => setText(e.target.getContent())}
       init={{

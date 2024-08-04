@@ -7,7 +7,6 @@ import useSWR from 'swr';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -89,11 +88,11 @@ const EditFaqPage: FC<EditDepartmentPageProps> = ({ params }) => {
       <div className="flex justify-between mb-[57px]">
         <h1 className="text-h1 font-semibold">Редагування FAQ</h1>
       </div>
-      <div className="flex items-end gap-4">
+      <div className="flex items-end gap-6">
         <div className="flex flex-col gap-1">
-          <Label htmlFor="question">Питання</Label>
           <Input
             id="question"
+            placeholder="Питання"
             className="w-[1056px] border-x-0 border-t-0 rounded-none pl-0"
             defaultValue={faq?.question}
             onChange={e => handleChange('question', e.target.value)}
@@ -117,6 +116,7 @@ const EditFaqPage: FC<EditDepartmentPageProps> = ({ params }) => {
           </SelectContent>
         </Select>
       </div>
+      <p className="mt-[57px] mb-[30px]">Відповідь</p>
       <div className="mt-3">
         <EditorComponent
           setText={text => handleChange('answer', text)}

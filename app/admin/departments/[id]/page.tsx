@@ -1,10 +1,14 @@
 'use client';
 
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
-import { ArrowDownToLine, Plus } from 'lucide-react';
+import { ArrowDownToLine } from 'lucide-react';
+import Image from 'next/image';
 
+import CreateModal from '@/components/admin/create-project-modal';
+import EditModal from '@/components/admin/edit-project-modal';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -27,9 +31,13 @@ interface EditDepartmentPageProps {
 const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
   const [projects, setProjects] = useState<DepartmentProject[]>([]);
   const [department, setDepartment] = useState<Department | undefined>();
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [updatedDepartment, setUpdatedDepartment] = useState<
     Partial<Department>
   >({});
+
+  const imageRef = useRef<HTMLImageElement>(null);
 
   const { toast } = useToast();
 
@@ -57,11 +65,15 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
     try {
       await api.delete(`/departments/projects/${projectId}`);
       setProjects(projects.filter(project => project.id !== projectId));
+
+      toast({
+        title: 'Проєкт успішно видалений',
+      });
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
           variant: 'destructive',
-          title: 'Сталася помилка при видаленні проєкту',
+          title: 'Не вдалося видалити проєкт',
           description: error.message,
         });
       }
@@ -72,6 +84,14 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
     setUpdatedDepartment(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFile(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
   const handleSave = async () => {
     if (!department) return;
 
@@ -80,6 +100,17 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         id: department.id,
         ...updatedDepartment,
       });
+
+      const formData = new FormData();
+      if (file) {
+        formData.append('image', file);
+
+        await api.patch(`/departments/image/${params.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
 
       toast({
         title: 'Департамент успішно оновлений',
@@ -116,7 +147,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
             placeholder="Назва департаменту"
             defaultValue={department?.name || ''}
             onChange={e => handleChange('name', e.target.value)}
-          ></Textarea>
+          />
         </div>
         <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
           <h2 className="text-h2 mb-[19px]">Стислий опис</h2>
@@ -125,7 +156,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
             placeholder="Тут має бути стислий опис"
             defaultValue={department?.shortDescription || ''}
             onChange={e => handleChange('shortDescription', e.target.value)}
-          ></Textarea>
+          />
         </div>
         <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
           <h2 className="text-h2 mb-[19px]">Посилання на вступ</h2>
@@ -134,18 +165,41 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
             placeholder="Тут має бути посилання на вступ"
             defaultValue={department?.buttonLink || ''}
             onChange={e => handleChange('buttonLink', e.target.value)}
-          ></Textarea>
+          />
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center w-[1272px] h-[264px] bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] mt-[24px]">
-        <h2 className="text-h2 mb-[10px]">
-          Завантажте сюди картинку департаменту
-        </h2>
-        <p className="text-p mb-[20px] text-center font-light">
-          Розмір та формат картинки, яка найкраще підійде для завантаження:
-          25MB, JPG, PNG, JPEG.
-        </p>
-        <ArrowDownToLine size={67} color="white" />
+
+      <div className="flex gap-[24px] mt-[24px]">
+        {(previewImage || department?.image) && (
+          <Image
+            width={624}
+            height={264}
+            src={previewImage || (department?.image as string)}
+            alt="Department Image"
+            className="rounded-[18px]"
+            ref={imageRef}
+          />
+        )}
+        <div className="flex flex-col items-center justify-center w-[624px] bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer">
+          <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+            <h2 className="text-h2 mb-[10px] text-center">
+              {previewImage
+                ? 'Завантажте сюди картинку департаменту'
+                : 'Ви можете змінити зображення департаменту'}
+            </h2>
+            <p className="text-p mb-[20px] text-center font-light">
+              Розмір та формат картинки, яка найкраще підійде для завантаження:
+              25MB, JPG, PNG, JPEG.
+            </p>
+            <ArrowDownToLine size={67} color="white" />
+            <Input
+              className="absolute inset-0 opacity-0 cursor-pointer"
+              type="file"
+              accept="image/jpeg, image/png"
+              onChange={handleFileChange}
+            />
+          </label>
+        </div>
       </div>
       <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
         <h2 className="text-h2 font-medium">Опис департаменту</h2>
@@ -173,9 +227,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
                 <TableCell>{project.description}</TableCell>
                 <TableCell>
                   <div className="flex space-x-4">
-                    <Button variant="default" className="w-[110px] h-[35px]">
-                      Змінити
-                    </Button>
+                    <EditModal project={project} />
                     <Button
                       variant="outline"
                       className="w-[110px] h-[35px]"
@@ -190,10 +242,8 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
           </TableBody>
         </Table>
       </div>
-      <Button className="bg-white h-[58px] gap-3 hover:bg-white text-blue mb-[20px]">
-        <Plus color="#374FFA" size={26}></Plus>
-        Додати проект
-      </Button>
+
+      <CreateModal id={params.id} />
     </div>
   );
 };
