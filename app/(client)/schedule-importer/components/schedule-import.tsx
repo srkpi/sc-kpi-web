@@ -31,7 +31,7 @@ const ScheduleImport: FC<ScheduleImportProps> = ({ events }) => {
   //   };
   //   try {
   //     const { data } = await api.post(
-  //       '/schedule/create',
+  //       '/schedule/create',па
   //       scheduleCreateRequest,
   //     );
   //     console.log(data);

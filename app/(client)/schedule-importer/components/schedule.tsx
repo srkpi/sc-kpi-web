@@ -3,6 +3,7 @@
 import { FC, useEffect, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import CoursesDropdown from '@/app/(client)/schedule-importer/components/courses-dropdown';
 import GroupsDropdown from '@/app/(client)/schedule-importer/components/groups-dropdown';
 import { WeekType } from '@/app/(client)/schedule-importer/types';
 import { Button } from '@/components/ui/button';
@@ -60,12 +61,15 @@ const Schedule: FC<ScheduleProps> = ({ groups }) => {
           Другий тиждень
         </Button>
       </div>
-      <GroupsDropdown
-        week={week}
-        groups={groups}
-        group={group}
-        setGroup={setGroup}
-      />
+      <div className="flex gap-[10px]">
+        <GroupsDropdown
+          week={week}
+          groups={groups}
+          group={group}
+          setGroup={setGroup}
+        />
+        <CoursesDropdown />
+      </div>
     </div>
   );
 };

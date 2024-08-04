@@ -16,25 +16,27 @@ interface ScheduleTableProps {
 
 const ScheduleTable: FC<ScheduleTableProps> = ({ eventsData }) => {
   const searchParams = useSearchParams();
-  const storedEvents = localStorage.getItem('schedule');
-  const week = searchParams.get('week') as WeekType;
-  const [events, setEvents] = useState<EventsData>(
-    storedEvents ? JSON.parse(storedEvents) : eventsData,
-  );
+  const [events, setEvents] = useState<EventsData>(eventsData);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const thRefs = useRef<(HTMLTableCellElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const week = searchParams.get('week') as WeekType;
   const scheduleWeek =
     week === 'first' ? events.scheduleFirstWeek : events.scheduleSecondWeek;
 
   const table = createEventsTable(scheduleWeek);
 
   useEffect(() => {
+    const storedEvents = localStorage.getItem('schedule');
     if (storedEvents) {
       setEvents(JSON.parse(storedEvents));
       localStorage.removeItem('schedule');
     }
   }, []);
+
+  useEffect(() => {
+    setEvents(eventsData);
+  }, [eventsData]);
 
   const handleDelete = (eventToDelete: Event) => {
     const updatedSchedule = scheduleWeek.map(({ day, pairs }) => ({

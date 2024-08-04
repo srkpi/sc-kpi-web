@@ -13,6 +13,8 @@ export const EventTypeMapper = {
   },
 };
 
+export const courses = ['1-3, 5 курси', '4 курс', '6 курс ОНП'];
+
 export const TIMES = ['8:30', '10:25', '12:20', '14:15', '16:10', '18:30'];
 
 export const DAYS = [
