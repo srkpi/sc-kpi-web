@@ -51,15 +51,15 @@ const GroupsDropdown: FC<GroupsDropdownProps> = memo(
             role="combobox"
             aria-expanded={open}
             size="sm"
-            className="justify-between gap-[5px] p-[10px] w-[200px]"
+            className="justify-between gap-[5px] p-[10px] w-[140px] md:w-[180px]"
           >
-            {group ? group?.name : 'Введіть вашу групу'}
+            {group ? group?.name : 'Оберіть групу'}
             {!open ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
           </Button>
         </PopoverTrigger>
         <PopoverContent
           style={{ WebkitOverflowScrolling: 'unset', scrollbarWidth: 'none' }}
-          className="w-[200px] h-[180px] p-0 border-none rounded-[10px]"
+          className="h-[180px] p-0 border-none rounded-[10px] w-[140px] md:w-[180px]"
         >
           <Command className="">
             <CommandInput placeholder="Пошук" />

@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { courses } from '../constants/index';
+import { COURSES } from '../constants/index';
 
 const CoursesDropdown = () => {
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
@@ -27,11 +27,11 @@ const CoursesDropdown = () => {
 
   return (
     <Select onValueChange={handleChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder={selectedCourse || 'Введіть групу'} />
+      <SelectTrigger className="w-[140px] md:w-[180px]">
+        <SelectValue placeholder={selectedCourse || 'Оберіть курс'} />
       </SelectTrigger>
       <SelectContent>
-        {courses.map(course => (
+        {COURSES.map(course => (
           <SelectItem key={course} value={course}>
             {course}
           </SelectItem>

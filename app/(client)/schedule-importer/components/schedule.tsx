@@ -61,7 +61,7 @@ const Schedule: FC<ScheduleProps> = ({ groups }) => {
           Другий тиждень
         </Button>
       </div>
-      <div className="flex gap-[10px]">
+      <div className="flex flex-wrap justify-center gap-[10px]">
         <GroupsDropdown
           week={week}
           groups={groups}

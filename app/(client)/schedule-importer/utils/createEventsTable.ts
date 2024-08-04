@@ -1,4 +1,7 @@
-import { days, TIMES } from '@/app/(client)/schedule-importer/constants';
+import {
+  DAYS_SHORT_FORM,
+  TIMES,
+} from '@/app/(client)/schedule-importer/constants';
 import { ScheduleWeek } from '@/app/(client)/schedule-importer/types';
 import { Event } from '@/types/event';
 
@@ -6,13 +9,13 @@ const createEventsTable = (scheduleWeek: ScheduleWeek[]) => {
   const table: (Event[] | null)[][] = Array(TIMES.length)
     .fill(null)
     .map(() =>
-      Array(days.length)
+      Array(DAYS_SHORT_FORM.length)
         .fill(null)
         .map(() => []),
     );
 
   scheduleWeek.forEach(({ day, pairs }) => {
-    const dayIndex = days.indexOf(day);
+    const dayIndex = DAYS_SHORT_FORM.indexOf(day);
     pairs.forEach(pair => {
       const normalizedTime = pair.time.replace('.', ':');
       const timeIndex = TIMES.indexOf(normalizedTime);

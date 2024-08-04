@@ -37,7 +37,7 @@ const DepartmentMoblieCard = ({
       </div>
       <div className="flex gap-3">
         <h3 className="font-extrabold text-[50px] text-blue opacity-55 leading-[1em]">
-          #{formatProjectIndex(index + 1)}
+          #{formatProjectIndex(index)}
         </h3>
         <div className="pt-[2px]">
           <p className="font-m-p text-m-p sm:text-p">{project.description}</p>

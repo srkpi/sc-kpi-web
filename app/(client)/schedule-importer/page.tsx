@@ -37,7 +37,7 @@ export default async function ScheduleImporter({
       {eventsData ? (
         <ScheduleTable eventsData={eventsData} />
       ) : (
-        <p className="max-w-[500px] text-center px-[24px]">
+        <p className="max-w-[500px] text-center text-m-p md:text-p px-[24px]">
           Виберіть групу у випадаючому списку. Надайте застосунку необхідні
           дозволи, та через декілька хвилин насолоджуйтесь розкладом у Google
           Calendar
