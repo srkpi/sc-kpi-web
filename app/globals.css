@@ -10,6 +10,14 @@
     --accent: #1323e9;
     --blue: #374ffa;
     --white: #ecedf8;
+
+    --viewport-height: 100vh;
+  }
+
+  @supports (height: 100dvh) {
+    :root {
+      --viewport-height: 100dvh;
+    }
   }
 }
 
@@ -50,5 +58,14 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  .h-screen-dvh {
+    height: var(--viewport-height);
+  }
+  .min-h-screen-dvh {
+    min-height: var(--viewport-height);
+  }
+  .max-h-screen-dvh {
+    max-height: var(--viewport-height);
   }
 }

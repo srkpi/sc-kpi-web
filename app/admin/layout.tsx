@@ -19,7 +19,7 @@ export default function AdminLayout({
         </Link>
       </div>
       <div className="flex">
-        <ul className="flex flex-col w-[320px] pl-16 pt-[23px] gap-[21px] h-screen">
+        <ul className="flex flex-col w-[320px] pl-16 pt-[23px] gap-[21px] h-screen-dvh">
           {navbarLinks.map(navbarLink => (
             <li
               className="flex items-center gap-4 focus-within:text-blue"

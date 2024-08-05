@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export default function NotFound() {
   return (
-    <div className="h-screen content-center grid-cols-2 grid-rows-2 px-[20px] lg:grid lg:pl-[100px]">
+    <div className="h-screen-dvh content-center grid-cols-2 grid-rows-2 px-[20px] lg:grid lg:pl-[100px]">
       <p className="text-center font-semibold leading-none text-[120px] bg-gradient-to-r from-[#10193D] to-accent bg-clip-text text-transparent ml-auto lg:text-[370px] lg:col-start-1 lg:row-start-1 lg:flex lg:items-end">
         404
       </p>
