@@ -9,7 +9,7 @@ export default function AuthLayout({
   return (
     <>
       <AnimatedLogo />
-      <main className="relative min-h-[100vh] w-full overflow-x-hidden flex">
+      <main className="relative min-h-screen-dvh w-full overflow-x-hidden flex">
         {children}
       </main>
       <AnimatedBackground />
