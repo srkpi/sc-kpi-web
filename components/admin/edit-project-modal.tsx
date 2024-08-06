@@ -112,6 +112,7 @@ const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
                 <Image
                   width={516}
                   height={311}
+                  quality={100}
                   objectFit="cover"
                   src={previewImage}
                   alt="Project Image"

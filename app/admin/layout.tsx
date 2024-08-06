@@ -15,7 +15,13 @@ export default function AdminLayout({
     <ProtectedAdminRoute>
       <div className="flex items-center h-[120px] pl-16">
         <Link href="/">
-          <Image width={130} height={47} src="/images/Logo.png" alt="Логотип" />
+          <Image
+            width={130}
+            height={47}
+            src="/images/Logo.png"
+            alt="Логотип"
+            quality={100}
+          />
         </Link>
       </div>
       <div className="flex">

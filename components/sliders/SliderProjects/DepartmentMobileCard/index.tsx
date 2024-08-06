@@ -31,6 +31,7 @@ const DepartmentMoblieCard = ({
           className="object-cover w-full h-full"
           width={720}
           height={420}
+          quality={100}
           src={project.image}
           alt={project.name}
         />
