@@ -106,10 +106,10 @@ const RegisterPage = () => {
                     type="email"
                     name="email"
                     placeholder="Пошта"
-                    className={`${errors.email && 'border-red-500 focus-visible:border-red-500'}`}
+                    className={`${errors.email && 'border-destructive focus-visible:border-destructive'}`}
                   />
                   {errors.email && (
-                    <span className="text-red-500 text-m-p md:text-p">
+                    <span className="text-destructive text-m-p md:text-p">
                       {errors.email.message}
                     </span>
                   )}
@@ -120,10 +120,10 @@ const RegisterPage = () => {
                     type="text"
                     name="lastName"
                     placeholder="Прізвище"
-                    className={`${errors.lastName && 'border-red-500 focus-visible:border-red-500'}`}
+                    className={`${errors.lastName && 'border-destructive focus-visible:border-destructive'}`}
                   />
                   {errors.lastName && (
-                    <span className="text-red-500 text-m-p md:text-p">
+                    <span className="text-destructive text-m-p md:text-p">
                       {errors.lastName.message}
                     </span>
                   )}
@@ -135,10 +135,10 @@ const RegisterPage = () => {
                       type="text"
                       name="firstName"
                       placeholder="Ім'я"
-                      className={` ${errors.firstName && 'border-red-500 focus-visible:border-red-500'}`}
+                      className={` ${errors.firstName && 'border-destructive focus-visible:border-destructive'}`}
                     />
                     {errors.firstName && (
-                      <span className="text-red-500 text-m-p md:text-p">
+                      <span className="text-destructive text-m-p md:text-p">
                         {errors.firstName.message}
                       </span>
                     )}
@@ -149,10 +149,10 @@ const RegisterPage = () => {
                       type="text"
                       name="middleName"
                       placeholder="По батькові"
-                      className={`${errors.middleName && 'border-red-500 focus-visible:border-red-500'}`}
+                      className={`${errors.middleName && 'border-destructive focus-visible:border-destructive'}`}
                     />
                     {errors.middleName && (
-                      <span className="text-red-500 text-m-p md:text-p">
+                      <span className="text-destructive text-m-p md:text-p">
                         {errors.middleName.message}
                       </span>
                     )}
@@ -168,7 +168,7 @@ const RegisterPage = () => {
                       clearErrors={form.clearErrors}
                     />
                     {errors.faculty && (
-                      <span className="text-red-500 text-m-p md:text-p">
+                      <span className="text-destructive text-m-p md:text-p">
                         {errors.faculty.message}
                       </span>
                     )}
@@ -183,7 +183,7 @@ const RegisterPage = () => {
                       clearErrors={form.clearErrors}
                     />
                     {errors.group && (
-                      <span className="text-red-500 text-m-p md:text-p">
+                      <span className="text-destructive text-m-p md:text-p">
                         {errors.group.message}
                       </span>
                     )}
@@ -195,10 +195,10 @@ const RegisterPage = () => {
                     type="password"
                     name="password"
                     placeholder="Пароль"
-                    className={`${errors.password && 'border-red-500 focus-visible:border-red-500'} select-none`}
+                    className={`${errors.password && 'border-destructive focus-visible:border-destructive'} select-none`}
                   />
                   {errors.password && (
-                    <span className="text-red-500 text-m-p md:text-p">
+                    <span className="text-destructive text-m-p md:text-p">
                       {errors.password.message}
                     </span>
                   )}
@@ -209,10 +209,10 @@ const RegisterPage = () => {
                     type="password"
                     name="confirmPassword"
                     placeholder="Підтвердіть пароль"
-                    className={`${errors.password && 'border-red-500 focus-visible:border-red-500'} select-none`}
+                    className={`${errors.password && 'border-destructive focus-visible:border-destructive'} select-none`}
                   />
                   {errors.confirmPassword && (
-                    <span className="text-red-500 text-m-p md:text-p">
+                    <span className="text-destructive text-m-p md:text-p">
                       {errors.confirmPassword.message}
                     </span>
                   )}
@@ -230,7 +230,7 @@ const RegisterPage = () => {
                           />
                         </FormControl>
                         <FormLabel
-                          className={`font-normal ${errors.terms && 'text-red-500'}`}
+                          className={`font-normal ${errors.terms && 'text-destructive'}`}
                         >
                           <span className="text-m-p md:text-p">
                             Даю згоду на обробку персональних даних
@@ -238,7 +238,7 @@ const RegisterPage = () => {
                         </FormLabel>
                       </FormItem>
                       {errors.terms && (
-                        <span className="text-red-500 text-m-p md:text-p">
+                        <span className="text-destructive text-m-p md:text-p">
                           {errors.terms.message}
                         </span>
                       )}

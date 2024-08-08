@@ -69,10 +69,10 @@ const ResetPassword = () => {
                 type="password"
                 name="password"
                 placeholder="Пароль"
-                className={`${errors.password && 'border-red-500 focus-visible:border-red-500'}`}
+                className={`${errors.password && 'border-destructive focus-visible:border-destructive'}`}
               />
               {errors.password && (
-                <span className="text-red-500 text-m-p md:text-p">
+                <span className="text-destructive text-m-p md:text-p">
                   {errors.password.message}
                 </span>
               )}
@@ -83,10 +83,10 @@ const ResetPassword = () => {
                 type="password"
                 name="confirmPassword"
                 placeholder="Підтвердіть пароль"
-                className={`${errors.password && 'border-red-500 focus-visible:border-red-500'}`}
+                className={`${errors.password && 'border-destructive focus-visible:border-destructive'}`}
               />
               {errors.confirmPassword && (
-                <span className="text-red-500 text-m-p md:text-p">
+                <span className="text-destructive text-m-p md:text-p">
                   {errors.confirmPassword.message}
                 </span>
               )}

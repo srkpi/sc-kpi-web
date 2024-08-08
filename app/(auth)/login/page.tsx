@@ -93,10 +93,10 @@ const LoginPage = () => {
                   type="email"
                   placeholder="Пошта"
                   defaultValue={getRememberedEmail() ?? ''}
-                  className={`${errors.email && 'border-red-500 focus-visible:border-red-500'}`}
+                  className={`${errors.email && 'border-destructive focus-visible:border-destructive'}`}
                 />
                 {errors.email && (
-                  <span className="text-red-500 text-m-p md:text-p">
+                  <span className="text-destructive text-m-p md:text-p">
                     {errors.email.message}
                   </span>
                 )}
@@ -106,10 +106,10 @@ const LoginPage = () => {
                   {...register('password')}
                   type="password"
                   placeholder="Пароль"
-                  className={`${errors.password && 'border-red-500 focus-visible:border-red-500'}`}
+                  className={`${errors.password && 'border-destructive focus-visible:border-destructive'}`}
                 />
                 {errors.password && (
-                  <span className="text-red-500 text-m-p md:text-p">
+                  <span className="text-destructive text-m-p md:text-p">
                     {errors.password.message}
                   </span>
                 )}

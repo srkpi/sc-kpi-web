@@ -75,10 +75,10 @@ const ResetPassword = () => {
                     {...register('email')}
                     type="email"
                     placeholder="Пошта"
-                    className={`${errors.email && 'border-red-500 focus-visible:border-red-500'}`}
+                    className={`${errors.email && 'border-destructive focus-visible:border-destructive'}`}
                   />
                   {errors.email && (
-                    <span className="text-red-500 text-m-p md:text-p">
+                    <span className="text-destructive text-m-p md:text-p">
                       {errors.email.message}
                     </span>
                   )}
