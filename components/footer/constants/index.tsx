@@ -8,7 +8,10 @@ import {
   MailIcon,
   MapPinIcon,
   ShieldCheckIcon,
+  TwitterIcon,
+  YoutubeIcon,
 } from 'lucide-react';
+import Image from 'next/image';
 
 import { LinkItem } from '@/types/link-item';
 
@@ -50,9 +53,12 @@ export const mediaItems: LinkItem[] = [
   {
     href: 'https://t.me/sr_kpi',
     icon: (
-      <img
+      <Image
+        quality={100}
         src="/icons/telegram.png"
         alt="telegram"
+        width={24}
+        height={24}
         className="size-[15px] md:size-[20px]"
       />
     ),
@@ -64,9 +70,12 @@ export const mediaItems: LinkItem[] = [
   {
     href: 'https://www.tiktok.com/@sr_kpi',
     icon: (
-      <img
+      <Image
+        quality={100}
         src="/icons/tik-tok.png"
         alt="tik-tok"
+        width={24}
+        height={24}
         className="size-[15px] md:size-[20px]"
       />
     ),
@@ -74,6 +83,27 @@ export const mediaItems: LinkItem[] = [
   {
     href: 'https://www.facebook.com/srkpi/',
     icon: <FacebookIcon className="size-[15px] md:size-[20px]" />,
+  },
+  {
+    href: 'https://www.facebook.com/srkpi/',
+    icon: <TwitterIcon className="size-[15px] md:size-[20px]" />,
+  },
+  {
+    href: 'https://discord.gg/V4YvUsYtSj',
+    icon: (
+      <Image
+        quality={100}
+        src="/icons/discord.png"
+        alt="tik-tok"
+        width={24}
+        height={24}
+        className="size-[15px] md:size-[20px]"
+      />
+    ),
+  },
+  {
+    href: 'https://www.youtube.com/@user-xo4ej6cj5p',
+    icon: <YoutubeIcon className="size-[15px] md:size-[20px]" />,
   },
   {
     href: 'https://github.com/srkpi',
