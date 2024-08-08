@@ -31,6 +31,7 @@ const ClubOrDepartmentPage: FC<ClubOrDepartmentProps> = ({
           className="w-full h-auto rounded-[20px] aspect-video object-cover order-first lg:order-last"
           src={image}
           alt="image"
+          quality={100}
           width={725}
           height={414}
         />
