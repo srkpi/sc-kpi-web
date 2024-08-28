@@ -15,11 +15,17 @@ export default function AdminLayout({
     <ProtectedAdminRoute>
       <div className="flex items-center h-[120px] pl-16">
         <Link href="/">
-          <Image width={130} height={47} src="/images/Logo.png" alt="Логотип" />
+          <Image
+            width={130}
+            height={47}
+            src="/images/Logo.png"
+            alt="Логотип"
+            quality={100}
+          />
         </Link>
       </div>
       <div className="flex">
-        <ul className="flex flex-col w-[320px] pl-16 pt-[23px] gap-[21px] h-screen">
+        <ul className="flex flex-col w-[320px] pl-16 pt-[23px] gap-[21px] h-screen-dvh">
           {navbarLinks.map(navbarLink => (
             <li
               className="flex items-center gap-4 focus-within:text-blue"

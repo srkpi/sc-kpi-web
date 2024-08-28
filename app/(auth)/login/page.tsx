@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/toast/use-toast';
 import useAuth from '@/hooks/useAuth';
 import { forgetMe, getRememberedEmail, rememberMe } from '@/lib/utils/auth';
 
@@ -16,6 +17,7 @@ import { LoginFormData, loginSchema } from './_validation';
 const LoginPage = () => {
   const { login } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
   const [isRememberMe, setIsRememberMe] = useState(false);
   const {
     register,
@@ -33,14 +35,28 @@ const LoginPage = () => {
     };
     const { error, success } = await login(dto);
     if (error && !success) {
-      setError('password', {
-        type: 'manual',
-        message: 'Неправильний логін або пароль',
-      });
+      switch (error) {
+        case 'Unauthorized':
+          setError('password', {
+            type: 'manual',
+            message: 'Неправильний логін або пароль',
+          });
+          break;
+        default:
+          toast({
+            variant: 'destructive',
+            title: 'Трапилась помилка',
+            description: error,
+          });
+          break;
+      }
       return;
     }
     isRememberMe ? rememberMe(data.email) : forgetMe();
     router.push('/');
+    toast({
+      title: 'Ви успішно увійшли до системи',
+    });
   };
 
   return (
@@ -77,10 +93,10 @@ const LoginPage = () => {
                   type="email"
                   placeholder="Пошта"
                   defaultValue={getRememberedEmail() ?? ''}
-                  className={`${errors.email && 'border-red-500 focus-visible:border-red-500'}`}
+                  className={`${errors.email && 'border-destructive focus-visible:border-destructive'}`}
                 />
                 {errors.email && (
-                  <span className="text-red-500 text-m-p md:text-p">
+                  <span className="text-destructive text-m-p md:text-p">
                     {errors.email.message}
                   </span>
                 )}
@@ -90,10 +106,10 @@ const LoginPage = () => {
                   {...register('password')}
                   type="password"
                   placeholder="Пароль"
-                  className={`${errors.password && 'border-red-500 focus-visible:border-red-500'}`}
+                  className={`${errors.password && 'border-destructive focus-visible:border-destructive'}`}
                 />
                 {errors.password && (
-                  <span className="text-red-500 text-m-p md:text-p">
+                  <span className="text-destructive text-m-p md:text-p">
                     {errors.password.message}
                   </span>
                 )}

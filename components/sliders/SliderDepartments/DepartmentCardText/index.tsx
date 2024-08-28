@@ -13,7 +13,6 @@ interface DepartmentCardTextProps {
 }
 
 const DepartmentCardText = ({ dep, next, prev }: DepartmentCardTextProps) => {
-  console.log(dep);
   return (
     <div className="hidden w-full md:flex flex-col h-full pr-8">
       <div className="max-w-[550px] flex-auto pb-3">
