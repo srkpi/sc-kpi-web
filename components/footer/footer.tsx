@@ -19,6 +19,7 @@ const Footer = () => {
             className="object-cover align-top w-[67px] md:w-[100px] lg:w-[200px] h-auto"
             src="/images/Logo.png"
             alt="logo"
+            quality={100}
             width={200}
             height={73}
           />

@@ -174,6 +174,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
           <Image
             width={624}
             height={264}
+            quality={100}
             src={previewImage || (department?.image as string)}
             alt="Department Image"
             className="rounded-[18px]"

@@ -118,6 +118,7 @@ const CreateProjectModal: FC<CreateProjectModalProps> = ({ id }) => {
                   height={311}
                   objectFit="cover"
                   src={previewImage}
+                  quality={100}
                   alt="Project Image"
                   className="rounded-[18px] h-[311px]"
                 />

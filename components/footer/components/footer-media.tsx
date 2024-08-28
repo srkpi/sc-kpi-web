@@ -15,7 +15,7 @@ const FooterMedia: FC<FooterMediaProps> = ({ items, className = '' }) => {
       <p className="font-m-button text-m-p mb-[20px] lg:hidden">
         Соціальні мережі
       </p>
-      <div className="flex gap-[23px]">
+      <div className="flex gap-[10px] md:gap-[20px]">
         {items.map((item: LinkItem) => (
           <Link
             className="size-[15px] md:size-[20px]"

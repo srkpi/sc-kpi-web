@@ -12,6 +12,7 @@ const DepartmentCardPicture = ({ dep }: { dep: Department }) => {
             className="object-cover w-full h-full"
             width={720}
             height={420}
+            quality={100}
             src={dep.image}
             alt={dep.name}
           />

@@ -25,6 +25,7 @@ const Header = () => {
             className="object-cover align-top w-[67px] md:w-[85px] lg:w-[104px] h-auto"
             src="/images/Logo.png"
             alt="logo"
+            quality={100}
             width={104}
             height={38}
           />

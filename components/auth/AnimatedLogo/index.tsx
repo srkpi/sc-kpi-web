@@ -16,6 +16,7 @@ const AnimatedLogo = () => {
           className="object-cover align-top w-[104px] md:w-[120px] lg:w-[133px] h-auto"
           src="/images/Logo.png"
           alt="logo"
+          quality={100}
           width={133}
           height={50}
         />

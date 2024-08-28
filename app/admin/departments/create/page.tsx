@@ -126,6 +126,7 @@ const CreateDepartmentPage: FC = () => {
                 width={624}
                 height={264}
                 src={previewImage}
+                quality={100}
                 alt="Department Image"
                 className="rounded-[18px]"
                 ref={imageRef}
