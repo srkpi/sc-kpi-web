@@ -1,4 +1,4 @@
-import { CableIcon, PaperclipIcon } from 'lucide-react';
+import { CableIcon, PaletteIcon, PaperclipIcon } from 'lucide-react';
 
 type Props = {
   icon: React.ReactNode;
@@ -7,11 +7,11 @@ type Props = {
 };
 
 export const navbarLinks: Props[] = [
-  // {
-  //   icon: <PaletteIcon width={28} height={28} />,
-  //   href: '/admin/clubs',
-  //   title: 'Гуртки',
-  // },
+  {
+    icon: <PaletteIcon width={28} height={28} />,
+    href: '/admin/clubs',
+    title: 'Гуртки',
+  },
   {
     icon: <PaperclipIcon width={28} height={28} />,
     href: '/admin/departments',
