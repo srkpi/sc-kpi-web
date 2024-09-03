@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { AxiosError } from 'axios';
 import { ArrowDownToLine } from 'lucide-react';
 import Image from 'next/image';
@@ -21,7 +21,6 @@ const CreateClubPage: FC = () => {
     buttonLink: '',
     description: '',
   });
-  const imageRef = useRef<HTMLImageElement>(null);
   const router = useRouter();
 
   const { toast } = useToast();
@@ -51,7 +50,33 @@ const CreateClubPage: FC = () => {
       });
       return;
     }
-
+    if (
+      !jsonData.name ||
+      !jsonData.shortDescription ||
+      !jsonData.buttonLink ||
+      !jsonData.description
+    ) {
+      toast({
+        variant: 'destructive',
+        title: 'Заповніть всі поля',
+      });
+      return;
+    }
+    if (file.size > 25 * 1024 * 1024) {
+      toast({
+        variant: 'destructive',
+        title: 'Розмір файлу перевищує 25MB',
+      });
+    }
+    const urlPattern =
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
+    if (jsonData.buttonLink && !urlPattern.test(jsonData.buttonLink)) {
+      toast({
+        variant: 'destructive',
+        title: 'Посилання має бути валідним URL',
+      });
+      return;
+    }
     const formData = new FormData();
     formData.append('image', file);
     formData.append('json', JSON.stringify(jsonData));
@@ -69,6 +94,11 @@ const CreateClubPage: FC = () => {
           variant: 'destructive',
           title: 'Сталася помилка',
           description: error.response?.data.message,
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Сталася невідома помилка',
         });
       }
     }
@@ -89,7 +119,7 @@ const CreateClubPage: FC = () => {
         </div>
         <div className="flex gap-[24px] font-medium">
           <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-            <h2 className="text-h2 mb-[19px]">Назва гуртку</h2>
+            <h2 className="text-h2 mb-[19px]">Назва гуртка</h2>
             <Textarea
               className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
               placeholder="Тут має бути назва"
@@ -129,7 +159,6 @@ const CreateClubPage: FC = () => {
                 quality={100}
                 alt="Department Image"
                 className="rounded-[18px]"
-                ref={imageRef}
               />
             </div>
           )}
@@ -139,8 +168,8 @@ const CreateClubPage: FC = () => {
             <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
               <h2 className="text-h2 mb-[10px]">
                 {previewImage
-                  ? 'Завантажте нову картинку гуртку'
-                  : 'Завантажте сюди картинку гуртку'}
+                  ? 'Завантажте нову картинку гуртка'
+                  : 'Завантажте сюди картинку гуртка'}
               </h2>
               <p className="text-p mb-[20px] text-center font-light">
                 Розмір та формат картинки, яка найкраще підійде для
@@ -158,10 +187,10 @@ const CreateClubPage: FC = () => {
         </div>
 
         <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-          <h2 className="text-h2 font-medium">Опис гуртку</h2>
+          <h2 className="text-h2 font-medium">Опис гуртка</h2>
           <Textarea
             className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-            placeholder="Введіть опис гуртку тут..."
+            placeholder="Введіть опис гуртка тут..."
             name="description"
             value={jsonData.description}
             onChange={handleInputChange}
