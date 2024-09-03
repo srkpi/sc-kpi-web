@@ -123,7 +123,7 @@ export default function AdminFaq() {
           ))}
         </TableBody>
       </Table>
-      <Link href={`/admin/faq/create`}>
+      <Link href="/admin/faq/create">
         <Button className="bg-white h-[58px] gap-3 hover:bg-white text-blue mt-[24px] mb-[20px]">
           <Plus color="#374FFA" size={26}></Plus>
           Додати питання

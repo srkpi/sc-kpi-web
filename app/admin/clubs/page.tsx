@@ -54,7 +54,7 @@ export default function AdminClubs() {
       if (error instanceof AxiosError) {
         toast({
           variant: 'destructive',
-          title: `Стался помилка при видаленні гуртку`,
+          title: `Стался помилка при видаленні гуртка`,
           description: error.message,
         });
       }
@@ -117,7 +117,7 @@ export default function AdminClubs() {
           ))}
         </TableBody>
       </Table>
-      <Link href={`/admin/clubs/create`}>
+      <Link href="/admin/clubs/create">
         <Button className="bg-white h-[58px] gap-3 hover:bg-white text-blue mt-[24px] mb-[20px]">
           <Plus color="#374FFA" size={26}></Plus>
           Додати гурток

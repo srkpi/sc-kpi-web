@@ -49,7 +49,7 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
         if (error instanceof AxiosError) {
           toast({
             variant: 'destructive',
-            title: 'Не вдалося отримати дані гуртку',
+            title: 'Не вдалося отримати дані гуртка',
             description: error.message,
           });
         }
@@ -57,7 +57,7 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
     };
 
     fetchProjects();
-  }, [params.id]);
+  }, [params.id, toast]);
 
   const handleDelete = async (projectId: number) => {
     try {
@@ -120,6 +120,11 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
           title: 'Сталася помилка при оновленні проєкту',
           description: error.message,
         });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Сталася невідома помилка при оновленні проєкту',
+        });
       }
     }
   };
@@ -139,10 +144,10 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
 
       <div className="flex gap-[24px] font-medium">
         <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-          <h2 className="text-h2 mb-[19px]">Назва гуртку</h2>
+          <h2 className="text-h2 mb-[19px]">Назва гуртка</h2>
           <Textarea
             className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-            placeholder="Назва гуртку"
+            placeholder="Назва гуртка"
             defaultValue={club?.name || ''}
             onChange={e => handleChange('name', e.target.value)}
           />
@@ -183,8 +188,8 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
           <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
             <h2 className="text-h2 mb-[10px] text-center">
               {previewImage
-                ? 'Завантажте сюди картинку гуртку'
-                : 'Ви можете змінити зображення гуртку'}
+                ? 'Завантажте сюди картинку гуртка'
+                : 'Ви можете змінити зображення гуртка'}
             </h2>
             <p className="text-p mb-[20px] text-center font-light">
               Розмір та формат картинки, яка найкраще підійде для завантаження:
@@ -201,10 +206,10 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
         </div>
       </div>
       <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-        <h2 className="text-h2 font-medium">Опис гуртку</h2>
+        <h2 className="text-h2 font-medium">Опис гуртка</h2>
         <Textarea
           className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-          placeholder="Введіть опис гуртку тут..."
+          placeholder="Введіть опис гуртка тут..."
           defaultValue={club?.description || ''}
           onChange={e => handleChange('description', e.target.value)}
         />
