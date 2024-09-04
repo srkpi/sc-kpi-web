@@ -39,9 +39,13 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
-  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
-  <div className="flex bg-dark items-center border-b px-3 border-[1px] border-blue rounded-[6px]">
+  React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> & {
+    customContainerClasses?: string;
+  }
+>(({ className, customContainerClasses, ...props }, ref) => (
+  <div
+    className={`flex bg-dark items-center border-b px-3 border-[1px] border-blue rounded-[6px] ${customContainerClasses}`}
+  >
     <Search className="mr-2 h-4 w-4 shrink-0" />
     <CommandPrimitive.Input
       ref={ref}
