@@ -16,45 +16,45 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
-import { FAQType } from '@/types/faq';
+import { Department } from '@/types/departments';
 
-export default function AdminFaq() {
-  const [faqs, setFaqs] = useState<FAQType[]>([]);
+export default function AdminClubs() {
+  const [clubs, setClubs] = useState<Department[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchFaqs = async () => {
+    const fetchClubs = async () => {
       try {
-        const response = await api.get<FAQType[]>('/faq');
-        setFaqs(response.data);
+        const response = await api.get<Department[]>('/clubs');
+        setClubs(response.data);
       } catch (error) {
         toast({
           variant: 'destructive',
-          title: 'Не вдалося отримати питання',
+          title: 'Не вдалося отримати гуртки',
         });
       }
     };
 
-    fetchFaqs();
+    fetchClubs();
   }, []);
 
   const handleDelete = async (id: number) => {
     try {
-      await api.delete(`/faq/${id}`);
+      await api.delete(`/clubs/${id}`);
 
       toast({
-        title: `Питання успішно видалено`,
+        title: `Гурток успішно видалений`,
       });
 
-      const filtered = faqs.filter(faq => faq.id !== id);
-      setFaqs(filtered);
+      const response = await api.get<Department[]>('/clubs');
+      setClubs(response.data);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
           variant: 'destructive',
-          title: `Стался помилка при видаленні питання`,
+          title: `Стался помилка при видаленні гуртка`,
           description: error.message,
         });
       }
@@ -65,15 +65,15 @@ export default function AdminFaq() {
     setSearchQuery(event.target.value);
   };
 
-  const filteredFaqs = faqs.filter(
-    faq =>
-      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredClubs = clubs.filter(
+    club =>
+      club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      club.shortDescription.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <div className="content">
-      <h1 className="text-h1 font-semibold mb-[54px]">FAQ</h1>
+      <h1 className="text-h1 font-semibold mb-[54px]">Гуртки</h1>
       <div className="relative w-[1272px]">
         <Input
           className="w-full text-p pl-16 h-[72px] mb-[78px]"
@@ -87,25 +87,19 @@ export default function AdminFaq() {
       <Table className="w-[1273px]">
         <TableHeader>
           <TableRow>
-            <TableHead>Категорія</TableHead>
-            <TableHead>Питання</TableHead>
-            <TableHead>Відповідь</TableHead>
+            <TableHead>Назва</TableHead>
+            <TableHead>Короткий опис</TableHead>
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredFaqs.map(faq => (
-            <TableRow key={faq.id}>
-              <TableCell className="w-fit">
-                <Button className="md:h-[35px] md:px-[24px] md:w-full whitespace-normal">
-                  {faq.category.name}
-                </Button>
-              </TableCell>
-              <TableCell>{faq.question}</TableCell>
-              <TableCell>{faq.answer}</TableCell>
+          {filteredClubs.map(club => (
+            <TableRow key={club.id}>
+              <TableCell>{club.name}</TableCell>
+              <TableCell>{club.description}</TableCell>
               <TableCell>
                 <div className="flex space-x-4">
-                  <Link href={`/admin/faq/${faq.id}`}>
+                  <Link href={`/admin/clubs/${club.id}`}>
                     <Button variant="default" className="w-[110px] h-[35px]">
                       Змінити
                     </Button>
@@ -113,7 +107,7 @@ export default function AdminFaq() {
                   <Button
                     variant="outline"
                     className="w-[110px] h-[35px]"
-                    onClick={() => handleDelete(faq.id)}
+                    onClick={() => handleDelete(club.id)}
                   >
                     Видалити
                   </Button>
@@ -123,10 +117,10 @@ export default function AdminFaq() {
           ))}
         </TableBody>
       </Table>
-      <Link href="/admin/faq/create">
+      <Link href="/admin/clubs/create">
         <Button className="bg-white h-[58px] gap-3 hover:bg-white text-blue mt-[24px] mb-[20px]">
           <Plus color="#374FFA" size={26}></Plus>
-          Додати питання
+          Додати гурток
         </Button>
       </Link>
     </div>
