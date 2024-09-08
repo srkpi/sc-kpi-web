@@ -31,7 +31,7 @@ const ScheduleCard: FC<ScheduleCardProps> = ({ event, onDelete }) => {
         {name}
       </p>
       <p className="line-clamp-1 lg:line-clamp-2 text-ellipsis text-m-p lg:text-p text-gray-500 mb-[5px]">
-        {teacherName}
+        {teacherName || 'Викладач відсутній у розкладі'}
       </p>
       <p className="font-light text-p-light lg:text-m-p">{time}</p>
     </div>
