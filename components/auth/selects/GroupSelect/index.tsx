@@ -1,10 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import { UseFormClearErrors, UseFormRegister } from 'react-hook-form';
+import { UseFormClearErrors, UseFormRegisterReturn } from 'react-hook-form';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import useSWR from 'swr';
 
 import { RegisterFormData } from '@/app/(auth)/register/validation';
+import { ChangeProfileFormData } from '@/app/(client)/profile/_validation';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -40,16 +41,18 @@ interface GroupSelectProps {
   setSelectedGroup: (group: IGroupData) => void;
   selectedGroup: IGroupData | undefined;
   selectedFaculty: IFacultyData | undefined;
-  register: UseFormRegister<RegisterFormData>;
-  clearErrors: UseFormClearErrors<RegisterFormData>;
+  registerProps: UseFormRegisterReturn;
+  clearErrors: UseFormClearErrors<RegisterFormData | ChangeProfileFormData>;
+  avoidCollisions?: boolean;
 }
 
 const GroupSelect = ({
   setValue,
   selectedGroup,
   setSelectedGroup,
-  register,
+  registerProps,
   clearErrors,
+  avoidCollisions = false,
 }: GroupSelectProps) => {
   const [open, setOpen] = useState(false);
   const { data: allGroups } = useSWR<IGroupsResponse>(
@@ -78,7 +81,7 @@ const GroupSelect = ({
           role="combobox"
           aria-expanded={open}
           size="sm"
-          className="justify-between relative gap-[5px] p-[10px] overflow-hidden"
+          className={`justify-between relative gap-[5px] p-[10px] overflow-hidden ${avoidCollisions && 'border-white'}`}
         >
           {selectedGroup ? selectedGroup?.name : 'Оберіть групу'}
           {!open ? (
@@ -96,12 +99,12 @@ const GroupSelect = ({
       </PopoverTrigger>
       <PopoverContent
         style={{ WebkitOverflowScrolling: 'unset', scrollbarWidth: 'none' }}
-        className="p-0 border-none rounded-[10px] w-full max-w-[calc(50vw-24px)] md:max-w-[calc(50vw-44px)] lg:max-w-[calc(50vw-74px)]"
+        className={`p-0 bg-transparent border-none rounded-[10px] w-full max-w-[calc(50vw-24px)] md:max-w-[calc(50vw-44px)] lg:max-w-[calc(50vw-74px)] ${avoidCollisions && 'px-2'}`}
         side="bottom"
-        align="start"
-        avoidCollisions={false}
+        align={avoidCollisions ? 'center' : 'start'}
+        avoidCollisions={avoidCollisions}
       >
-        <Command>
+        <Command className="bg-transparent">
           <CommandInput placeholder="Пошук" />
           <CommandList className="mt-[5px] bg-dark border-white border-[1px] no-scrollbar rounded-b-[10px]">
             <CommandEmpty className="bg-dark p-2 text-m-p md:text-p">
@@ -121,7 +124,7 @@ const GroupSelect = ({
           </CommandList>
         </Command>
       </PopoverContent>
-      <input type="hidden" {...register('group')} />
+      <input type="hidden" {...registerProps} />
     </Popover>
   );
 };

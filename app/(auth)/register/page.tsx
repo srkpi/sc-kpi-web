@@ -164,7 +164,7 @@ const RegisterPage = () => {
                       setValue={setValue}
                       setSelectedFaculty={setSelectedFaculty}
                       selectedFaculty={selectedFaculty}
-                      register={register}
+                      registerProps={register('faculty')}
                       clearErrors={form.clearErrors}
                     />
                     {errors.faculty && (
@@ -179,7 +179,7 @@ const RegisterPage = () => {
                       selectedFaculty={selectedFaculty}
                       selectedGroup={selectedGroup}
                       setSelectedGroup={setSelectedGroup}
-                      register={register}
+                      registerProps={register('group')}
                       clearErrors={form.clearErrors}
                     />
                     {errors.group && (
