@@ -12,6 +12,7 @@ import { Department } from '@/types/departments';
 const ClubsPage = () => {
   const [clubs, setClubs] = useState<Department[]>([]);
   const [filteredClubs, setFilteredClubs] = useState<Department[]>([]);
+  const [visibleCount, setVisibleCount] = useState(6); // Controls how many clubs are shown
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const { toast } = useToast();
@@ -65,6 +66,10 @@ const ClubsPage = () => {
     filterByCategoryAndSearch();
   }, [selectedCategory, searchTerm, clubs]);
 
+  const handleShowMore = () => {
+    setVisibleCount(prevCount => prevCount + 6); // Increase visible clubs by 6
+  };
+
   return (
     <div className="min-h-screen bg-dark text-white">
       <div className="_container py-8">
@@ -101,16 +106,21 @@ const ClubsPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredClubs.map(club => (
+          {filteredClubs.slice(0, visibleCount).map(club => (
             <ClubCard key={club.id} club={club} />
           ))}
         </div>
 
-        <div className="flex justify-center mt-8">
-          <button className="font-button bg-blue text-white px-6 py-3 rounded-lg hover:bg-accent transition">
-            Показати ще
-          </button>
-        </div>
+        {visibleCount < filteredClubs.length && (
+          <div className="flex justify-center mt-8">
+            <button
+              className="font-button bg-blue text-white px-6 py-3 rounded-lg hover:bg-accent transition"
+              onClick={handleShowMore}
+            >
+              Показати ще
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
