@@ -21,34 +21,38 @@ const Event = ({
 }: EventInterface) => {
   const startDateObj = new Date(startDate);
   const endDateObj = new Date(endDate);
+  const isTheSameDay =
+    startDateObj.getDay() === endDateObj.getDay() &&
+    startDateObj.getMonth() === endDateObj.getMonth() &&
+    startDateObj.getFullYear() === endDateObj.getFullYear();
+
   const cropDate = (DateObj: Date) => {
-    return (
-      DateObj.getDate() + '.' + DateObj.getMonth() + '.' + DateObj.getFullYear()
-    );
+    const day = String(DateObj.getDate()).padStart(2, '0');
+    const month = String(DateObj.getMonth() + 1).padStart(2, '0');
+    const year = DateObj.getFullYear();
+    return `${day}.${month}.${year}`;
+  };
+
+  const getTimeHoursAndMinutes = (DateObj: Date) => {
+    const hours = String(DateObj.getHours()).padStart(2, '0');
+    const minutes = String(DateObj.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
   };
 
   const getTimeDifference = () => {
-    if (
-      endDateObj.getHours() != startDateObj.getHours() &&
-      endDateObj.getHours() * 60 + endDateObj.getMinutes() >=
-        startDateObj.getHours() * 60 + startDateObj.getMinutes()
-    ) {
+    if (endDateObj.getTime() !== startDateObj.getTime()) {
       return (
-        startDateObj.getHours() +
-        ':' +
-        startDateObj.getMinutes() +
+        getTimeHoursAndMinutes(startDateObj) +
         '-' +
-        endDateObj.getHours() +
-        ':' +
-        endDateObj.getMinutes()
+        getTimeHoursAndMinutes(endDateObj)
       );
     } else {
-      return startDateObj.getHours() + ':' + startDateObj.getMinutes();
+      return getTimeHoursAndMinutes(startDateObj);
     }
   };
 
   return (
-    <div className="flex flex-col gap-[10px] outline-none border-[1px] rounded-[10px] p-[14px] border-white w-full hover:scale-[1.02] md:hover:scale-[1.04] transition">
+    <div className="flex flex-col gap-[10px] outline-none border-[1px] rounded-[10px] p-[14px] border-white w-full hover:scale-[1.036] hover:shadow-[0px_0px_7px_0px_#ECEDF8A8] transition">
       <h3 className="text-blue text-sm md:text-base font-semibold">{title}</h3>
       <p className="text-m-p md:text-sm flex-auto">{shortDescription}</p>
       <div className="text-sm md:text-base font-medium flex flex-row gap-2 leading-[25px] mb-[-3px]">
@@ -57,10 +61,10 @@ const Event = ({
       </div>
       <div className="flex justify-between items-center flex-wrap gap-x-2 text-sm md:text-base">
         <span className="md:text-greyBlue">{tag}</span>
-        <div className="flex flex-row gap-3">
+        <div className="flex gap-x-2 flex-wrap">
           <span className="font-semibold">
-            {startDateObj === endDateObj
-              ? cropDate(startDateObj) + '-' + cropDate(endDateObj)
+            {!isTheSameDay
+              ? cropDate(startDateObj) + ' - ' + cropDate(endDateObj)
               : cropDate(startDateObj)}
           </span>
           <span>{getTimeDifference()}</span>

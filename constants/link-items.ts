@@ -9,6 +9,10 @@ export const linkItems: LinkItem[] = [
     name: 'Розклад',
     href: '/schedule-importer',
   },
+  {
+    name: 'Заходи',
+    href: '/events',
+  },
   // {
   //   name: 'Гуртки',
   //   href: '/clubs',

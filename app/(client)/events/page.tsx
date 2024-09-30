@@ -5,7 +5,14 @@ import useSWR from 'swr';
 
 import Event from '@/app/(client)/events/_components/event';
 import { Button } from '@/components/ui/button';
-import { Command, CommandInput, CommandList } from '@/components/ui/command';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
 import {
   Select,
   SelectContent,
@@ -34,6 +41,7 @@ const EventCalendar = () => {
   const [isDesc, setIsDesc] = useState(false);
   const [filterKey, setFilterKey] = useState('');
   const [sortBy, setSortBy] = useState<SortBy | null>(null);
+  const [focused, setFocused] = useState(false);
   const { toast } = useToast();
 
   const { data: events, error } = useSWR<IEvent[]>(
@@ -69,7 +77,6 @@ const EventCalendar = () => {
 
     return filtered;
   }, [filterKey, events, sortBy, isDesc]);
-
   if (error) {
     toast({
       variant: 'destructive',
@@ -94,14 +101,45 @@ const EventCalendar = () => {
       <h1 className="font-semibold text-m-h1 md:text-h1">Розклад заходів</h1>
       <div className="flex flex-wrap gap-5">
         <div className="max-w-[408px] flex-auto">
-          <Command className="bg-transparent">
+          <Command
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            className="bg-transparent relative overflow-visible"
+          >
             <CommandInput
               placeholder="Пошук"
               value={filterKey}
-              customContainerClasses="border-white max-h-[30px] md:max-h-full md:h-full rounded-1 md:rounded-[6px]"
+              customContainerClasses="border-white rounded-1 md:rounded-[6px] max-h-[30px] md:max-h-12"
               onValueChange={setFilterKey}
             />
-            <CommandList />
+            <CommandList
+              className={`mt-[5px] bg-dark border-white border-[1px] no-scrollbar rounded-b-[10px] max-h-[35vh] absolute w-full top-full ${!focused && 'hidden'} z-10`}
+            >
+              <CommandEmpty className="bg-dark p-2 text-m-p md:text-p">
+                захід не знайдено
+              </CommandEmpty>
+              <CommandGroup>
+                {filteredEvents
+                  .filter(
+                    (event, index, self) =>
+                      index === self.findIndex(e => e.title === event.title),
+                  )
+                  .slice(0, 3)
+                  .map(event => (
+                    <CommandItem
+                      key={event.id}
+                      value={event.title}
+                      className="py-1 md:py-3"
+                      onSelect={() => {
+                        setFilterKey(event.title);
+                        setFocused(false);
+                      }}
+                    >
+                      {event.title}
+                    </CommandItem>
+                  ))}
+              </CommandGroup>
+            </CommandList>
           </Command>
         </div>
         <div className="flex gap-5 max-h-[30px] md:max-h-12">
