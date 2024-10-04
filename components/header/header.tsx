@@ -21,7 +21,7 @@ const Header = () => {
   const iconClassName = 'size-[20px]  cursor-pointer';
 
   return (
-    <header className="fixed bg-dark z-10 w-full">
+    <header className="fixed bg-dark z-[100] w-full">
       <div className="flex justify-between items-center py-[8px] sm:py-[15px] lg:py-[23px] px-[14px] md:px-[32px] lg:px-[64px] xl:px-[100px]">
         <Link href="/">
           <Image
