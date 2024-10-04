@@ -85,7 +85,7 @@ export const mediaItems: LinkItem[] = [
     icon: <FacebookIcon className="size-[15px] md:size-[20px]" />,
   },
   {
-    href: 'https://www.facebook.com/srkpi/',
+    href: 'https://x.com/sr_kpi',
     icon: <TwitterIcon className="size-[15px] md:size-[20px]" />,
   },
   {
