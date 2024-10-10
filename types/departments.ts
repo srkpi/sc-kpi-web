@@ -9,6 +9,7 @@ export interface Department {
   id: number;
   name: string;
   description: string;
+  category: string;
   shortDescription: string;
   image: string;
   buttonLink: string;
