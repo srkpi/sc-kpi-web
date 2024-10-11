@@ -106,7 +106,7 @@ const ClubsPage = () => {
               <Button
                 variant={selectedCategory === category ? 'outline' : 'default'}
                 key={category}
-                className="h-[48px] hidden md:flex items-center"
+                className="h-[48px] hidden md:flex items-center px-0"
                 onClick={() => setSelectedCategory(category)}
               >
                 {category}
@@ -115,7 +115,7 @@ const ClubsPage = () => {
             <Input
               type="text"
               placeholder="Шукати гурток"
-              className="w-[130px] md:w-[406px] md:h-[48px] h-[30px] ml-0 md:ml-4 order-last md:order-none mr-[35px] md:mr-[95px]"
+              className="w-[130px] md:w-[406px] md:h-[48px] h-[30px] ml-0 order-last md:order-none mr-[35px] md:mr-[95px] md:ml-[370px]"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
             />

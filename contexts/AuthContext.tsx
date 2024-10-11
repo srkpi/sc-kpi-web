@@ -1,10 +1,5 @@
 'use client';
-import React, {
-  createContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import React, { createContext, useLayoutEffect, useState } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
@@ -39,7 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isRefreshingToken, setIsRefreshingToken] = useState<boolean>(false);
   const [refreshError, setRefreshError] = useState<string | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const initAuth = async () => {
       try {
         setIsRefreshingToken(true);
@@ -87,6 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           !isRefreshingToken
         ) {
           originalRequest._retry = true;
+          
           setIsRefreshingToken(true);
           try {
             const access_token = await refreshToken();

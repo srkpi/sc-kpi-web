@@ -1,13 +1,13 @@
-.main-slider .slick-slide {
+.main-page-slider .slick-slide {
   opacity: 0.4;
   transition: opacity 0.3s ease;
 }
 
-.main-slider .slick-current {
+.main-page-slider .slick-current {
   opacity: 1;
 }
 
-.main-slider {
+.main-page-slider {
   height: 100%;
 }
 
@@ -15,8 +15,108 @@
   height: 100%;
 }
 
-.slick-list,
-.slick-track {
+.main-page-slider__item {
+  @apply w-[95px] h-[60px] min-[430px]:w-[215px] min-[430px]:h-[135px] md:w-[285px] md:h-[165px] lg:w-[400px] lg:h-[250px];
+}
+
+.main-page-slider__item:nth-child(1),
+.main-page-slider__item:nth-child(2) {
+  bottom: 0;
+  left: 0;
+  transform: translate(0, 0);
+  border-radius: 0;
+  width: 100%;
   height: 100%;
 }
 
+.main-page-slider__item:nth-child(1) .main-page-slider__slide-bg,
+.main-page-slider__item:nth-child(2) .main-page-slider__slide-bg {
+  opacity: 1;
+}
+.main-page-slider__item .main-page-slider__slide-bg {
+  opacity: 0;
+}
+.main-page-slider__item:nth-child(3),
+.main-page-slider__item:nth-child(4),
+.main-page-slider__item:nth-child(5) {
+  filter: brightness(0.7);
+}
+
+.main-page-slider__item:nth-child(3) {
+  z-index: 11;
+  left: 55%;
+  @apply left-[45%] md:left-[55%];
+}
+
+.main-page-slider__item:nth-child(n + 4) {
+  width: 285px;
+  height: 165px;
+  @apply w-[65px] h-[40px] min-[430px]:w-[160px] min-[430px]:h-[100px] md:w-[165px] md:h-[120px] lg:w-[285px] lg:h-[165px];
+}
+
+.main-page-slider__item:nth-child(4) {
+  z-index: 11;
+  @apply left-[calc(45%+105px)] min-[430px]:left-[calc(45%+230px)] md:left-[calc(55%+300px)] lg:left-[calc(55%+430px)];
+}
+
+.main-page-slider__item:nth-child(5) {
+  z-index: 11;
+  left: calc(55% + 745px);
+  @apply left-[calc(45%+180px)] min-[430px]:left-[calc(45%+345px)] md:left-[calc(55%+480px)] lg:left-[calc(55%+745px)];
+}
+
+.main-page-slider__item:nth-child(n + 6) {
+  left: calc(55% + 1060px);
+  opacity: 0;
+}
+
+.main-page-slider__item:nth-child(2) .main-page-slider__content {
+  @apply hidden md:flex flex-col gap-[3px];
+}
+
+.main-page-slider-content__item:nth-child(2) .main-page-slider__content {
+  @apply flex md:hidden flex-col gap-[3px];
+}
+
+.main-page-slider__content .name {
+  opacity: 0;
+  animation: animate 0.7s ease-in-out 0.5s forwards;
+}
+
+.main-page-slider__content .des {
+  opacity: 0;
+  animation: animate 0.7s ease-in-out 0.65s 1 forwards;
+}
+
+.main-page-slider__content button {
+  opacity: 0;
+  animation: animate 0.7s ease-in-out 0.8s 1 forwards;
+}
+
+@media (min-width: 768px) {
+  .main-page-slider__content .name {
+    animation: animate 1s ease-in-out 0.5s forwards;
+  }
+
+  .main-page-slider__content .des {
+    animation: animate 1s ease-in-out 0.75s 1 forwards;
+  }
+
+  .main-page-slider__content button {
+    animation: animate 1s ease-in-out 1s 1 forwards;
+  }
+}
+
+@keyframes animate {
+  from {
+    opacity: 0;
+    transform: translate(0, 100px);
+    filter: blur(33px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0);
+    filter: blur(0);
+  }
+}

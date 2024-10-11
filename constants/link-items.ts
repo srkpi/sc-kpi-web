@@ -13,4 +13,8 @@ export const linkItems: LinkItem[] = [
     name: 'Гуртки',
     href: '/clubs',
   },
+  {
+    name: 'Заходи',
+    href: '/events',
+  },
 ];

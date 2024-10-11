@@ -27,8 +27,8 @@ export const supportItems: LinkItem[] = [
     icon: <BotIcon className="size-[15px] md:size-[20px]" />,
   },
   {
-    name: 'studradakpi1998@gmail.com',
-    href: 'mailto:studradakpi1998@gmail.com',
+    name: 'sr@kpi.ua',
+    href: 'mailto:sr@kpi.ua',
     icon: <MailIcon className="size-[15px] md:size-[20px]" />,
   },
 ];
@@ -85,7 +85,7 @@ export const mediaItems: LinkItem[] = [
     icon: <FacebookIcon className="size-[15px] md:size-[20px]" />,
   },
   {
-    href: 'https://www.facebook.com/srkpi/',
+    href: 'https://x.com/sr_kpi',
     icon: <TwitterIcon className="size-[15px] md:size-[20px]" />,
   },
   {

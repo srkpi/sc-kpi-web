@@ -22,7 +22,7 @@ import useAuth from '@/hooks/useAuth';
 import { IFacultyData } from '@/types/faculty.interface';
 import { IGroupData } from '@/types/group.interface';
 
-import { RegisterFormData, registerSchema } from './validation';
+import { RegisterFormData, registerSchema } from './_validation';
 
 const RegisterPage = () => {
   const [selectedFaculty, setSelectedFaculty] = useState<IFacultyData>();
@@ -164,7 +164,7 @@ const RegisterPage = () => {
                       setValue={setValue}
                       setSelectedFaculty={setSelectedFaculty}
                       selectedFaculty={selectedFaculty}
-                      register={register}
+                      registerProps={register('faculty')}
                       clearErrors={form.clearErrors}
                     />
                     {errors.faculty && (
@@ -179,7 +179,7 @@ const RegisterPage = () => {
                       selectedFaculty={selectedFaculty}
                       selectedGroup={selectedGroup}
                       setSelectedGroup={setSelectedGroup}
-                      register={register}
+                      registerProps={register('group')}
                       clearErrors={form.clearErrors}
                     />
                     {errors.group && (

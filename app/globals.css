@@ -7,6 +7,7 @@
 @layer base {
   :root {
     --dark: #101820;
+    --gray: #666;
 
     --blue: #374ffa;
     --white: #ecedf8;
@@ -62,6 +63,7 @@
   :root {
     --max-width-container: 1720px;
   }
+  
   ._container {
     max-width: var(--max-width-container);
     box-sizing: content-box;
@@ -75,16 +77,20 @@
     display: none;
   }
   .bg-linear-auth {
-    background: linear-gradient(152deg, #374FFA -39.56%, #101820 58.37%);
+    background: linear-gradient(
+      152deg,
+      var(--blue) -39.56%,
+      var(--dark) 58.37%
+    );
     @apply md:bg-linear-auth-md;
   }
   .bg-linear-auth-md {
     background: linear-gradient(
-            0deg,
-            rgba(16, 24, 32, 0.3) 0%,
-            rgba(16, 24, 32, 0.3) 100%
-    ),
-    linear-gradient(90deg, var(--blue) 0%, var(--dark) 117.83%);
+        0deg,
+        rgba(16, 24, 32, 0.3) 0%,
+        rgba(16, 24, 32, 0.3) 100%
+      ),
+      linear-gradient(90deg, var(--blue) 0%, var(--dark) 117.83%);
   }
   .no-scrollbar {
     -ms-overflow-style: none;
