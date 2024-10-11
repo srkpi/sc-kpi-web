@@ -1,6 +1,5 @@
-// components/clubs/club-card.tsx
-
 import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
 import { Department } from '@/types/departments';
 
@@ -25,12 +24,18 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
         <p className="font-p md:font-m-p mt-2">{description}</p>
         <div className="flex justify-between mt-4 space-x-0 md:space-x-4">
           <Link href={`${buttonLink}`}>
-            <Button variant="default" className="w-[130px] h-[40px] md:w-[180px] md:h-[35px]">
+            <Button
+              variant="default"
+              className="w-[130px] h-[40px] md:w-[180px] md:h-[35px]"
+            >
               Долучитися
             </Button>
           </Link>
           <Link href={`/clubs/${id}`}>
-            <Button variant="outline" className="w-[130px] h-[40px] md:w-[180px] md:h-[35px]">
+            <Button
+              variant="outline"
+              className="w-[130px] h-[40px] md:w-[180px] md:h-[35px]"
+            >
               Дізнатися більше
             </Button>
           </Link>
