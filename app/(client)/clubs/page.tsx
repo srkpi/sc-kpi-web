@@ -29,7 +29,6 @@ const ClubsPage = () => {
     const fetchClubs = async () => {
       try {
         const { data: fetchedClubs } = await api.get<Department[]>(`/clubs`);
-        // const resultArray = fetchedClubs.flatMap(item => Array(5).fill(item));
         setClubs(fetchedClubs);
       } catch (error) {
         toast({
@@ -122,7 +121,7 @@ const ClubsPage = () => {
         />
       </div>
 
-      <div className="flex flex-wrap gap-7">
+      <div className="flex flex-wrap gap-7 mt-[60px]">
         {filteredClubs.slice(0, visibleCount).map(club => (
           <ClubCard key={club.id} club={club} />
         ))}
