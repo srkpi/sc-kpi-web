@@ -244,7 +244,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         </Table>
       </div>
 
-      <CreateModal id={params.id} />
+      <CreateModal id={params.id} variant="department" />
     </div>
   );
 };

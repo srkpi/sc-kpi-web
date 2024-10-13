@@ -12,6 +12,7 @@ interface ClubPageProps {
 
 const ClubPage: FC<ClubPageProps> = async ({ params }) => {
   const { data: club } = await api.get<Department>(`/clubs/${params.id}`);
+  console.log(club);
   return <ClubOrDepartmentPage clubOrDepartment={club} />;
 };
 

@@ -99,8 +99,8 @@ const SliderProjects = ({ projects }: { projects: DepartmentProject[] }) => {
           {...generalSettingsSlider}
           {...settingsForSlider2}
         >
-          {projects.map((project: DepartmentProject, index: number) => (
-            <React.Fragment key={index}>
+          {projects.map((project: DepartmentProject) => (
+            <React.Fragment key={project.id}>
               <DepartmentCardPicture project={project} />
             </React.Fragment>
           ))}

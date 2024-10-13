@@ -119,7 +119,7 @@ const CreateClubPage: FC = () => {
         </div>
         <div className="flex gap-[24px] font-medium">
           <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-            <h2 className="text-h2 mb-[19px]">Назва гуртка</h2>
+            <h2 className="text-h2 mb-[19px]">Назва студ. об'єднання</h2>
             <Textarea
               className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
               placeholder="Тут має бути назва"
@@ -168,8 +168,8 @@ const CreateClubPage: FC = () => {
             <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
               <h2 className="text-h2 mb-[10px]">
                 {previewImage
-                  ? 'Завантажте нову картинку гуртка'
-                  : 'Завантажте сюди картинку гуртка'}
+                  ? "Завантажте нову картинку студ. об'єднання"
+                  : "Завантажте сюди картинку студ. об'єднання"}
               </h2>
               <p className="text-p mb-[20px] text-center font-light">
                 Розмір та формат картинки, яка найкраще підійде для
@@ -187,10 +187,10 @@ const CreateClubPage: FC = () => {
         </div>
 
         <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-          <h2 className="text-h2 font-medium">Опис гуртка</h2>
+          <h2 className="text-h2 font-medium">Опис студ. об'єднання</h2>
           <Textarea
             className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-            placeholder="Введіть опис гуртка тут..."
+            placeholder="Введіть опис студ. об'єднання тут..."
             name="description"
             value={jsonData.description}
             onChange={handleInputChange}

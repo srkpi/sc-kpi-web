@@ -10,11 +10,11 @@ export const linkItems: LinkItem[] = [
     href: '/schedule-importer',
   },
   {
+    name: "Cтудентські об'єднання",
+    href: '/clubs',
+  },
+  {
     name: 'Заходи',
     href: '/events',
   },
-  // {
-  //   name: 'Гуртки',
-  //   href: '/clubs',
-  // },
 ];

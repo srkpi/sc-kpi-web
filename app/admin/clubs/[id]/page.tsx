@@ -10,6 +10,13 @@ import EditModal from '@/components/admin/edit-project-modal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Table,
   TableBody,
   TableCell,
@@ -19,6 +26,7 @@ import {
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
+import CLUB_CATEGORIES from '@/constants/club-categories';
 import { api } from '@/lib/api';
 import { Department, DepartmentProject } from '@/types/departments';
 
@@ -29,6 +37,9 @@ interface EditClubPageProps {
 }
 
 const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
+    undefined,
+  );
   const [projects, setProjects] = useState<DepartmentProject[]>([]);
   const [club, setClub] = useState<Department | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -45,11 +56,12 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
         const response = await api.get(`/clubs/${params.id}`);
         setClub(response.data);
         setProjects(response.data.projects || []);
+        setSelectedCategory(response.data.category || 'all');
       } catch (error) {
         if (error instanceof AxiosError) {
           toast({
             variant: 'destructive',
-            title: 'Не вдалося отримати дані гуртка',
+            title: `Не вдалося отримати дані студ. об'єднання`,
             description: error.message,
           });
         }
@@ -58,6 +70,12 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
 
     fetchProjects();
   }, [params.id, toast]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      setUpdatedClub(prev => ({ ...prev, category: selectedCategory }));
+    }
+  }, [selectedCategory]);
 
   const handleDelete = async (projectId: number) => {
     try {
@@ -111,7 +129,7 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
       }
 
       toast({
-        title: 'Гурток успішно оновлений',
+        title: `Студ. об'єднання успішно оновлено`,
       });
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -144,10 +162,10 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
 
       <div className="flex gap-[24px] font-medium">
         <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-          <h2 className="text-h2 mb-[19px]">Назва гуртка</h2>
+          <h2 className="text-h2 mb-[19px]">Назва Студ. об'єднання</h2>
           <Textarea
             className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-            placeholder="Назва гуртка"
+            placeholder="Назва студ. об'єднання"
             defaultValue={club?.name || ''}
             onChange={e => handleChange('name', e.target.value)}
           />
@@ -188,8 +206,8 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
           <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
             <h2 className="text-h2 mb-[10px] text-center">
               {previewImage
-                ? 'Завантажте сюди картинку гуртка'
-                : 'Ви можете змінити зображення гуртка'}
+                ? "Завантажте сюди картинку студ. об'єднання"
+                : "Ви можете змінити зображення студ. об'єднання"}
             </h2>
             <p className="text-p mb-[20px] text-center font-light">
               Розмір та формат картинки, яка найкраще підійде для завантаження:
@@ -205,14 +223,34 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
           </label>
         </div>
       </div>
-      <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-        <h2 className="text-h2 font-medium">Опис гуртка</h2>
-        <Textarea
-          className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-          placeholder="Введіть опис гуртка тут..."
-          defaultValue={club?.description || ''}
-          onChange={e => handleChange('description', e.target.value)}
-        />
+      <div className="flex justify-between w-full">
+        <div className="flex flex-col items-start w-[1044px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
+          <h2 className="text-h2 font-medium">Опис студ. об'єднання</h2>
+          <Textarea
+            className="w-[996px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
+            placeholder="Введіть опис студ. об'єднання тут..."
+            defaultValue={club?.description || ''}
+            onChange={e => handleChange('description', e.target.value)}
+          />
+        </div>
+        <Select
+          onValueChange={value => setSelectedCategory(value)}
+          value={selectedCategory}
+        >
+          <SelectTrigger className="w-[193px] h-[40px] mt-6">
+            <SelectValue placeholder="Категорія студ. об'єднання" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all" className="md:hidden bg-white">
+              Всі категорії
+            </SelectItem>
+            {CLUB_CATEGORIES.map(category => (
+              <SelectItem key={category} value={category}>
+                {category}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       <div className="mt-[47px] mb-[45px]">
         <h2 className="text-h2 font-semibold">Проєкти</h2>
@@ -247,7 +285,7 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
         </Table>
       </div>
 
-      <CreateModal id={params.id} />
+      <CreateModal id={params.id} variant="club" />
     </div>
   );
 };
