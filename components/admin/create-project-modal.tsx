@@ -18,14 +18,14 @@ import { useToast } from '../ui/toast/use-toast';
 
 interface CreateProjectModalProps {
   id: string;
+  variant: 'department' | 'club';
 }
 
-const CreateProjectModal: FC<CreateProjectModalProps> = ({ id }) => {
+const CreateProjectModal: FC<CreateProjectModalProps> = ({ id, variant }) => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [inputKey, setInputKey] = useState<number>(0);
   const [jsonData, setJsonData] = useState({
-    departmentId: Number(id),
     name: '',
     description: '',
   });
@@ -62,10 +62,22 @@ const CreateProjectModal: FC<CreateProjectModalProps> = ({ id }) => {
     if (file) {
       formData.append('image', file);
     }
-    formData.append('json', JSON.stringify(jsonData));
+
+    // Conditionally add departmentId or clubId to jsonData based on variant
+    const updatedJsonData = {
+      ...jsonData,
+      ...(variant === 'department'
+        ? { departmentId: Number(id) }
+        : { clubId: Number(id) }),
+    };
+
+    formData.append('json', JSON.stringify(updatedJsonData));
+
+    const endpoint =
+      variant === 'department' ? '/departments/projects' : '/clubs/projects';
 
     try {
-      await api.post('/departments/projects', formData, {
+      await api.post(endpoint, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -131,7 +143,9 @@ const CreateProjectModal: FC<CreateProjectModalProps> = ({ id }) => {
               </div>
             )}
             <div
-              className={`flex flex-col items-center justify-center ${previewImage ? 'w-[624px]' : 'w-[1048px]'} bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer`}
+              className={`flex flex-col items-center justify-center ${
+                previewImage ? 'w-[624px]' : 'w-[1048px]'
+              } bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer`}
             >
               <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
                 <h2 className="text-h2 mb-[10px]">

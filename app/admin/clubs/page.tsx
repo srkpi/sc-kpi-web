@@ -32,7 +32,7 @@ export default function AdminClubs() {
       } catch (error) {
         toast({
           variant: 'destructive',
-          title: 'Не вдалося отримати гуртки',
+          title: "Не вдалося отримати студ. об'єднання",
         });
       }
     };
@@ -45,7 +45,7 @@ export default function AdminClubs() {
       await api.delete(`/clubs/${id}`);
 
       toast({
-        title: `Гурток успішно видалений`,
+        title: `Студ. об'єднання успішно видалено`,
       });
 
       const response = await api.get<Department[]>('/clubs');
@@ -54,7 +54,7 @@ export default function AdminClubs() {
       if (error instanceof AxiosError) {
         toast({
           variant: 'destructive',
-          title: `Стался помилка при видаленні гуртка`,
+          title: `Стался помилка при видаленні студ. об'єднання`,
           description: error.message,
         });
       }
@@ -73,7 +73,9 @@ export default function AdminClubs() {
 
   return (
     <div className="content">
-      <h1 className="text-h1 font-semibold mb-[54px]">Гуртки</h1>
+      <h1 className="text-h1 font-semibold mb-[54px]">
+        Cтудентські об'єднання
+      </h1>
       <div className="relative w-[1272px]">
         <Input
           className="w-full text-p pl-16 h-[72px] mb-[78px]"
@@ -120,7 +122,7 @@ export default function AdminClubs() {
       <Link href="/admin/clubs/create">
         <Button className="bg-white h-[58px] gap-3 hover:bg-white text-blue mt-[24px] mb-[20px]">
           <Plus color="#374FFA" size={26}></Plus>
-          Додати гурток
+          Додати студ. об'єднання
         </Button>
       </Link>
     </div>

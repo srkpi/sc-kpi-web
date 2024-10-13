@@ -33,7 +33,7 @@ const ClubsPage = () => {
       } catch (error) {
         toast({
           variant: 'destructive',
-          title: 'Не вдалося отримати гуртки',
+          title: "Не вдалося отримати студ. об'єднання",
         });
       }
     };
@@ -67,10 +67,12 @@ const ClubsPage = () => {
     setVisibleCount(prevCount => prevCount + 8);
   };
 
+  console.log(filteredClubs);
+
   return (
     <div className="_container py-8">
       <h1 className="font-h1 mb-[25px] md:mb-[50px] text-m-h1 md:text-h1">
-        Гуртки
+        Cтудентські об'єднання
       </h1>
       <div className="w-full justify-between gap-3 flex lg:hidden">
         <Select onValueChange={value => setSelectedCategory(value)}>
@@ -90,7 +92,7 @@ const ClubsPage = () => {
         </Select>
         <Input
           type="text"
-          placeholder="Шукати гурток"
+          placeholder="Шукати об'єднання"
           className="w-[130px] md:min-h-[48px] md:rounded-[6px] md:w-[406px] min-h-[30px]"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
@@ -101,7 +103,7 @@ const ClubsPage = () => {
           {CLUB_CATEGORIES.map(category => (
             <Button
               key={category}
-              className={`h-[50px] hidden lg:flex md:px-4 items-center md:rounded-[6px] md:opacity-${selectedCategory === category ? '100' : '70'} `}
+              className={`h-[50px] hidden lg:flex md:px-4 items-center md:rounded-[6px] opacity-100 bg-${selectedCategory === category ? 'blue' : 'greyBlue'} `}
               onClick={() =>
                 setSelectedCategory(
                   selectedCategory === category ? 'all' : category,
@@ -114,7 +116,7 @@ const ClubsPage = () => {
         </div>
         <Input
           type="text"
-          placeholder="Шукати гурток"
+          placeholder="Шукати об'єднання"
           className="w-[130px] md:min-h-[48px] md:rounded-[6px] md:w-[406px] h-[30px]"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}

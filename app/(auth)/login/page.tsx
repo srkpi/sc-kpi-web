@@ -68,7 +68,8 @@ const LoginPage = () => {
           </h2>
           <p className="mb-5 md:mb-10 text-m-p md:text-p">
             Приєднуйтесь до сайту студради! Тут ви зможете переглянути та
-            імпортувати розклад, перглянути гуртки та опис до них
+            імпортувати розклад, переглянути студентські об'єднання та опис до
+            них
           </p>
           <Link className="self-stretch" href="/register">
             <Button className="min-w-[200px] max-w-[580px] w-full bg-dark border-dark py-2 md:py-4">
