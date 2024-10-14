@@ -11,6 +11,7 @@ interface DepartmentMoblieCardProps {
   next: () => void;
   prev: () => void;
   index: number;
+  isArrowsShown: boolean;
 }
 
 const DepartmentMoblieCard = ({
@@ -18,14 +19,21 @@ const DepartmentMoblieCard = ({
   next,
   prev,
   index,
+  isArrowsShown,
 }: DepartmentMoblieCardProps) => {
   return (
     <div className="flex md:hidden flex-col gap-5 sm:gap-8 items-center max-w-[500px] mx-auto">
-      <div className="flex gap-1 w-full justify-between items-center">
-        <ArrowLeft onClick={prev} />
-        <h2 className="font-h3 text-m-h1 sm:text-[24px]">{project.name}</h2>
-        <ArrowRight onClick={next} />
-      </div>
+      {isArrowsShown ? (
+        <div className="flex gap-1 w-full justify-between items-center">
+          <ArrowLeft onClick={prev} />
+          <h2 className="font-h3 text-m-h1 sm:text-[24px]">{project.name}</h2>
+          <ArrowRight onClick={next} />
+        </div>
+      ) : (
+        <div className="flex gap-1 w-full justify-center items-center">
+          <h2 className="font-h3 text-m-h1 sm:text-[24px]">{project.name}</h2>
+        </div>
+      )}
       <div className="max-h-[420px] aspect-[36/21] overflow-hidden w-[100%] rounded-[20px]">
         <Image
           className="object-cover w-full h-full"
