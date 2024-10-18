@@ -2,16 +2,16 @@ import { LinkItem } from '@/types/link-item';
 
 export const linkItems: LinkItem[] = [
   {
-    name: 'Головна',
-    href: '/',
-  },
-  {
     name: 'Розклад',
     href: '/schedule-importer',
   },
   {
-    name: "Cтудентські об'єднання",
+    name: "Cтуд. об'єднання",
     href: '/clubs',
+  },
+  {
+    name: 'FAQ',
+    href: '/faq',
   },
   {
     name: 'Заходи',
