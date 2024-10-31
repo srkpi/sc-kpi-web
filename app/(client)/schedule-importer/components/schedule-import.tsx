@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { isAxiosError } from 'axios';
 import { useSearchParams } from 'next/navigation';
 
@@ -17,13 +17,47 @@ interface ScheduleImportProps {
 const ScheduleImport: FC<ScheduleImportProps> = ({ events }) => {
   const searchParams = useSearchParams();
   const { toast } = useToast();
+  const [isImporting, setIsImporting] = useState(false);
   const handleImportSchedule = async () => {
     try {
-      const { data } = await api.get<ScheduleAuthResponse>('/schedule/auth');
-      const { authUrl } = data;
-      window.location.href = authUrl;
-      localStorage.setItem('schedule', JSON.stringify(events));
       localStorage.setItem('params', JSON.stringify(searchParams.toString()));
+
+      const groupName = searchParams.get('name');
+      const courseIdentifier = sessionStorage.getItem('course');
+      if (!groupName || !courseIdentifier) {
+        toast({
+          variant: 'destructive',
+          title: 'Виберіть групу та курс',
+        });
+        return;
+      }
+      if (events) {
+        try {
+          const { data } =
+            await api.get<ScheduleAuthResponse>('/schedule/auth');
+          const { authUrl } = data;
+          window.location.href = authUrl;
+          setIsImporting(true);
+          await api.post('/schedule/create', {
+            groupName,
+            courseIdentifier,
+            scheduleFirstWeek: events.scheduleFirstWeek,
+            scheduleSecondWeek: events.scheduleSecondWeek,
+          });
+          localStorage.removeItem('schedule');
+          setIsImporting(false);
+          toast({
+            title: 'Розклад успішно імпортовано',
+          });
+        } catch (error) {
+          if (isAxiosError(error)) {
+            toast({
+              variant: 'destructive',
+              title: 'Помилка створення розкладу',
+            });
+          }
+        }
+      }
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
@@ -41,8 +75,8 @@ const ScheduleImport: FC<ScheduleImportProps> = ({ events }) => {
         Натисніть на кнопку "Імпортувати розклад". Надайте застосунку необхідні
         дозволи. Насолоджуйтесь розкладом у Google Calendar.
       </p>
-      <Button size="sm" onClick={handleImportSchedule}>
-        Імпортувати розклад
+      <Button size="sm" disabled={isImporting} onClick={handleImportSchedule}>
+        {isImporting ? 'Імпортується...' : 'Імпортувати розклад'}
       </Button>
     </div>
   );
