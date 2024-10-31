@@ -1,6 +1,5 @@
 'use client';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { isAxiosError } from 'axios';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
@@ -13,8 +12,6 @@ import {
 } from '@/app/(client)/schedule-importer/constants';
 import { EventsData, WeekType } from '@/app/(client)/schedule-importer/types';
 import createEventsTable from '@/app/(client)/schedule-importer/utils/createEventsTable';
-import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { Event } from '@/types/event';
 
 interface ScheduleTableProps {
@@ -22,14 +19,9 @@ interface ScheduleTableProps {
 }
 
 const ScheduleTable: FC<ScheduleTableProps> = ({ eventsData }) => {
-  const { toast } = useToast();
   const searchParams = useSearchParams();
 
-  const storedEvents =
-    typeof window !== 'undefined' ? localStorage.getItem('schedule') : null;
-  const [events, setEvents] = useState<EventsData>(
-    storedEvents ? JSON.parse(storedEvents) : eventsData,
-  );
+  const [events, setEvents] = useState<EventsData>(eventsData);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
 
   const thRefs = useRef<(HTMLTableCellElement | null)[]>([]);
@@ -43,39 +35,7 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsData }) => {
   const table = createEventsTable(scheduleWeek);
 
   useEffect(() => {
-    const createSchedule = async () => {
-      const groupName = searchParams.get('name');
-      const courseIdentifier = sessionStorage.getItem('course');
-      if (storedEvents && groupName && courseIdentifier) {
-        try {
-          setEvents(JSON.parse(storedEvents));
-          await api.post('/schedule/create', {
-            groupName,
-            courseIdentifier,
-            scheduleFirstWeek: events.scheduleFirstWeek,
-            scheduleSecondWeek: events.scheduleSecondWeek,
-          });
-          localStorage.removeItem('schedule');
-          toast({
-            title: 'Розклад успішно імпортовано',
-          });
-        } catch (error) {
-          if (isAxiosError(error)) {
-            toast({
-              variant: 'destructive',
-              title: 'Помилка створення розкладу',
-            });
-          }
-        }
-      }
-    };
-    createSchedule();
-  }, []);
-
-  useEffect(() => {
-    if (!storedEvents) {
-      setEvents(eventsData);
-    }
+    setEvents(eventsData);
   }, [groupName]);
 
   const handleDelete = (eventToDelete: Event) => {
