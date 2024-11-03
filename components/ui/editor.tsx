@@ -19,7 +19,7 @@ const EditorComponent: FC<EditorComponentProps> = ({
         skin: 'oxide-dark',
         content_css: 'dark',
         plugins:
-          'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+          'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
         toolbar:
           'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
