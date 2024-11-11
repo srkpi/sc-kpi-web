@@ -32,6 +32,7 @@ interface GroupsDropdownProps {
 const GroupsDropdown: FC<GroupsDropdownProps> = memo(
   ({ week, groups, group, setGroup }) => {
     const [open, setOpen] = React.useState(false);
+    const [searchTerm, setSearchTerm] = React.useState('');
     const router = useRouter();
 
     const handleChooseGroup = (curGroup: string) => {
@@ -42,6 +43,10 @@ const GroupsDropdown: FC<GroupsDropdownProps> = memo(
         `/schedule-importer?id=${selectedGroup?.id}&name=${selectedGroup?.name}&week=${week || 'first'}`,
       );
     };
+
+    const filteredGroups = groups.filter(curGroup =>
+      curGroup.name.toLowerCase().startsWith(searchTerm.toLowerCase()),
+    );
 
     return (
       <Popover open={open} onOpenChange={setOpen}>
@@ -59,14 +64,18 @@ const GroupsDropdown: FC<GroupsDropdownProps> = memo(
         </PopoverTrigger>
         <PopoverContent
           style={{ WebkitOverflowScrolling: 'unset', scrollbarWidth: 'none' }}
-          className="h-[180px] p-0 border-none rounded-[10px] w-[140px] md:w-[180px]"
+          className="max-h-[180px] p-0 border-none rounded-[10px] w-[140px] md:w-[180px]"
         >
-          <Command className="">
-            <CommandInput placeholder="Пошук" />
+          <Command>
+            <CommandInput
+              placeholder="Пошук"
+              value={searchTerm}
+              onValueChange={setSearchTerm}
+            />
             <CommandEmpty>Групу не знайдено</CommandEmpty>
             <CommandList className="mt-[5px] bg-dark border-white border-[1px] no-scrollbar rounded-b-[10px]">
               <CommandGroup>
-                {groups.map(curGroup => (
+                {filteredGroups.map(curGroup => (
                   <CommandItem
                     key={curGroup.id}
                     value={curGroup.name}
