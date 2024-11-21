@@ -5,6 +5,7 @@ import { AxiosError } from 'axios';
 import dynamic from 'next/dynamic';
 import useSWR from 'swr';
 
+import EditCategoryModal from '@/components/admin/edit-category-modal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -33,7 +34,7 @@ interface EditDepartmentPageProps {
 
 const EditFaqPage: FC<EditDepartmentPageProps> = ({ params }) => {
   const { toast } = useToast();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedFaq, setUpdatedFaq] = useState<Partial<FAQType>>({});
 
   const { data: categories } = useSWR<Category[]>(
@@ -115,6 +116,13 @@ const EditFaqPage: FC<EditDepartmentPageProps> = ({ params }) => {
             </SelectGroup>
           </SelectContent>
         </Select>
+        <Button
+          variant="default"
+          className="w-[188px] h-[39px] "
+          onClick={() => setIsModalOpen(true)}
+        >
+          Змінити категорії
+        </Button>
       </div>
       <p className="mt-[57px] mb-[30px]">Відповідь</p>
       <div className="mt-3">
@@ -131,6 +139,11 @@ const EditFaqPage: FC<EditDepartmentPageProps> = ({ params }) => {
       >
         Зберегти зміни
       </Button>
+      <EditCategoryModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialCategories={categories || []}
+      />
     </div>
   );
 };
