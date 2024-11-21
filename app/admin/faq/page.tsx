@@ -98,7 +98,7 @@ export default function AdminFaq() {
             <TableRow key={faq.id}>
               <TableCell className="w-fit">
                 <Button className="md:h-[35px] md:px-[24px] md:w-full whitespace-normal">
-                  {faq.category.name}
+                  {faq.category ? faq.category.name : 'No Category'}
                 </Button>
               </TableCell>
               <TableCell>{faq.question}</TableCell>
