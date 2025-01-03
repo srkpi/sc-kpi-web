@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description,
     type: 'website',
     images: '',
-    url: 'https://sckpi.vercel.app/',
+    url: 'https://sc.kpi.ua',
   },
 };
 
