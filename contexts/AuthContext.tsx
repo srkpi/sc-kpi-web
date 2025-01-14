@@ -23,7 +23,7 @@ const AuthContext = createContext<
       logout: () => Promise<ReponseAuthType>;
       loggedIn: boolean;
       refresh: () => Promise<ReponseAuthType>;
-      isAdmin: () => boolean;
+      isAdmin: () => { value: boolean | undefined; loading: boolean };
     }
   | undefined
 >(undefined);
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [isRefreshingToken, setIsRefreshingToken] = useState<boolean>(false);
   const [refreshError, setRefreshError] = useState<string | null>(null);
-
+  const [isCompletedInit, setIsCompletedInit] = useState<boolean>(false);
   useLayoutEffect(() => {
     const initAuth = async () => {
       try {
@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setToken(null);
         setRefreshError(errorHandler(error));
       } finally {
+        setIsCompletedInit(true);
         setIsRefreshingToken(false);
       }
     };
@@ -154,11 +155,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const isAdmin = () => {
     try {
-      if (!token) return false;
-      const decoded = jwtDecode<DecodedTokenType>(token);
-      return decoded.role.toLowerCase() === Role.ADMIN;
+      if (token) {
+        const decoded = jwtDecode<DecodedTokenType>(token);
+        return {
+          value: decoded.role.toLowerCase() === Role.ADMIN,
+          loading: false,
+        };
+      } else if (isCompletedInit) {
+        return {
+          value: false,
+          loading: false,
+        };
+      }
+      return { value: undefined, loading: true };
     } catch (error) {
-      return false;
+      return { value: false, loading: false };
     }
   };
 
