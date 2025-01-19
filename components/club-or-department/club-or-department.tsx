@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import SliderProjects from '@/components/sliders/SliderProjects';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,7 @@ interface ClubOrDepartmentProps {
 const ClubOrDepartmentPage: FC<ClubOrDepartmentProps> = ({
   clubOrDepartment,
 }) => {
-  const { name, description, image, projects } = clubOrDepartment;
+  const { name, description, image, projects, buttonLink } = clubOrDepartment;
   return (
     <div className="flex flex-col items-center justify-center pt-[25px] sm:pt-[50px] w-full overflow-x-hidden">
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-3 rounded-[20px] bg-gray w-fit h-full p-0 lg:p-[25px] 2xl:p-[50px] mx-[14px] md:mx-[32px] lg:mx-[64px] xl:mx-[200px] backdrop-blur-[10px]">
@@ -23,9 +24,12 @@ const ClubOrDepartmentPage: FC<ClubOrDepartmentProps> = ({
             </h1>
             <p className="text-m-p lg:text-p mt-[21.5px]">{description}</p>
           </div>
-          <Button className="w-full lg:w-[300px] mt-[14.5px]" size="sm">
-            Вступити
-          </Button>
+          <Link href={buttonLink}>
+            <Button className="w-full lg:w-[300px] mt-[14.5px]" size="sm">
+              Вступити
+            </Button>
+          </Link>
+
         </div>
         <Image
           className="w-full h-auto rounded-[20px] aspect-video object-cover order-first lg:order-last"
