@@ -29,7 +29,6 @@ const ClubOrDepartmentPage: FC<ClubOrDepartmentProps> = ({
               Вступити
             </Button>
           </Link>
-
         </div>
         <Image
           className="w-full h-auto rounded-[20px] aspect-video object-cover order-first lg:order-last"

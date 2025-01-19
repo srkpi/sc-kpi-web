@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           !isRefreshingToken
         ) {
           originalRequest._retry = true;
-          
+
           setIsRefreshingToken(true);
           try {
             const access_token = await refreshToken();

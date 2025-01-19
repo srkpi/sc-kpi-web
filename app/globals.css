@@ -63,7 +63,7 @@
   :root {
     --max-width-container: 1720px;
   }
-  
+
   ._container {
     max-width: var(--max-width-container);
     box-sizing: content-box;

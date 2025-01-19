@@ -23,14 +23,15 @@
 </details>
 
 ## About the project
+
 This application serves frontend for the KPI Student Council Website.
 
 ### Built with
 
-* [Next.js](https://nextjs.org)
-* [Shadcn UI](https://ui.shadcn.com)
-* [Tailwind](https://tailwindcss.com)
-* [EsLint](https://eslint.org)
+- [Next.js](https://nextjs.org)
+- [Shadcn UI](https://ui.shadcn.com)
+- [Tailwind](https://tailwindcss.com)
+- [EsLint](https://eslint.org)
 
 ## Getting started
 
@@ -50,6 +51,7 @@ To get a local copy up and running follow these steps.
 ## Usage
 
 To start the application locally:
+
 ```sh
 npm run dev
 ```
@@ -63,8 +65,7 @@ See the [open issues](https://github.com/srkpi/sc-kpi-web/issues) for a list of 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
+
 Head of IT service - [https://t.me/Archangel_inf](Michael)
 
 Feedback - [https://t.me/suggestSRbot](SuggestSRbot)
-
-
