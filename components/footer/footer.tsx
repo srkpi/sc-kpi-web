@@ -11,6 +11,7 @@ import {
 import { linkItems } from '@/constants/link-items';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
   return (
     <footer className="p-[14px] md:p-[32px] lg:p-[64px] xl:p-[100px]">
       <div className="flex gap-2 align-top justify-between flex-wrap">
@@ -42,7 +43,9 @@ const Footer = () => {
       </div>
       <div className="flex gap-[9px] items-center mt-[10px]">
         <CopyrightIcon className="size-[15px] md:size-[20px]" />
-        <p className="font-p text-m-p md:text-p">2024 Студентська рада КПІ</p>
+        <p className="font-p text-m-p md:text-p">
+          {currentYear} Студентська рада КПІ
+        </p>
       </div>
     </footer>
   );
