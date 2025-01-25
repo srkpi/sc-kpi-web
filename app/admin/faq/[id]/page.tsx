@@ -26,16 +26,17 @@ const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
   ssr: false,
 });
 
-interface EditDepartmentPageProps {
-  params: {
+interface EditFaqPageProps {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-const EditFaqPage: FC<EditDepartmentPageProps> = ({ params }) => {
+const EditFaqPage: FC<EditFaqPageProps> = async ({ params }) => {
   const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedFaq, setUpdatedFaq] = useState<Partial<FAQType>>({});
+  const resolvedParams = await params;
 
   const { data: categories } = useSWR<Category[]>(
     '/faq/categories',
@@ -44,16 +45,20 @@ const EditFaqPage: FC<EditDepartmentPageProps> = ({ params }) => {
       revalidateOnFocus: false,
     },
   );
-  const { data: faq } = useSWR<FAQType>(`/faq/${params.id}`, axiosFetcher, {
-    revalidateOnFocus: false,
-    onError: error => {
-      toast({
-        variant: 'destructive',
-        title: 'Не вдалося отримати питання',
-        description: error.message,
-      });
+  const { data: faq } = useSWR<FAQType>(
+    `/faq/${resolvedParams.id}`,
+    axiosFetcher,
+    {
+      revalidateOnFocus: false,
+      onError: error => {
+        toast({
+          variant: 'destructive',
+          title: 'Не вдалося отримати питання',
+          description: error.message,
+        });
+      },
     },
-  });
+  );
 
   const handleChange = (field: keyof FAQType, value: string | number) => {
     setUpdatedFaq(prev => ({ ...prev, [field]: value }));

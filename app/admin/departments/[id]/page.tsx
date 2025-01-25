@@ -23,12 +23,12 @@ import { api } from '@/lib/api';
 import { Department, DepartmentProject } from '@/types/departments';
 
 interface EditDepartmentPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
+const EditDepartmentPage: FC<EditDepartmentPageProps> = async ({ params }) => {
   const [projects, setProjects] = useState<DepartmentProject[]>([]);
   const [department, setDepartment] = useState<Department | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -38,13 +38,13 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
   >({});
 
   const imageRef = useRef<HTMLImageElement>(null);
-
+  const resolvedParams = await params;
   const { toast } = useToast();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await api.get(`/departments/${params.id}`);
+        const response = await api.get(`/departments/${resolvedParams.id}`);
         setDepartment(response.data);
         setProjects(response.data.projects || []);
       } catch (error) {
@@ -59,7 +59,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
     };
 
     fetchProjects();
-  }, [params.id]);
+  }, [resolvedParams.id]);
 
   const handleDelete = async (projectId: number) => {
     try {
@@ -105,7 +105,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
       if (file) {
         formData.append('image', file);
 
-        await api.patch(`/departments/image/${params.id}`, formData, {
+        await api.patch(`/departments/image/${resolvedParams.id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -244,7 +244,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ params }) => {
         </Table>
       </div>
 
-      <CreateModal id={params.id} variant="department" />
+      <CreateModal id={resolvedParams.id} variant="department" />
     </div>
   );
 };

@@ -24,6 +24,15 @@ const ResetPassword = () => {
   });
   const onSubmit = async (data: ResetPasswordFormData) => {
     const validToken = token instanceof Array ? token[0] : token;
+
+    if (!validToken) {
+      setError('confirmPassword', {
+        type: 'manual',
+        message: 'Invalid token. Please try again.',
+      });
+      return;
+    }
+
     const { error, success } = await resetPassword({
       newPassword: data.password,
       token: validToken,

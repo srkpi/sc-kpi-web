@@ -11,20 +11,21 @@ import { campusApi } from '@/lib/api';
 export default async function ScheduleImporter({
   searchParams,
 }: {
-  searchParams: { id: string; name: string; week: WeekType };
+  searchParams: Promise<{ id: string; name: string; week: WeekType }>;
 }) {
   let eventsData: EventsData | null = null;
   const { data: groups } =
     await campusApi.get<GroupsResponse>('/schedule/groups');
 
-  const isGroupSelected = searchParams.id && searchParams.name;
+  const resolvedSearchParams = await searchParams;
+  const isGroupSelected = resolvedSearchParams.id && resolvedSearchParams.name;
   if (isGroupSelected) {
     const { data: eventsResponse } = await campusApi.get<EventsResponse>(
       '/schedule/lessons',
       {
         params: {
-          groupName: searchParams.name,
-          groupId: searchParams.id,
+          groupName: resolvedSearchParams.name,
+          groupId: resolvedSearchParams.id,
         },
       },
     );

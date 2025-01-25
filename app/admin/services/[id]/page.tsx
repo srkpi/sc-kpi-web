@@ -13,25 +13,25 @@ import { api } from '@/lib/api';
 import { Service } from '@/types/service';
 
 interface EditServicePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-const EditServicePage: FC<EditServicePageProps> = ({ params }) => {
+const EditServicePage: FC<EditServicePageProps> = async ({ params }) => {
   const [service, setService] = useState<Service | undefined>();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [updatedService, setUpdatedService] = useState<Partial<Service>>({});
 
   const imageRef = useRef<HTMLImageElement>(null);
-
+  const resolvedParams = await params;
   const { toast } = useToast();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await api.get(`/services/${params.id}`);
+        const response = await api.get(`/services/${resolvedParams.id}`);
         setService(response.data);
       } catch (error) {
         if (error instanceof AxiosError) {
@@ -45,7 +45,7 @@ const EditServicePage: FC<EditServicePageProps> = ({ params }) => {
     };
 
     fetchProjects();
-  }, [params.id, toast]);
+  }, [resolvedParams.id, toast]);
 
   const handleChange = (field: keyof Service, value: string) => {
     setUpdatedService(prev => ({ ...prev, [field]: value }));
@@ -72,7 +72,7 @@ const EditServicePage: FC<EditServicePageProps> = ({ params }) => {
       if (file) {
         formData.append('image', file);
 
-        await api.patch(`/services/image/${params.id}`, formData, {
+        await api.patch(`/services/image/${resolvedParams.id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

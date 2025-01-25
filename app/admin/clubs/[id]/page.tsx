@@ -31,12 +31,12 @@ import { api } from '@/lib/api';
 import { Department, DepartmentProject } from '@/types/departments';
 
 interface EditClubPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
+const EditClubPage: FC<EditClubPageProps> = async ({ params }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(
     undefined,
   );
@@ -47,13 +47,13 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
   const [updatedClub, setUpdatedClub] = useState<Partial<Department>>({});
 
   const imageRef = useRef<HTMLImageElement>(null);
-
+  const resolvedParams = await params;
   const { toast } = useToast();
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await api.get(`/clubs/${params.id}`);
+        const response = await api.get(`/clubs/${resolvedParams.id}`);
         setClub(response.data);
         setProjects(response.data.projects || []);
         setSelectedCategory(response.data.category || 'all');
@@ -69,7 +69,7 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
     };
 
     fetchProjects();
-  }, [params.id, toast]);
+  }, [resolvedParams.id, toast]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -121,7 +121,7 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
       if (file) {
         formData.append('image', file);
 
-        await api.patch(`/clubs/image/${params.id}`, formData, {
+        await api.patch(`/clubs/image/${resolvedParams.id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -285,7 +285,7 @@ const EditClubPage: FC<EditClubPageProps> = ({ params }) => {
         </Table>
       </div>
 
-      <CreateModal id={params.id} variant="club" />
+      <CreateModal id={resolvedParams.id} variant="club" />
     </div>
   );
 };

@@ -5,13 +5,16 @@ import { api } from '@/lib/api';
 import { Department } from '@/types/departments';
 
 interface ClubPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const ClubPage: FC<ClubPageProps> = async ({ params }) => {
-  const { data: club } = await api.get<Department>(`/clubs/${params.id}`);
+  const resolvedParams = await params;
+  const { data: club } = await api.get<Department>(
+    `/clubs/${resolvedParams.id}`,
+  );
   console.log(club);
   return <ClubOrDepartmentPage clubOrDepartment={club} />;
 };
