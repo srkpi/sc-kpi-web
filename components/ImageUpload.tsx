@@ -4,22 +4,40 @@ import { ArrowDownToLine } from 'lucide-react';
 import Image from 'next/image';
 
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/toast/use-toast';
+
+const FILE_MAX_SIZE = 25 * 1024 * 1024; //25Mb
 
 interface Props {
-  photoSrc: string;
   onFileUpload: (file: File) => void;
+  photoSrc?: string;
 }
 
-const ImageUpload = ({ photoSrc, onFileUpload }: Props) => {
+const ImageUpload = ({ photoSrc = '', onFileUpload }: Props) => {
   const imageRef = useRef<HTMLImageElement>(null);
   const [previewImage, setImagePreview] = useState(photoSrc);
 
+  const { toast } = useToast();
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      onFileUpload(file);
-      setImagePreview(URL.createObjectURL(file));
+    if (!file) {
+      toast({
+        variant: 'destructive',
+        title: 'Картинку не обрано',
+      });
+      return;
     }
+    if (file.size > FILE_MAX_SIZE) {
+      toast({
+        variant: 'destructive',
+        title: 'Розмір файлу перевищує 25MB',
+      });
+      return;
+    }
+
+    onFileUpload(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
   return (

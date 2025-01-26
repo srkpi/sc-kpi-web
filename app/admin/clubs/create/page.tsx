@@ -1,199 +1,171 @@
 'use client';
 
 import React, { FC, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
-import { ArrowDownToLine } from 'lucide-react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import * as z from 'zod';
 
+import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
 
 const CreateClubPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [jsonData, setJsonData] = useState({
-    name: '',
-    shortDescription: '',
-    buttonLink: '',
-    description: '',
-  });
+
   const router = useRouter();
 
   const { toast } = useToast();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreviewImage(URL.createObjectURL(selectedFile));
-    }
-  };
+  const FormSchema = z.object({
+    name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
+    shortDescription: z
+      .string()
+      .min(1, { message: 'Стислий опис обов’язковий' }),
+    description: z.string().min(1, { message: 'Опис обов’язковий' }),
+    buttonLink: z
+      .string()
+      .trim()
+      .url('Посилання має бути валідним URL')
+      .min(1, { message: 'Посилання на вступ є обов’язковим' }),
+    category: z.string().trim(),
+  });
+  type FormData = z.infer<typeof FormSchema>;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setJsonData({
-      ...jsonData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: '',
+      description: '',
+      shortDescription: '',
+      buttonLink: '',
+      category: '',
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!file) {
-      toast({
-        variant: 'destructive',
-        title: 'Картинку не обрано',
-      });
-      return;
-    }
-    if (
-      !jsonData.name ||
-      !jsonData.shortDescription ||
-      !jsonData.buttonLink ||
-      !jsonData.description
-    ) {
-      toast({
-        variant: 'destructive',
-        title: 'Заповніть всі поля',
-      });
-      return;
-    }
-    if (file.size > 25 * 1024 * 1024) {
-      toast({
-        variant: 'destructive',
-        title: 'Розмір файлу перевищує 25MB',
-      });
-    }
-    const urlPattern =
-      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
-    if (jsonData.buttonLink && !urlPattern.test(jsonData.buttonLink)) {
-      toast({
-        variant: 'destructive',
-        title: 'Посилання має бути валідним URL',
-      });
-      return;
-    }
+  const handleFormSubmit = async (data: FormData) => {
     const formData = new FormData();
-    formData.append('image', file);
-    formData.append('json', JSON.stringify(jsonData));
-
+    if (file) {
+      formData.append('image', file);
+      formData.append('json', JSON.stringify(data));
+    }
     try {
-      const response = await api.post('/clubs', formData);
-      router.push(`/admin/clubs/${response.data.id}`);
+      await api.post('/clubs', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      router.push(`/admin/clubs`);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
           variant: 'destructive',
           title: 'Сталася помилка',
-          description: error.response?.data.message,
-        });
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Сталася невідома помилка',
         });
       }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <div className="flex justify-between items-center mb-[57px]">
-          <h1 className="text-h1 font-semibold">Додавання</h1>
-          <Button
-            variant="default"
-            className="w-[120px] h-[55px]"
-            type="submit"
-          >
-            Додати
-          </Button>
-        </div>
-        <div className="flex gap-[24px] font-medium">
-          <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-            <h2 className="text-h2 mb-[19px]">Назва студ. об'єднання</h2>
-            <Textarea
-              className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-              placeholder="Тут має бути назва"
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+        <div>
+          <div className="flex justify-between items-center mb-[57px]">
+            <h1 className="text-h1 font-semibold">Додавання</h1>
+            <Button
+              variant="default"
+              className="w-[120px] h-[55px]"
+              type="submit"
+            >
+              Додати
+            </Button>
+          </div>
+          <div className="flex gap-[24px] font-medium">
+            <FormField
+              control={form.control}
               name="name"
-              value={jsonData.name}
-              onChange={handleInputChange}
+              render={({ field }) => (
+                <FormItem className="my-6 grid w-full items-center gap-2">
+                  <FormLabel htmlFor="name">Назва</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="h-[120px] placeholder-top"
+                      placeholder="Тут має бути назва"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-            <h2 className="text-h2 mb-[19px]">Стислий опис</h2>
-            <Textarea
-              className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-              placeholder="Тут має бути стислий опис"
+            <FormField
+              control={form.control}
               name="shortDescription"
-              value={jsonData.shortDescription}
-              onChange={handleInputChange}
+              render={({ field }) => (
+                <FormItem className="my-6 grid w-full items-center gap-2">
+                  <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="h-[120px]"
+                      placeholder="Введіть стислий опис"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-            <h2 className="text-h2 mb-[19px]">Посилання на вступ</h2>
-            <Textarea
-              className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-              placeholder="Тут має бути посилання на вступ"
+            <FormField
+              control={form.control}
               name="buttonLink"
-              value={jsonData.buttonLink}
-              onChange={handleInputChange}
+              render={({ field }) => (
+                <FormItem className="my-6 w-full items-center gap-2">
+                  <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="h-[120px]"
+                      placeholder="Посилання на вступ"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
-        </div>
-        <div className="flex gap-[24px] mt-[24px]">
-          {previewImage && (
-            <div className="w-[624px]">
-              <Image
-                width={624}
-                height={264}
-                src={previewImage}
-                quality={100}
-                alt="Department Image"
-                className="rounded-[18px]"
-              />
-            </div>
-          )}
-          <div
-            className={`flex flex-col items-center justify-center ${previewImage ? 'w-[624px]' : 'w-full'} bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer`}
-          >
-            <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-              <h2 className="text-h2 mb-[10px]">
-                {previewImage
-                  ? "Завантажте нову картинку студ. об'єднання"
-                  : "Завантажте сюди картинку студ. об'єднання"}
-              </h2>
-              <p className="text-p mb-[20px] text-center font-light">
-                Розмір та формат картинки, яка найкраще підійде для
-                завантаження: 25MB, JPG, PNG, JPEG.
-              </p>
-              <ArrowDownToLine size={67} color="white" />
-              <Input
-                className="absolute inset-0 opacity-0 cursor-pointer"
-                type="file"
-                accept="image/jpeg, image/png"
-                onChange={handleFileChange}
-              />
-            </label>
-          </div>
-        </div>
+          <ImageUpload onFileUpload={setFile} />
 
-        <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-          <h2 className="text-h2 font-medium">Опис студ. об'єднання</h2>
-          <Textarea
-            className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-            placeholder="Введіть опис студ. об'єднання тут..."
+          <FormField
+            control={form.control}
             name="description"
-            value={jsonData.description}
-            onChange={handleInputChange}
+            render={({ field }) => (
+              <FormItem className="my-6 grid w-full items-center gap-2">
+                <FormLabel htmlFor="description">Опис СО</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="h-[120px]"
+                    placeholder="Введіть опис СО"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
-      </div>
-    </form>
+      </form>
+    </Form>
   );
 };
 

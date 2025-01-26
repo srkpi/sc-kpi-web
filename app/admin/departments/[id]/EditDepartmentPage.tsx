@@ -1,13 +1,11 @@
 'use client';
-import { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 import { AxiosError } from 'axios';
-import { ArrowDownToLine } from 'lucide-react';
-import Image from 'next/image';
 
 import CreateModal from '@/components/admin/create-project-modal';
 import EditModal from '@/components/admin/edit-project-modal';
+import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -28,12 +26,9 @@ interface EditDepartmentPageProps {
 const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
   const [projects, setProjects] = useState(department.projects);
   const [file, setFile] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [updatedDepartment, setUpdatedDepartment] = useState<
     Partial<Department>
   >({});
-
-  const imageRef = useRef<HTMLImageElement>(null);
 
   const { toast } = useToast();
 
@@ -58,14 +53,6 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
 
   const handleChange = (field: keyof Department, value: string) => {
     setUpdatedDepartment(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFile(file);
-      setPreviewImage(URL.createObjectURL(file));
-    }
   };
 
   const handleSave = async () => {
@@ -141,39 +128,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
         </div>
       </div>
 
-      <div className="flex gap-[24px] mt-[24px]">
-        {(previewImage || department?.image) && (
-          <Image
-            width={624}
-            height={264}
-            quality={100}
-            src={previewImage || (department?.image as string)}
-            alt="Department Image"
-            className="rounded-[18px]"
-            ref={imageRef}
-          />
-        )}
-        <div className="flex flex-col items-center justify-center w-[624px] bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer">
-          <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-            <h2 className="text-h2 mb-[10px] text-center">
-              {previewImage
-                ? 'Завантажте сюди картинку департаменту'
-                : 'Ви можете змінити зображення департаменту'}
-            </h2>
-            <p className="text-p mb-[20px] text-center font-light">
-              Розмір та формат картинки, яка найкраще підійде для завантаження:
-              25MB, JPG, PNG, JPEG.
-            </p>
-            <ArrowDownToLine size={67} color="white" />
-            <Input
-              className="absolute inset-0 opacity-0 cursor-pointer"
-              type="file"
-              accept="image/jpeg, image/png"
-              onChange={handleFileChange}
-            />
-          </label>
-        </div>
-      </div>
+      <ImageUpload photoSrc={department.image} onFileUpload={setFile} />
       <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
         <h2 className="text-h2 font-medium">Опис департаменту</h2>
         <Textarea
