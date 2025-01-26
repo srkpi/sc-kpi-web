@@ -17,7 +17,7 @@ import { api } from '@/lib/api';
 import { useToast } from '../ui/toast/use-toast';
 
 interface CreateProjectModalProps {
-  id: string;
+  id: number;
   variant: 'department' | 'club';
 }
 
@@ -77,11 +77,7 @@ const CreateProjectModal: FC<CreateProjectModalProps> = ({ id, variant }) => {
       variant === 'department' ? '/departments/projects' : '/clubs/projects';
 
     try {
-      await api.post(endpoint, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      await api.post(endpoint, formData);
 
       toast({
         title: 'Проєкт успішно створений',

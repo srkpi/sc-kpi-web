@@ -61,11 +61,7 @@ const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
       if (file) {
         formData.append('image', file);
 
-        await api.patch(`/departments/projects/image/${project.id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        await api.patch(`/departments/projects/image/${project.id}`, formData);
       }
 
       toast({

@@ -62,6 +62,7 @@ const CreateServicePage: FC = () => {
         title: 'Розмір файлу перевищує 25MB',
       });
     }
+
     const urlPattern =
       /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/;
     if (jsonData.buttonLink && !urlPattern.test(jsonData.buttonLink)) {
@@ -76,11 +77,7 @@ const CreateServicePage: FC = () => {
     formData.append('json', JSON.stringify(jsonData));
 
     try {
-      const response = await api.post('/services', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await api.post('/services', formData);
       router.push(`/admin/services/${response.data.id}`);
     } catch (error) {
       if (error instanceof AxiosError) {

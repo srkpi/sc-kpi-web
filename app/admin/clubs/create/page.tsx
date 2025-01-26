@@ -82,11 +82,7 @@ const CreateClubPage: FC = () => {
     formData.append('json', JSON.stringify(jsonData));
 
     try {
-      const response = await api.post('/clubs', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await api.post('/clubs', formData);
       router.push(`/admin/clubs/${response.data.id}`);
     } catch (error) {
       if (error instanceof AxiosError) {

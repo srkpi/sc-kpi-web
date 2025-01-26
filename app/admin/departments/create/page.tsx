@@ -57,11 +57,7 @@ const CreateDepartmentPage: FC = () => {
     formData.append('json', JSON.stringify(jsonData));
 
     try {
-      const response = await api.post('/departments', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await api.post('/departments', formData);
       router.push(`/admin/departments/${response.data.id}`);
     } catch (error) {
       if (error instanceof AxiosError) {
