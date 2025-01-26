@@ -1,14 +1,12 @@
 'use client';
 
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
-import { ArrowDownToLine } from 'lucide-react';
-import Image from 'next/image';
 
 import CreateModal from '@/components/admin/create-project-modal';
 import EditModal from '@/components/admin/edit-project-modal';
+import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -37,11 +35,10 @@ interface EditClubPageProps {
 const EditClubPage: FC<EditClubPageProps> = ({ club }) => {
   const [selectedCategory, setSelectedCategory] = useState(club.category);
   const [projects, setProjects] = useState<ClubProject[]>(club.projects);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
-  const [updatedClub, setUpdatedClub] = useState<Partial<Club>>({});
 
-  const imageRef = useRef<HTMLImageElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+
+  const [updatedClub, setUpdatedClub] = useState<Partial<Club>>({});
 
   const { toast } = useToast();
 
@@ -74,13 +71,7 @@ const EditClubPage: FC<EditClubPageProps> = ({ club }) => {
     setUpdatedClub(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFile(file);
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
+  console.log(file);
 
   const handleSave = async () => {
     if (!club) return;
@@ -153,40 +144,8 @@ const EditClubPage: FC<EditClubPageProps> = ({ club }) => {
           />
         </div>
       </div>
+      <ImageUpload photoSrc={club.image} onFileUpload={setFile} />
 
-      <div className="flex gap-[24px] mt-[24px]">
-        {(previewImage || club?.image) && (
-          <Image
-            width={624}
-            height={264}
-            quality={100}
-            src={previewImage || (club?.image as string)}
-            alt="Department Image"
-            className="rounded-[18px]"
-            ref={imageRef}
-          />
-        )}
-        <div className="flex flex-col items-center justify-center w-[624px] bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer">
-          <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-            <h2 className="text-h2 mb-[10px] text-center">
-              {previewImage
-                ? "Завантажте сюди картинку студ. об'єднання"
-                : "Ви можете змінити зображення студ. об'єднання"}
-            </h2>
-            <p className="text-p mb-[20px] text-center font-light">
-              Розмір та формат картинки, яка найкраще підійде для завантаження:
-              25MB, JPG, PNG, JPEG.
-            </p>
-            <ArrowDownToLine size={67} color="white" />
-            <Input
-              className="absolute inset-0 opacity-0 cursor-pointer"
-              type="file"
-              accept="image/jpeg, image/png"
-              onChange={handleFileChange}
-            />
-          </label>
-        </div>
-      </div>
       <div className="flex justify-between w-full">
         <div className="flex flex-col items-start w-[1044px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
           <h2 className="text-h2 font-medium">Опис студ. об'єднання</h2>

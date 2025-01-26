@@ -11,9 +11,9 @@ interface EditClubPageProps {
 }
 
 const Page: FC<EditClubPageProps> = async ({ params }) => {
-  const response = await api.get<Club>(`/clubs/${params.id}`);
+  const { data } = await api.get<Club>(`/clubs/${params.id}`);
 
-  return <EditClubPage club={response.data} />;
+  return <EditClubPage club={data} />;
 };
 
 export default Page;

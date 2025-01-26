@@ -35,12 +35,12 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   },
 ];
 
-interface FaqPagerops {
+interface Props {
   categories: Category[];
   faqs: FAQType[];
 }
 
-const FaqContainer: FC<FaqPagerops> = ({ categories, faqs }) => {
+const FaqContainer: FC<Props> = ({ categories, faqs }) => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
 
   const filteredFaqs = useMemo(() => {
@@ -48,6 +48,7 @@ const FaqContainer: FC<FaqPagerops> = ({ categories, faqs }) => {
 
     return faqs?.filter(faq => faq.category.name === selectedCategory);
   }, [faqs, selectedCategory]);
+
   return (
     <div className="_container">
       <Breadcrumbs

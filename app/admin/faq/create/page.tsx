@@ -85,7 +85,7 @@ const CreateFaqPage: FC = () => {
           onValueChange={value => handleChange('categoryId', parseInt(value))}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Категорія питання" />
+            <SelectValue placeholder="Категорія" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
