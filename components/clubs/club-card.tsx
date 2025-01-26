@@ -12,9 +12,11 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
   return (
     <div className="rounded-lg w-[290px] md:w-[400px] h-[555px] shadow-lg flex flex-col justify-center">
       <div className="relative w-full h-[300px] md:h-[338px] bg-muted rounded-lg flex items-center justify-center">
-        <span className="absolute top-2 left-6 font-m-button text-white bg-blue bg-opacity-75 flex items-center justify-center px-3 py-3 md:px-5 md:py-3 rounded text-m-p md:text-p h-[38px] md:h-[48px]">
-          {category.toLocaleLowerCase()}
-        </span>
+        {category && (
+          <span className="absolute top-2 left-6 font-m-button text-white bg-blue bg-opacity-75 flex items-center justify-center px-3 py-3 md:px-5 md:py-3 rounded text-m-p md:text-p h-[38px] md:h-[48px]">
+            {category.toLocaleLowerCase()}
+          </span>
+        )}
         <img
           src={image || '/placeholder.png'}
           alt={name}
