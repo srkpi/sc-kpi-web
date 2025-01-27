@@ -54,19 +54,17 @@ export default function DepartmentsPage({ departments }: Props) {
   );
 
   return (
-    <div className="content">
+    <>
       <h1 className="text-h1 font-semibold mb-[54px]">Департаменти</h1>
-      <div className="relative w-[1272px]">
-        <Input
-          className="w-full text-p pl-16 h-[72px] mb-[78px]"
-          placeholder="Пошук..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-          icon={<Search />}
-          iconPosition="start"
-        />
-      </div>
-      <Table className="w-[1273px]">
+      <Input
+        className="w-full text-p pl-16 h-[72px] mb-[78px]"
+        placeholder="Пошук..."
+        value={searchQuery}
+        onChange={handleSearchChange}
+        icon={<Search />}
+        iconPosition="start"
+      />
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Назва</TableHead>
@@ -105,6 +103,6 @@ export default function DepartmentsPage({ departments }: Props) {
           Додати департамент
         </Button>
       </Link>
-    </div>
+    </>
   );
 }

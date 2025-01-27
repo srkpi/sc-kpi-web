@@ -17,28 +17,31 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
-import { Club } from '@/types/club';
+import { FAQType } from '@/types/faq';
 
 interface Props {
-  clubs: Club[];
+  faqs: FAQType[];
 }
 
-export default function ClubsPage({ clubs }: Props) {
+export default function FaqPage({ faqs }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   const { toast } = useToast();
-  const router = useRouter();
 
   const handleDelete = async (id: number) => {
     try {
-      await api.delete(`/clubs/${id}`);
+      await api.delete(`/faq/${id}`);
 
+      toast({
+        title: `Питання успішно видалено`,
+      });
       router.refresh();
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
           variant: 'destructive',
-          title: `Стался помилка при видаленні студ. об'єднання`,
+          title: `Стался помилка при видаленні питання`,
           description: error.message,
         });
       }
@@ -49,17 +52,15 @@ export default function ClubsPage({ clubs }: Props) {
     setSearchQuery(event.target.value);
   };
 
-  const filteredClubs = clubs.filter(
-    club =>
-      club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      club.shortDescription.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredFaqs = faqs.filter(
+    faq =>
+      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <>
-      <h1 className="text-h1 font-semibold mb-[54px]">
-        Cтудентські об'єднання
-      </h1>
+      <h1 className="text-h1 font-semibold mb-[54px]">FAQ</h1>
       <Input
         className="w-full text-p pl-16 h-[72px] mb-[78px]"
         placeholder="Пошук..."
@@ -71,19 +72,25 @@ export default function ClubsPage({ clubs }: Props) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Назва</TableHead>
-            <TableHead>Короткий опис</TableHead>
+            <TableHead>Категорія</TableHead>
+            <TableHead>Питання</TableHead>
+            <TableHead>Відповідь</TableHead>
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredClubs.map(club => (
-            <TableRow key={club.id}>
-              <TableCell>{club.name}</TableCell>
-              <TableCell>{club.description}</TableCell>
+          {filteredFaqs.map(faq => (
+            <TableRow key={faq.id}>
+              <TableCell className="w-fit">
+                <Button className="md:h-[35px] md:px-[24px] md:w-full whitespace-normal">
+                  {faq.category ? faq.category.name : 'No Category'}
+                </Button>
+              </TableCell>
+              <TableCell>{faq.question}</TableCell>
+              <TableCell>{faq.answer}</TableCell>
               <TableCell>
                 <div className="flex space-x-4">
-                  <Link href={`/admin/clubs/${club.id}`}>
+                  <Link href={`/admin/faq/${faq.id}`}>
                     <Button variant="default" className="w-[110px] h-[35px]">
                       Змінити
                     </Button>
@@ -91,7 +98,7 @@ export default function ClubsPage({ clubs }: Props) {
                   <Button
                     variant="outline"
                     className="w-[110px] h-[35px]"
-                    onClick={() => handleDelete(club.id)}
+                    onClick={() => handleDelete(faq.id)}
                   >
                     Видалити
                   </Button>
@@ -101,10 +108,10 @@ export default function ClubsPage({ clubs }: Props) {
           ))}
         </TableBody>
       </Table>
-      <Link href="/admin/clubs/create">
+      <Link href="/admin/faq/create">
         <Button className="bg-white h-[58px] gap-3 hover:bg-white text-blue mt-[24px] mb-[20px]">
           <Plus color="#374FFA" size={26}></Plus>
-          Додати студ. об'єднання
+          Додати питання
         </Button>
       </Link>
     </>

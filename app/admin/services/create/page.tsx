@@ -60,7 +60,7 @@ const CreateServicePage: FC = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      router.push('/services');
+      router.push('admin/services');
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({

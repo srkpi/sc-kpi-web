@@ -1,8 +1,8 @@
-import { ChangeEvent, FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { AxiosError } from 'axios';
-import { ArrowDownToLine, Plus, X } from 'lucide-react';
-import Image from 'next/image';
+import { Plus } from 'lucide-react';
 
+import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -22,29 +22,13 @@ interface CreateProjectModalProps {
 }
 
 const CreateProjectModal: FC<CreateProjectModalProps> = ({ id, variant }) => {
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [inputKey, setInputKey] = useState<number>(0);
   const [jsonData, setJsonData] = useState({
     name: '',
     description: '',
   });
 
   const { toast } = useToast();
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreviewImage(URL.createObjectURL(selectedFile));
-    }
-  };
-
-  const handleRemoveImage = () => {
-    setPreviewImage(null);
-    setFile(null);
-    setInputKey(prevKey => prevKey + 1);
-  };
 
   const handleInputChange = (
     e:
@@ -63,7 +47,6 @@ const CreateProjectModal: FC<CreateProjectModalProps> = ({ id, variant }) => {
       formData.append('image', file);
     }
 
-    // Conditionally add departmentId or clubId to jsonData based on variant
     const updatedJsonData = {
       ...jsonData,
       ...(variant === 'department'
@@ -77,7 +60,11 @@ const CreateProjectModal: FC<CreateProjectModalProps> = ({ id, variant }) => {
       variant === 'department' ? '/departments/projects' : '/clubs/projects';
 
     try {
-      await api.post(endpoint, formData);
+      await api.post(endpoint, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       toast({
         title: 'Проєкт успішно створений',
@@ -118,52 +105,7 @@ const CreateProjectModal: FC<CreateProjectModalProps> = ({ id, variant }) => {
             value={jsonData.description}
             onChange={handleInputChange}
           />
-          <div className="flex gap-[24px] mt-[24px] h-[311px]">
-            {previewImage && (
-              <div className="relative w-[516px] h-[311px]">
-                <Image
-                  width={516}
-                  height={311}
-                  objectFit="cover"
-                  src={previewImage}
-                  quality={100}
-                  alt="Project Image"
-                  className="rounded-[18px] h-[311px]"
-                />
-                <X
-                  onClick={handleRemoveImage}
-                  size={48}
-                  color="white"
-                  className="absolute top-2 right-2 p-2 cursor-pointer"
-                />
-              </div>
-            )}
-            <div
-              className={`flex flex-col items-center justify-center ${
-                previewImage ? 'w-[624px]' : 'w-[1048px]'
-              } bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer`}
-            >
-              <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-                <h2 className="text-h2 mb-[10px]">
-                  {previewImage
-                    ? 'Ви можете змінити зображення проєкту'
-                    : 'Завантажте сюди картинку проєкту'}
-                </h2>
-                <p className="text-p mb-[20px] text-center font-light">
-                  Розмір та формат картинки, яка найкраще підійде для
-                  завантаження: 25MB, JPG, PNG, JPEG.
-                </p>
-                <ArrowDownToLine size={67} color="white" />
-                <Input
-                  key={inputKey}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
-                  type="file"
-                  accept="image/jpeg, image/png"
-                  onChange={handleFileChange}
-                />
-              </label>
-            </div>
-          </div>
+          <ImageUpload onFileUpload={setFile} />
         </div>
         <DialogFooter>
           <Button className="w-[141px] h-[51px]" onClick={handleSave}>

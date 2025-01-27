@@ -1,11 +1,23 @@
 'use client';
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import * as z from 'zod';
 
 import CreateModal from '@/components/admin/create-project-modal';
 import EditModal from '@/components/admin/edit-project-modal';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -26,9 +38,6 @@ interface EditDepartmentPageProps {
 const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
   const [projects, setProjects] = useState(department.projects);
   const [file, setFile] = useState<File | null>(null);
-  const [updatedDepartment, setUpdatedDepartment] = useState<
-    Partial<Department>
-  >({});
 
   const { toast } = useToast();
 
@@ -51,28 +60,51 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
     }
   };
 
-  const handleChange = (field: keyof Department, value: string) => {
-    setUpdatedDepartment(prev => ({ ...prev, [field]: value }));
-  };
+  const FormSchema = z.object({
+    name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
+    description: z.string().min(1, { message: 'Опис обов’язковий' }),
+    shortDescription: z
+      .string()
+      .min(1, { message: 'Стислий опис обов’язковий' }),
+    buttonLink: z
+      .string()
+      .trim()
+      .url('Посилання має бути валідним URL')
+      .min(1, { message: 'Посилання на вступ є обов’язковим' }),
+  });
 
-  const handleSave = async () => {
-    if (!department) return;
+  type FormData = z.infer<typeof FormSchema>;
 
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: department.name,
+      description: department.description,
+      buttonLink: department.buttonLink,
+      shortDescription: department.shortDescription,
+    },
+  });
+
+  const handleFormSubmit = async (data: FormData) => {
     try {
       await api.patch('/departments', {
         id: department.id,
-        ...updatedDepartment,
+        ...data,
       });
 
       const formData = new FormData();
       if (file) {
         formData.append('image', file);
 
-        await api.patch(`/departments/image/${department.id}`, formData);
+        await api.patch(`/departments/image/${department.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
       }
 
       toast({
-        title: 'Департамент успішно оновлений',
+        title: 'Успішно оновлено',
       });
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -86,61 +118,85 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
   };
 
   return (
-    <div>
-      <div className="flex justify-between mb-[57px]">
-        <h1 className="text-h1 font-semibold">Редагування</h1>
-        <Button
-          variant="default"
-          className="w-[120px] h-[55px]"
-          onClick={handleSave}
-        >
-          Зберегти все
-        </Button>
-      </div>
-
-      <div className="flex gap-[24px] font-medium">
-        <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-          <h2 className="text-h2 mb-[19px]">Назва департаменту</h2>
-          <Textarea
-            className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-            placeholder="Назва департаменту"
-            defaultValue={department?.name || ''}
-            onChange={e => handleChange('name', e.target.value)}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+        <div className="flex justify-between mb-[57px]">
+          <h1 className="text-h1 font-semibold">Редагування</h1>
+          <Button
+            variant="default"
+            className="w-[120px] h-[55px]"
+            type="submit"
+          >
+            Зберегти все
+          </Button>
+        </div>
+        <ImageUpload photoSrc={department.image} onFileUpload={setFile} />
+        <div className="flex gap-[24px] mt-6 items-start">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel htmlFor="name">Назва департаменту</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="buttonLink"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
-        <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-          <h2 className="text-h2 mb-[19px]">Стислий опис</h2>
-          <Textarea
-            className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-            placeholder="Тут має бути стислий опис"
-            defaultValue={department?.shortDescription || ''}
-            onChange={e => handleChange('shortDescription', e.target.value)}
+        <div className="flex gap-[24px]">
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="my-6 grid w-full items-center gap-2">
+                <FormLabel htmlFor="description">Опис департаменту</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="h-[120px]"
+                    placeholder="Введіть опис департаменту"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="shortDescription"
+            render={({ field }) => (
+              <FormItem className="my-6 grid w-full items-center gap-2">
+                <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="h-[120px] placeholder-top"
+                    placeholder="Тут має бути стислий опис"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
-        <div className="w-[408px] h-[216px] border-[1px] border-white rounded-[18px] p-[25px]">
-          <h2 className="text-h2 mb-[19px]">Посилання на вступ</h2>
-          <Textarea
-            className="w-[360px] h-[120px] bg-greyBlue placeholder-top"
-            placeholder="Тут має бути посилання на вступ"
-            defaultValue={department?.buttonLink || ''}
-            onChange={e => handleChange('buttonLink', e.target.value)}
-          />
-        </div>
-      </div>
-
-      <ImageUpload photoSrc={department.image} onFileUpload={setFile} />
-      <div className="flex flex-col items-start w-[1272px] h-[313px] p-[25px] px-[24px] pb-[31px] gap-[20px] border-[1px] border-white rounded-[18px] mt-[24px]">
-        <h2 className="text-h2 font-medium">Опис департаменту</h2>
-        <Textarea
-          className="w-[1224px] h-[209px] p-[18px] bg-greyBlue rounded-[18px] border-none"
-          placeholder="Введіть опис департаменту тут..."
-          defaultValue={department?.description || ''}
-          onChange={e => handleChange('description', e.target.value)}
-        />
-      </div>
-      <div className="mt-[47px] mb-[45px]">
         <h2 className="text-h2 font-semibold">Проєкти</h2>
-        <Table className="w-[1273px]">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead></TableHead>
@@ -169,10 +225,9 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
             ))}
           </TableBody>
         </Table>
-      </div>
-
-      <CreateModal id={department.id} variant="department" />
-    </div>
+        <CreateModal id={department.id} variant="department" />
+      </form>
+    </Form>
   );
 };
 

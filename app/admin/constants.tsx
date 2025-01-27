@@ -15,7 +15,7 @@ export const navbarLinks: Props[] = [
   {
     icon: <PaletteIcon width={28} height={28} />,
     href: '/admin/clubs',
-    title: "Cтудентські об'єднання",
+    title: "Cтуд. об'єднання",
   },
   {
     icon: <PaperclipIcon width={28} height={28} />,

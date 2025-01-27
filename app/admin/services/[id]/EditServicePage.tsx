@@ -3,7 +3,6 @@
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 
 import ImageUpload from '@/components/ImageUpload';
@@ -16,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
@@ -27,7 +27,6 @@ interface EditServicePageProps {
 
 const EditServicePage: FC<EditServicePageProps> = ({ service }) => {
   const [file, setFile] = useState<File | null>(null);
-  const router = useRouter();
   const { toast } = useToast();
 
   const FormSchema = z.object({
@@ -61,9 +60,15 @@ const EditServicePage: FC<EditServicePageProps> = ({ service }) => {
       const formData = new FormData();
       if (file) {
         formData.append('image', file);
-        await api.patch(`/services/image/${service.id}`, formData);
+        await api.patch(`/services/image/${service.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
       }
-      router.push('/services');
+      toast({
+        title: 'Успішно оновлено',
+      });
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -74,8 +79,11 @@ const EditServicePage: FC<EditServicePageProps> = ({ service }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-        <div className="flex justify-between mb-[57px]">
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={form.handleSubmit(handleFormSubmit)}
+      >
+        <div className="flex justify-between">
           <h1 className="text-h1 font-semibold">Редагування</h1>
           <Button
             variant="default"
@@ -85,20 +93,16 @@ const EditServicePage: FC<EditServicePageProps> = ({ service }) => {
             Зберегти все
           </Button>
         </div>
-
-        <div className="flex gap-[24px] font-medium">
+        <ImageUpload photoSrc={service.image} onFileUpload={setFile} />
+        <div className="flex gap-6">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="my-6 grid w-full items-center gap-2">
+              <FormItem className="w-full">
                 <FormLabel htmlFor="name">Назва служби</FormLabel>
                 <FormControl>
-                  <Textarea
-                    className="h-[120px] placeholder-top"
-                    placeholder="Тут має бути назва"
-                    {...field}
-                  />
+                  <Input placeholder="Тут має бути назва" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,14 +112,10 @@ const EditServicePage: FC<EditServicePageProps> = ({ service }) => {
             control={form.control}
             name="buttonLink"
             render={({ field }) => (
-              <FormItem className="my-6 w-full items-center gap-2">
+              <FormItem className="w-full">
                 <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
                 <FormControl>
-                  <Textarea
-                    className="h-[120px]"
-                    placeholder="Посилання на вступ"
-                    {...field}
-                  />
+                  <Input placeholder="Посилання на вступ" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,7 +123,6 @@ const EditServicePage: FC<EditServicePageProps> = ({ service }) => {
           />
         </div>
 
-        <ImageUpload photoSrc={service.image} onFileUpload={setFile} />
         <FormField
           control={form.control}
           name="description"

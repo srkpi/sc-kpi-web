@@ -1,8 +1,7 @@
-import { ChangeEvent, FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { AxiosError } from 'axios';
-import { ArrowDownToLine } from 'lucide-react';
-import Image from 'next/image';
 
+import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -22,9 +21,6 @@ interface EditProjectModalProps {
 }
 
 const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
-  const [previewImage, setPreviewImage] = useState<string | null>(
-    project.image,
-  );
   const [file, setFile] = useState<File | null>(null);
   const [jsonData, setJsonData] = useState({
     id: Number(project.id),
@@ -33,14 +29,6 @@ const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
   });
 
   const { toast } = useToast();
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreviewImage(URL.createObjectURL(selectedFile));
-    }
-  };
 
   const handleInputChange = (
     e:
@@ -61,7 +49,11 @@ const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
       if (file) {
         formData.append('image', file);
 
-        await api.patch(`/departments/projects/image/${project.id}`, formData);
+        await api.patch(`/departments/projects/image/${project.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
       }
 
       toast({
@@ -102,43 +94,7 @@ const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
             value={jsonData.description}
             onChange={handleInputChange}
           />
-          <div className="flex gap-[24px] mt-[24px] h-[311px]">
-            {previewImage && (
-              <div className="relative w-[516px] h-[311px]">
-                <Image
-                  width={516}
-                  height={311}
-                  quality={100}
-                  objectFit="cover"
-                  src={previewImage}
-                  alt="Project Image"
-                  className="rounded-[18px] h-[311px]"
-                />
-              </div>
-            )}
-            <div
-              className={`flex flex-col items-center justify-center ${previewImage ? 'w-[624px]' : 'w-[1048px]'} bg-greyBlue border-[1px] border-white rounded-[18px] p-[50px] relative cursor-pointer`}
-            >
-              <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-                <h2 className="text-h2 mb-[10px]">
-                  {previewImage
-                    ? 'Ви можете змінити зображення проєкту'
-                    : 'Завантажте сюди картинку проєкту'}
-                </h2>
-                <p className="text-p mb-[20px] text-center font-light">
-                  Розмір та формат картинки, яка найкраще підійде для
-                  завантаження: 25MB, JPG, PNG, JPEG.
-                </p>
-                <ArrowDownToLine size={67} color="white" />
-                <Input
-                  className="absolute inset-0 opacity-0 cursor-pointer"
-                  type="file"
-                  accept="image/jpeg, image/png"
-                  onChange={handleFileChange}
-                />
-              </label>
-            </div>
-          </div>
+          <ImageUpload photoSrc={project.image} onFileUpload={setFile} />
         </div>
         <DialogFooter>
           <Button className="w-[141px] h-[51px]" onClick={handleSave}>
