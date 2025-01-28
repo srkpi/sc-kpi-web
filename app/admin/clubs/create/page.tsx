@@ -17,8 +17,17 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
+import CLUB_CATEGORIES from '@/constants/club-categories';
 import { api } from '@/lib/api';
 
 const CreateClubPage: FC = () => {
@@ -79,83 +88,104 @@ const CreateClubPage: FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-        <div>
-          <div className="flex justify-between items-center mb-[57px]">
-            <h1 className="text-h1 font-semibold">Додавання</h1>
-            <Button
-              variant="default"
-              className="w-[120px] h-[55px]"
-              type="submit"
-            >
-              Додати
-            </Button>
-          </div>
-          <div className="flex gap-[24px] font-medium">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="my-6 grid w-full items-center gap-2">
-                  <FormLabel htmlFor="name">Назва</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px] placeholder-top"
-                      placeholder="Тут має бути назва"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="shortDescription"
-              render={({ field }) => (
-                <FormItem className="my-6 grid w-full items-center gap-2">
-                  <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px]"
-                      placeholder="Введіть стислий опис"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="buttonLink"
-              render={({ field }) => (
-                <FormItem className="my-6 w-full items-center gap-2">
-                  <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px]"
-                      placeholder="Посилання на вступ"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <ImageUpload onFileUpload={setFile} />
-
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={form.handleSubmit(handleFormSubmit)}
+      >
+        <div className="flex justify-between items-center ">
+          <h1 className="text-h1 font-semibold">Додавання</h1>
+          <Button
+            variant="default"
+            className="w-[120px] h-[55px]"
+            disabled={form.formState.isSubmitting}
+            type="submit"
+          >
+            Додати
+          </Button>
+        </div>
+        <ImageUpload onFileUpload={setFile} />
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Категорія" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="all" className="md:hidden bg-white">
+                    Всі категорії
+                  </SelectItem>
+                  {CLUB_CATEGORIES.map(category => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="flex gap-6">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel htmlFor="name">Назва</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="buttonLink"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex gap-6">
           <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
-              <FormItem className="my-6 grid w-full items-center gap-2">
+              <FormItem className="w-full">
                 <FormLabel htmlFor="description">Опис СО</FormLabel>
                 <FormControl>
                   <Textarea
                     className="h-[120px]"
                     placeholder="Введіть опис СО"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="shortDescription"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
+                <FormControl>
+                  <Textarea
+                    className="h-[120px]"
+                    placeholder="Введіть стислий опис"
                     {...field}
                   />
                 </FormControl>

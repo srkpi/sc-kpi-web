@@ -56,9 +56,9 @@ const ClubsPage = ({ clubs }: Props) => {
       <h1 className="font-h1 mb-[25px] md:mb-[50px] text-m-h1 md:text-h1">
         Cтудентські об'єднання
       </h1>
-      <div className="w-full justify-between gap-3 flex lg:hidden">
+      <div className="w-full justify-between flex-row-reverse gap-3 h-[30px] md:h-[48px] flex lg:hidden">
         <Select onValueChange={value => setSelectedCategory(value)}>
-          <SelectTrigger className="w-[130px] h-[30px] md:h-[48px] lg:hidden">
+          <SelectTrigger className="w-[130px] lg:hidden">
             <SelectValue placeholder="Категорії" />
           </SelectTrigger>
           <SelectContent>
@@ -75,7 +75,7 @@ const ClubsPage = ({ clubs }: Props) => {
         <Input
           type="text"
           placeholder="Шукати об'єднання"
-          className="w-[130px] md:min-h-[48px] md:rounded-[6px] md:w-[406px] min-h-[30px]"
+          className=" md:rounded-[6px] md:w-[406px] "
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
@@ -105,7 +105,7 @@ const ClubsPage = ({ clubs }: Props) => {
         />
       </div>
 
-      <div className="flex flex-wrap gap-7 mt-[60px]">
+      <div className="flex flex-wrap justify-center md:justify-start gap-7 mt-[60px]">
         {filteredClubs.slice(0, visibleCount).map(club => (
           <ClubCard key={club.id} club={club} />
         ))}

@@ -130,144 +130,149 @@ export default function EditClubPage({ club }: EditClubPageProps) {
   };
 
   return (
-    <Form {...form}>
-      <form
-        className="flex flex-col gap-6"
-        onSubmit={form.handleSubmit(handleFormSubmit)}
-      >
-        <div className="flex justify-between mb-[57px]">
-          <h1 className="text-h1 font-semibold">Редагування</h1>
-          <Button
-            variant="default"
-            className="w-[120px] h-[55px]"
-            type="submit"
-          >
-            Зберегти все
-          </Button>
-        </div>
-        <ImageUpload photoSrc={club.image} onFileUpload={setFile} />
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Категорія" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="all" className="md:hidden bg-white">
-                    Всі категорії
-                  </SelectItem>
-                  {CLUB_CATEGORIES.map(category => (
-                    <SelectItem key={category} value={category}>
-                      {category}
+    <>
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-6"
+          onSubmit={form.handleSubmit(handleFormSubmit)}
+        >
+          <div className="flex justify-between mb-[57px]">
+            <h1 className="text-h1 font-semibold">Редагування</h1>
+            <Button
+              variant="default"
+              className="w-[120px] h-[55px]"
+              type="submit"
+            >
+              Зберегти все
+            </Button>
+          </div>
+          <ImageUpload photoSrc={club.image} onFileUpload={setFile} />
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Категорія" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="all" className="md:hidden bg-white">
+                      Всі категорії
                     </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex gap-6">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel htmlFor="name">Назва</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                    {CLUB_CATEGORIES.map(category => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="buttonLink"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="flex w-full gap-6">
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="my-6 grid w-full items-center gap-2">
-                <FormLabel htmlFor="description">Опис департаменту</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-[120px]"
-                    placeholder="Введіть опис департаменту"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="shortDescription"
-            render={({ field }) => (
-              <FormItem className="my-6 grid w-full items-center gap-2">
-                <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-[120px] placeholder-top"
-                    placeholder="Тут має бути стислий опис"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <h2 className="text-h2 font-semibold">Проєкти</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Назва</TableHead>
-              <TableHead>Опис</TableHead>
-              <TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {club.projects.map(project => (
-              <TableRow key={project.id}>
-                <TableCell>{project.name}</TableCell>
-                <TableCell>{project.description}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-4">
-                    <EditModal project={project} />
-                    <Button
-                      variant="outline"
-                      className="w-[110px] h-[35px]"
-                      onClick={() => handleDelete(project.id)}
-                    >
-                      Видалити
-                    </Button>
-                  </div>
-                </TableCell>
+          <div className="flex gap-6">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel htmlFor="name">Назва</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="buttonLink"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex w-full gap-6">
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="my-6 grid w-full items-center gap-2">
+                  <FormLabel htmlFor="description">Опис департаменту</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="h-[120px]"
+                      placeholder="Введіть опис департаменту"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="shortDescription"
+              render={({ field }) => (
+                <FormItem className="my-6 grid w-full items-center gap-2">
+                  <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="h-[120px] placeholder-top"
+                      placeholder="Тут має бути стислий опис"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <h2 className="text-h2 font-semibold">Проєкти</h2>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Назва</TableHead>
+                <TableHead>Опис</TableHead>
+                <TableHead></TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <CreateModal id={club.id} variant="club" />
-      </form>
-    </Form>
+            </TableHeader>
+            <TableBody>
+              {club.projects.map(project => (
+                <TableRow key={project.id}>
+                  <TableCell>{project.name}</TableCell>
+                  <TableCell>{project.description}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-4">
+                      <EditModal project={project} />
+                      <Button
+                        variant="outline"
+                        className="w-[110px] h-[35px]"
+                        onClick={() => handleDelete(project.id)}
+                      >
+                        Видалити
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </form>
+      </Form>
+      <CreateModal id={club.id} variant="club" />
+    </>
   );
 }

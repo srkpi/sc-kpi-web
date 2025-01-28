@@ -45,10 +45,6 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
     try {
       await api.delete(`/departments/projects/${projectId}`);
       setProjects(projects.filter(project => project.id !== projectId));
-
-      toast({
-        title: 'Проєкт успішно видалений',
-      });
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -118,116 +114,121 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-        <div className="flex justify-between mb-[57px]">
-          <h1 className="text-h1 font-semibold">Редагування</h1>
-          <Button
-            variant="default"
-            className="w-[120px] h-[55px]"
-            type="submit"
-          >
-            Зберегти все
-          </Button>
-        </div>
-        <ImageUpload photoSrc={department.image} onFileUpload={setFile} />
-        <div className="flex gap-[24px] mt-6 items-start">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel htmlFor="name">Назва департаменту</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="buttonLink"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="flex gap-[24px]">
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="my-6 grid w-full items-center gap-2">
-                <FormLabel htmlFor="description">Опис департаменту</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-[120px]"
-                    placeholder="Введіть опис департаменту"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="shortDescription"
-            render={({ field }) => (
-              <FormItem className="my-6 grid w-full items-center gap-2">
-                <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-[120px] placeholder-top"
-                    placeholder="Тут має бути стислий опис"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <h2 className="text-h2 font-semibold">Проєкти</h2>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead></TableHead>
-              <TableHead></TableHead>
-              <TableHead></TableHead>
+    <>
+      <Form {...form}>
+        <form
+          className="flex flex-col gap-6"
+          onSubmit={form.handleSubmit(handleFormSubmit)}
+        >
+          <div className="flex justify-between">
+            <h1 className="text-h1 font-semibold">Редагування</h1>
+            <Button
+              disabled={form.formState.isSubmitting}
+              className="w-[120px] h-[55px]"
+              type="submit"
+            >
+              Зберегти все
+            </Button>
+          </div>
+          <ImageUpload photoSrc={department.image} onFileUpload={setFile} />
+          <div className="flex gap-[24px] mt-6 items-start">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel htmlFor="name">Назва департаменту</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="buttonLink"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex gap-[24px]">
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="my-6 grid w-full items-center gap-2">
+                  <FormLabel htmlFor="description">Опис департаменту</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="h-[120px]"
+                      placeholder="Введіть опис департаменту"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="shortDescription"
+              render={({ field }) => (
+                <FormItem className="my-6 grid w-full items-center gap-2">
+                  <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="h-[120px] placeholder-top"
+                      placeholder="Тут має бути стислий опис"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </form>
+      </Form>
+      <h2 className="text-h2 font-semibold">Проєкти</h2>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Назва</TableHead>
+            <TableHead>Опис</TableHead>
+            <TableHead></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {projects.map(project => (
+            <TableRow key={project.id}>
+              <TableCell>{project.name}</TableCell>
+              <TableCell>{project.description}</TableCell>
+              <TableCell>
+                <div className="flex space-x-4">
+                  <EditModal project={project} />
+                  <Button
+                    variant="outline"
+                    className="w-[110px] h-[35px]"
+                    onClick={() => handleDelete(project.id)}
+                  >
+                    Видалити
+                  </Button>
+                </div>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {projects.map(project => (
-              <TableRow key={project.id}>
-                <TableCell>{project.name}</TableCell>
-                <TableCell>{project.description}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-4">
-                    <EditModal project={project} />
-                    <Button
-                      variant="outline"
-                      className="w-[110px] h-[35px]"
-                      onClick={() => handleDelete(project.id)}
-                    >
-                      Видалити
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <CreateModal id={department.id} variant="department" />
-      </form>
-    </Form>
+          ))}
+        </TableBody>
+      </Table>
+      <CreateModal id={department.id} variant="department" />
+    </>
   );
 };
 

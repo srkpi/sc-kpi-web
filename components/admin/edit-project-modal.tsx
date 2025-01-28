@@ -1,8 +1,18 @@
 import React, { FC, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import * as z from 'zod';
 
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { api } from '@/lib/api';
@@ -21,29 +31,28 @@ interface EditProjectModalProps {
 }
 
 const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
+  const { toast } = useToast();
   const [file, setFile] = useState<File | null>(null);
-  const [jsonData, setJsonData] = useState({
-    id: Number(project.id),
-    name: project.name,
-    description: project.description,
+
+  const FormSchema = z.object({
+    name: z.string().min(1, { message: 'Поле обов`язкове' }),
+    description: z.string().min(1, { message: 'Поле обов`язкове' }),
   });
 
-  const { toast } = useToast();
+  type FormData = z.infer<typeof FormSchema>;
 
-  const handleInputChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setJsonData({
-      ...jsonData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: project.name,
+      description: project.description,
+    },
+  });
 
-  const handleSave = async () => {
+  const handleFormSubmit = async (data: FormData) => {
     try {
-      await api.patch('/departments/projects', jsonData);
+      const dataWithId = { ...data, id: project.id };
+      await api.patch('/departments/projects', dataWithId);
 
       const formData = new FormData();
       if (file) {
@@ -76,31 +85,49 @@ const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
         <Button className="w-[110px] h-[35px]">Змінити</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[1300px] bg-dark border-0 justify-center items-center">
-        <div className="flex flex-col gap-[45px] mt-[70px]">
-          <Input
-            type="text"
-            name="name"
-            placeholder="Назва проєкту"
-            className="p-3 w-[516px] h-[46px] border-0 border-b rounded-none"
-            defaultValue={project.name}
-            value={jsonData.name}
-            onChange={handleInputChange}
-          />
-          <Textarea
-            name="description"
-            placeholder="Опис проєкту"
-            className="flex w-full h-[80px] p-[8px_12px] items-start gap-[10px] flex-shrink-0 border rounded-[6px]"
-            defaultValue={project.description}
-            value={jsonData.description}
-            onChange={handleInputChange}
-          />
-          <ImageUpload photoSrc={project.image} onFileUpload={setFile} />
-        </div>
-        <DialogFooter>
-          <Button className="w-[141px] h-[51px]" onClick={handleSave}>
-            Зберегти
-          </Button>
-        </DialogFooter>
+        <Form {...form}>
+          <form
+            className="flex flex-col gap-8"
+            onSubmit={form.handleSubmit(handleFormSubmit)}
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="name">Назва проєкту</FormLabel>
+                  <Input
+                    {...field}
+                    name="name"
+                    className="p-3 w-[516px] h-[46px] border-0 border-b rounded-none"
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="description">Опис проєкту</FormLabel>
+                  <Textarea {...field} />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <ImageUpload onFileUpload={setFile} />
+            <DialogFooter>
+              <Button
+                className="w-[141px] h-[51px]"
+                disabled={form.formState.isSubmitting}
+                type="submit"
+              >
+                Зберегти зміни
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
