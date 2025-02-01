@@ -8,7 +8,7 @@ interface ClubCardProps {
 }
 
 const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
-  const { id, name, category, description, image, buttonLink } = club;
+  const { id, name, category, shortDescription, image, buttonLink } = club;
   return (
     <div className="rounded-lg w-[290px] md:w-[400px] h-[555px] shadow-lg flex flex-col justify-center">
       <div className="relative w-full h-[300px] md:h-[338px] bg-muted rounded-lg flex items-center justify-center">
@@ -22,9 +22,9 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
         />
       </div>
       <h2 className="font-m-h1 md:font-h3 mt-4">{name}</h2>
-      <p className="font-p md:font-m-p mt-2 line-clamp-4">{description}</p>
+      <p className="font-p md:font-m-p mt-2 line-clamp-4">{shortDescription}</p>
       <div className="flex justify-between mt-auto space-x-0 md:space-x-4">
-        <Link href={`${buttonLink}`}>
+        <Link href={buttonLink}>
           <Button
             variant="default"
             className="w-[130px] h-[40px] md:h-[50px] md:w-[197px] md:rounded-[6px]"
