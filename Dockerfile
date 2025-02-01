@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 ENV NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production YARN_VERSION=4.3.1
 RUN corepack enable && corepack prepare yarn@${YARN_VERSION}
