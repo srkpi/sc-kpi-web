@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
-import { KeyRound, Layers, User } from 'lucide-react';
+import { KeyRound, Layers, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { BreadcrumbItemType, Breadcrumbs } from '@/components/ui/breadcrumb';
@@ -17,7 +17,7 @@ import { toast } from '@/components/ui/toast/use-toast';
 import useAuth from '@/hooks/useAuth';
 import { api } from '@/lib/api';
 import { useProfileStore } from '@/store/profile-store';
-import { IUser } from '@/types/auth/user.interface';
+import { User } from '@/types/auth/user';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
@@ -26,7 +26,7 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
     label: 'Головна',
   },
   {
-    icon: User,
+    icon: UserIcon,
     href: '/profile',
     label: 'Персональний аккаунт',
   },
@@ -45,7 +45,7 @@ export default function ClientLayout({
 
   const fetchUser = useCallback(async () => {
     try {
-      const { data } = await api.get<IUser>('/user');
+      const { data } = await api.get<User>('/user');
       setUserData(data);
       setErrors(null);
     } catch (error) {
@@ -144,7 +144,7 @@ export default function ClientLayout({
                 onClick={() => setIsProfileMenuActive(false)}
                 href="/profile"
               >
-                <User />
+                <UserIcon />
                 Персональні дані
               </Link>
             </li>

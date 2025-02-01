@@ -19,14 +19,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast/use-toast';
 import useAuth from '@/hooks/useAuth';
-import { IFacultyData } from '@/types/faculty.interface';
-import { IGroupData } from '@/types/group.interface';
+import { Faculty } from '@/types/faculty';
+import { Group } from '@/types/group';
 
 import { RegisterFormData, registerSchema } from './_validation';
 
 const RegisterPage = () => {
-  const [selectedFaculty, setSelectedFaculty] = useState<IFacultyData>();
-  const [selectedGroup, setSelectedGroup] = useState<IGroupData>();
+  const [selectedFaculty, setSelectedFaculty] = useState<Faculty>();
+  const [selectedGroup, setSelectedGroup] = useState<Group>();
   const { register: registerAuth } = useAuth();
   const router = useRouter();
   const { toast } = useToast();

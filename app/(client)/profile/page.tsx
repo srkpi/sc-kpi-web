@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
-import { ChevronLeft, User } from 'lucide-react';
+import { ChevronLeft, User as UserIcon } from 'lucide-react';
 
 import FacultySelect from '@/components/auth/selects/FacultySelect';
 import GroupSelect from '@/components/auth/selects/GroupSelect';
@@ -14,15 +14,15 @@ import { useToast } from '@/components/ui/toast/use-toast';
 import useAuth from '@/hooks/useAuth';
 import { api } from '@/lib/api';
 import { useProfileStore } from '@/store/profile-store';
-import { IUser } from '@/types/auth/user.interface';
-import { IFacultyData } from '@/types/faculty.interface';
-import { IGroupData } from '@/types/group.interface';
+import { User } from '@/types/auth/user';
+import { Faculty } from '@/types/faculty';
+import { Group } from '@/types/group';
 
 import { changeDataSchema, ChangeProfileFormData } from './_validation';
 
 const PersonalData = () => {
-  const [selectedFaculty, setSelectedFaculty] = useState<IFacultyData>();
-  const [selectedGroup, setSelectedGroup] = useState<IGroupData>();
+  const [selectedFaculty, setSelectedFaculty] = useState<Faculty>();
+  const [selectedGroup, setSelectedGroup] = useState<Group>();
   const { userData, setUserData, isProfileMenuActive, setIsProfileMenuActive } =
     useProfileStore(state => state);
   const { toast } = useToast();
@@ -43,11 +43,11 @@ const PersonalData = () => {
     if (!loggedIn) return;
     const fetchUser = async () => {
       try {
-        api.get<IUser>('/user').then(res => {
+        api.get<User>('/user').then(res => {
           setUserData(res.data);
-          setSelectedFaculty({ name: res.data.faculty } as IFacultyData);
+          setSelectedFaculty({ name: res.data.faculty } as Faculty);
           setValue('faculty', res.data.faculty);
-          setSelectedGroup({ name: res.data.group } as IGroupData);
+          setSelectedGroup({ name: res.data.group } as Group);
           setValue('group', res.data.group);
         });
       } catch (error) {
@@ -124,10 +124,10 @@ const PersonalData = () => {
             <ChevronLeft size={24} />
           </button>
           <div className="block sm:hidden mb-1">
-            <User size={21} />
+            <UserIcon size={21} />
           </div>
           <div className="hidden sm:block">
-            <User size={44} />
+            <UserIcon size={44} />
           </div>
           Персональні дані
         </h1>

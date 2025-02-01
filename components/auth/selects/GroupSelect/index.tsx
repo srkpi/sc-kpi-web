@@ -21,8 +21,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { axiosCampusFetcher } from '@/lib/swr/fetcher';
-import { IFacultyData } from '@/types/faculty.interface';
-import { IGroupData, IGroupsResponse } from '@/types/group.interface';
+import { Faculty } from '@/types/faculty';
+import { Group, GroupsResponse } from '@/types/group';
 
 type SetValueTypeProps = (
   name: 'faculty' | 'group',
@@ -38,9 +38,9 @@ type SetValueTypeProps = (
 
 interface GroupSelectProps {
   setValue: SetValueTypeProps;
-  setSelectedGroup: (group: IGroupData) => void;
-  selectedGroup: IGroupData | undefined;
-  selectedFaculty: IFacultyData | undefined;
+  setSelectedGroup: (group: Group) => void;
+  selectedGroup: Group | undefined;
+  selectedFaculty: Faculty | undefined;
   registerProps: UseFormRegisterReturn;
   clearErrors: UseFormClearErrors<RegisterFormData | ChangeProfileFormData>;
   avoidCollisions?: boolean;
@@ -55,7 +55,7 @@ const GroupSelect = ({
   avoidCollisions = false,
 }: GroupSelectProps) => {
   const [open, setOpen] = useState(false);
-  const { data: allGroups } = useSWR<IGroupsResponse>(
+  const { data: allGroups } = useSWR<GroupsResponse>(
     '/schedule/groups',
     axiosCampusFetcher,
     {
@@ -63,7 +63,7 @@ const GroupSelect = ({
     },
   );
 
-  const handleGroupChange = (group: IGroupData) => {
+  const handleGroupChange = (group: Group) => {
     setValue('group', group.name);
     setSelectedGroup(group);
     clearErrors('group');

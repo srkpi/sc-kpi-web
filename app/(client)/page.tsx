@@ -6,7 +6,7 @@ import SliderMainPageDepartments from '@/components/sliders/SliderMainPageDepart
 import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api';
 import { Department } from '@/types/departments';
-import { Service } from '@/types/service.interface';
+import { Service } from '@/types/service';
 
 const documents = [
   {

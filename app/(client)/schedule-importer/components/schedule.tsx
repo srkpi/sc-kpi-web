@@ -8,7 +8,7 @@ import GroupsDropdown from '@/app/(client)/schedule-importer/components/groups-d
 import { WeekType } from '@/app/(client)/schedule-importer/types';
 import { Button } from '@/components/ui/button';
 import { api } from '@/lib/api';
-import { IUser } from '@/types/auth/user.interface';
+import { User } from '@/types/auth/user';
 import { Group } from '@/types/group';
 
 interface ScheduleProps {
@@ -36,7 +36,7 @@ const Schedule: FC<ScheduleProps> = ({ groups }) => {
   useEffect(() => {
     const fetchUserGroup = async () => {
       try {
-        const { data: user } = await api.get<IUser>('/user');
+        const { data: user } = await api.get<User>('/user');
         if (!user.group) {
           return;
         }

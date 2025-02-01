@@ -1,4 +1,4 @@
-export interface IFacultyData {
+export interface Faculty {
   id: number;
   name: string;
   nameShort: string;

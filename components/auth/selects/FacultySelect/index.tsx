@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { axiosCampusFetcher } from '@/lib/swr/fetcher';
-import { IFacultyData } from '@/types/faculty.interface';
+import { Faculty } from '@/types/faculty';
 
 type SetValueTypeProps = (
   name: 'faculty' | 'group',
@@ -36,8 +36,8 @@ type SetValueTypeProps = (
 
 interface FacultySelectProps {
   setValue: SetValueTypeProps;
-  setSelectedFaculty: (faculty: IFacultyData) => void;
-  selectedFaculty: IFacultyData | undefined;
+  setSelectedFaculty: (faculty: Faculty) => void;
+  selectedFaculty: Faculty | undefined;
   registerProps: UseFormRegisterReturn;
   clearErrors: UseFormClearErrors<RegisterFormData | ChangeProfileFormData>;
   avoidCollisions?: boolean;
@@ -51,7 +51,7 @@ const FacultySelect = ({
   avoidCollisions = false,
 }: FacultySelectProps) => {
   const [open, setOpen] = useState(false);
-  const { data: faculties } = useSWR<IFacultyData[]>(
+  const { data: faculties } = useSWR<Faculty[]>(
     '/subdivision/faculty',
     axiosCampusFetcher,
     {
@@ -59,7 +59,7 @@ const FacultySelect = ({
       revalidateOnFocus: false,
     },
   );
-  const handleFacultyChange = (facultyName: IFacultyData) => {
+  const handleFacultyChange = (facultyName: Faculty) => {
     setSelectedFaculty(facultyName);
     setValue('faculty', facultyName.nameShort);
     clearErrors('faculty');

@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Category } from '@/types/category';
-import { FAQType } from '@/types/faq';
+import { FAQ } from '@/types/faq';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
@@ -37,7 +37,7 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
 
 interface Props {
   categories: Category[];
-  faqs: FAQType[];
+  faqs: FAQ[];
 }
 
 const FaqContainer: FC<Props> = ({ categories, faqs }) => {

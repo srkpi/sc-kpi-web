@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 
-import { IUser } from '@/types/auth/user.interface';
+import { User } from '@/types/auth/user';
 
 type ProfileStore = {
-  userData: IUser | null;
-  setUserData: (data: IUser) => void;
+  userData: User | null;
+  setUserData: (data: User) => void;
   isProfileMenuActive: boolean;
   setIsProfileMenuActive: (isActive: boolean) => void;
 };

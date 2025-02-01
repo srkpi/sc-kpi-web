@@ -17,10 +17,10 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
-import { FAQType } from '@/types/faq';
+import { FAQ } from '@/types/faq';
 
 interface Props {
-  faqs: FAQType[];
+  faqs: FAQ[];
 }
 
 export default function FaqPage({ faqs }: Props) {

@@ -18,7 +18,7 @@ import {
 import { useToast } from '@/components/ui/toast/use-toast';
 import { api } from '@/lib/api';
 import { Category } from '@/types/category';
-import { FAQType } from '@/types/faq';
+import { FAQ } from '@/types/faq';
 
 const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
   ssr: false,
@@ -26,15 +26,15 @@ const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
 
 interface EditDepartmentPageProps {
   categories: Category[];
-  faq: FAQType;
+  faq: FAQ;
 }
 
 const EditFaqPage: FC<EditDepartmentPageProps> = ({ categories, faq }) => {
   const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [updatedFaq, setUpdatedFaq] = useState<Partial<FAQType>>({});
+  const [updatedFaq, setUpdatedFaq] = useState<Partial<FAQ>>({});
 
-  const handleChange = (field: keyof FAQType, value: string | number) => {
+  const handleChange = (field: keyof FAQ, value: string | number) => {
     setUpdatedFaq(prev => ({ ...prev, [field]: value }));
   };
 
