@@ -3,10 +3,10 @@ import {
   TIMES,
 } from '@/app/(client)/schedule-importer/constants';
 import { ScheduleWeek } from '@/app/(client)/schedule-importer/types';
-import { Event } from '@/types/event';
+import { ScheduleEvent } from '@/types/schedule-event';
 
 const createEventsTable = (scheduleWeek: ScheduleWeek[]) => {
-  const table: (Event[] | null)[][] = Array(TIMES.length)
+  const table: (ScheduleEvent[] | null)[][] = Array(TIMES.length)
     .fill(null)
     .map(() =>
       Array(DAYS_SHORT_FORM.length)

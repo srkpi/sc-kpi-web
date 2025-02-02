@@ -2,11 +2,11 @@ import { FC } from 'react';
 import { Plus } from 'lucide-react';
 
 import getEventColor from '@/app/(client)/schedule-importer/utils/getEventColor';
-import { Event } from '@/types/event';
+import { ScheduleEvent } from '@/types/schedule-event';
 
 interface ScheduleCardProps {
-  event: Event;
-  onDelete: (event: Event) => void;
+  event: ScheduleEvent;
+  onDelete: (event: ScheduleEvent) => void;
 }
 
 const ScheduleCard: FC<ScheduleCardProps> = ({ event, onDelete }) => {

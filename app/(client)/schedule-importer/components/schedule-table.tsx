@@ -12,7 +12,7 @@ import {
 } from '@/app/(client)/schedule-importer/constants';
 import { EventsData, WeekType } from '@/app/(client)/schedule-importer/types';
 import createEventsTable from '@/app/(client)/schedule-importer/utils/createEventsTable';
-import { Event } from '@/types/event';
+import { ScheduleEvent } from '@/types/schedule-event';
 
 interface ScheduleTableProps {
   eventsData: EventsData;
@@ -38,7 +38,7 @@ const ScheduleTable: FC<ScheduleTableProps> = ({ eventsData }) => {
     setEvents(eventsData);
   }, [groupName]);
 
-  const handleDelete = (eventToDelete: Event) => {
+  const handleDelete = (eventToDelete: ScheduleEvent) => {
     const updatedSchedule = scheduleWeek.map(({ day, pairs }) => ({
       day,
       pairs: pairs.filter(pair => pair !== eventToDelete),

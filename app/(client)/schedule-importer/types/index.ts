@@ -1,5 +1,5 @@
-import { Event } from '@/types/event';
 import { Group } from '@/types/group';
+import { ScheduleEvent } from '@/types/schedule-event';
 
 export type WeekType = 'first' | 'second';
 
@@ -34,7 +34,7 @@ export interface EventsData {
 
 export interface ScheduleWeek {
   day: string;
-  pairs: Event[];
+  pairs: ScheduleEvent[];
 }
 
 export interface ScheduleAuthResponse {

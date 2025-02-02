@@ -1,6 +1,7 @@
 import { FileCheck2, Layers } from 'lucide-react';
 
-import { BreadcrumbItemType, Breadcrumbs } from '@/components/ui/breadcrumb';
+import SubClientLayout from '@/app/(client)/sub-client-layout';
+import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
@@ -17,13 +18,10 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
 
 export default function Privacy() {
   return (
-    <main className="pt-5 md:pt-8 lg:pt-12 p-[14px] sm:p-12 md:p-24">
-      <div className="w-full flex flex-col md:flex-row md:justify-start md:items-center">
-        <Breadcrumbs items={BREADCRUMBS_ITEMS} />
-        <h1 className="md:ml-40 md:block md:text-h1 mt-[30px] md:mt-0 text-m-h1 font-semibold text-center">
-          Політика конфіденційності
-        </h1>
-      </div>
+    <SubClientLayout
+      pageTitle="Політика конфіденційності"
+      breadcrumbs={BREADCRUMBS_ITEMS}
+    >
       <div className="mt-9 md:mt-[80px] ml-0 mr-0 md:ml-[193px] md:mr-[193px] text-left space-y-4">
         <p className="font-regular text-m-p leading-4 sm:text-p sm:leading-5">
           <span className="font-m-p font-semibold md:text-m-h1">
@@ -112,6 +110,6 @@ export default function Privacy() {
           функціонуванню Сайту.
         </p>
       </div>
-    </main>
+    </SubClientLayout>
   );
 }

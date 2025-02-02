@@ -23,13 +23,13 @@ const ClubsPage = ({ clubs }: Props) => {
   const [filteredClubs, setFilteredClubs] = useState<Club[]>([]);
   const [visibleCount, setVisibleCount] = useState(8);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     const filterByCategoryAndSearch = () => {
       let filtered = clubs;
 
-      if (selectedCategory && selectedCategory !== 'all') {
+      if (selectedCategory) {
         filtered = filtered.filter(club =>
           club.category.includes(selectedCategory),
         );
@@ -52,14 +52,21 @@ const ClubsPage = ({ clubs }: Props) => {
   };
 
   return (
-    <div className="_container py-8">
-      <h1 className="font-h1 mb-[25px] md:mb-[50px] text-m-h1 md:text-h1">
-        Cтудентські об'єднання
-      </h1>
-      <div className="w-full justify-between flex-row-reverse gap-3 h-[30px] md:h-[48px] flex lg:hidden">
-        <Select onValueChange={value => setSelectedCategory(value)}>
-          <SelectTrigger className="w-[130px] lg:hidden">
-            <SelectValue placeholder="Категорії" />
+    <>
+      <div className="w-full gap-5 h-[30px] md:h-[48px] flex">
+        <Input
+          placeholder="Пошук"
+          className="w-[400px] h-[30px] md:h-[48px] max-w-full rounded-[6px] md:max-w-[406px]"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+        />
+
+        <Select
+          value={selectedCategory?.toString()}
+          onValueChange={value => setSelectedCategory(value)}
+        >
+          <SelectTrigger className="max-w-[200px] md:max-w-[250px]">
+            <SelectValue placeholder="Категорія" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all" className="md:hidden bg-white">
@@ -72,40 +79,21 @@ const ClubsPage = ({ clubs }: Props) => {
             ))}
           </SelectContent>
         </Select>
-        <Input
-          type="text"
-          placeholder="Шукати об'єднання"
-          className=" md:rounded-[6px] md:w-[406px] "
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-        />
-      </div>
-      <div className="w-full justify-between gap-3 flex-wrap hidden lg:flex">
-        <div className="flex gap-3">
-          {CLUB_CATEGORIES.map(category => (
-            <Button
-              key={category}
-              className={`h-[50px] hidden lg:flex md:px-4 items-center md:rounded-[6px] opacity-100 bg-${selectedCategory === category ? 'blue' : 'greyBlue'} `}
-              onClick={() =>
-                setSelectedCategory(
-                  selectedCategory === category ? 'all' : category,
-                )
-              }
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-        <Input
-          type="text"
-          placeholder="Шукати об'єднання"
-          className="w-[130px] md:min-h-[48px] md:rounded-[6px] md:w-[406px] h-[30px]"
-          value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
-        />
+        {selectedCategory && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={e => {
+              e.stopPropagation();
+              setSelectedCategory('');
+            }}
+          >
+            X
+          </Button>
+        )}
       </div>
 
-      <div className="flex flex-wrap justify-center md:justify-start gap-7 mt-[60px]">
+      <div className="flex flex-wrap justify-center md:justify-start gap-12 md:gap-7 mt-[60px]">
         {filteredClubs.slice(0, visibleCount).map(club => (
           <ClubCard key={club.id} club={club} />
         ))}
@@ -122,7 +110,7 @@ const ClubsPage = ({ clubs }: Props) => {
           </Button>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
