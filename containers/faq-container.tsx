@@ -1,7 +1,6 @@
 'use client';
 import * as React from 'react';
 import { FC, useMemo, useState } from 'react';
-import { Cable, Layers } from 'lucide-react';
 import Link from 'next/link';
 
 import {
@@ -10,7 +9,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { BreadcrumbItemType, Breadcrumbs } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -21,19 +19,6 @@ import {
 } from '@/components/ui/select';
 import { Category } from '@/types/category';
 import { FAQ } from '@/types/faq';
-
-const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
-  {
-    icon: Layers,
-    href: '/',
-    label: 'Головна',
-  },
-  {
-    icon: Cable,
-    href: '/faq',
-    label: 'Часті питання',
-  },
-];
 
 interface Props {
   categories: Category[];
@@ -49,12 +34,10 @@ const FaqContainer: FC<Props> = ({ categories, faqs }) => {
     return faqs?.filter(faq => faq.category.name === selectedCategory);
   }, [faqs, selectedCategory]);
 
+  if (categories.length === 0 || faqs.length === 0) return null;
+
   return (
-    <div className="_container">
-      <Breadcrumbs
-        className="mt-[20px] md:mt-[40px]"
-        items={BREADCRUMBS_ITEMS}
-      />
+    <>
       <main className="flex xsm:flex-col sm:gap-2 xsm:gap-2 mt-[20px] md:mt-[65px] lg:gap-32 sm:flex-col md:flex-col lg:flex-row min-[390px]:flex-col max-[390px]:flex-col">
         <aside className="h-full w-full lg:max-w-64 flex mb-3">
           <div className="block md:hidden">
@@ -142,7 +125,7 @@ const FaqContainer: FC<Props> = ({ categories, faqs }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default FaqContainer;

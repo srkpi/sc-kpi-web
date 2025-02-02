@@ -1,4 +1,4 @@
-export interface Event {
+export interface ScheduleEvent {
   teacherName: string;
   lecturerId: string;
   type: string;
