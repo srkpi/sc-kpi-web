@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 import { isAdmin } from '@/app/actions/auth.actions';
 
@@ -11,8 +12,10 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isAd = await isAdmin();
-  console.log('is admin', isAd);
+  const userIsAdmin = await isAdmin();
+  if (!userIsAdmin) {
+    redirect('/');
+  }
   return (
     <div className="p-10">
       <Link href="/">
