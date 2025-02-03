@@ -1,6 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import Slider from 'react-slick';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import Slider, { Slider as SliderComponent } from 'react-slick';
 
 import { Department } from '@/types/departments';
 
@@ -74,9 +76,11 @@ const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
   return (
     <div className="relative md:flex">
       <div className="md:w-[45%] 2xl:w-[40%] slider-container md:flex md:flex-col">
-        <Slider
+        <SliderComponent
           asNavFor={nav2 ? nav2 : undefined}
-          ref={slider1 => setNav1(slider1)}
+          ref={(slider1: React.SetStateAction<Slider | null>) =>
+            setNav1(slider1)
+          }
           {...generalSettingsSlider}
           {...settingsForSlider1}
           className="flex-auto"
@@ -87,24 +91,24 @@ const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
               <DepartmentMoblieCard dep={dep} next={next} prev={previous} />
             </React.Fragment>
           ))}
-        </Slider>
+        </SliderComponent>
       </div>
       <div className="hidden md:block md:w-[55%] 2xl:w-[2300px] slider-container relative">
         <div className="absolute hidden 2xl:block right-[-3px] top-0 h-full w-[500px] bg-gradient-to-r from-transparent to-dark to-80% z-10"></div>
-        <Slider
+        <SliderComponent
           asNavFor={nav1 ? nav1 : undefined}
-          ref={slider2 => {
+          ref={(slider2: React.SetStateAction<Slider | null>) => {
             setNav2(slider2);
           }}
           {...generalSettingsSlider}
           {...settingsForSlider2}
         >
-          {departments.map((dep: Department, index: number) => (
-            <React.Fragment key={index}>
+          {departments.map((dep: Department) => (
+            <React.Fragment key={dep.id}>
               <DepartmentCardPicture dep={dep} />
             </React.Fragment>
           ))}
-        </Slider>
+        </SliderComponent>
       </div>
     </div>
   );
