@@ -1,62 +1,58 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { login } from '@/app/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/toast/use-toast';
-import useAuth from '@/hooks/useAuth';
-import { forgetMe, getRememberedEmail, rememberMe } from '@/lib/utils/auth';
 
 import { LoginFormData, loginSchema } from './_validation';
 
-const LoginPage = () => {
-  const { login } = useAuth();
+export default function LoginPage() {
   const router = useRouter();
-  const { toast } = useToast();
-  const [isRememberMe, setIsRememberMe] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    setError,
-  } = useForm<LoginFormData>({
+
+  const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    const dto = {
-      email: data.email,
-      password: data.password,
-    };
-    const { error, success } = await login(dto);
-    if (error && !success) {
+    try {
+      await login(data.email, data.password, data.rememberMe);
+      router.push('/profile');
+    } catch (error) {
       switch (error) {
         case 'Unauthorized':
-          setError('password', {
+          form.setError('password', {
             type: 'manual',
             message: 'Неправильний логін або пароль',
           });
           break;
         default:
-          toast({
-            variant: 'destructive',
-            title: 'Трапилась помилка',
-            description: error,
+          form.setError('password', {
+            type: 'manual',
+            message: 'Трапилась помилка',
           });
           break;
       }
       return;
     }
-    isRememberMe ? rememberMe(data.email) : forgetMe();
-    router.push('/');
-    toast({
-      title: 'Ви успішно увійшли до системи',
-    });
   };
 
   return (
@@ -81,78 +77,86 @@ const LoginPage = () => {
       <div className="w-full md:w-1/2 h-auto p-[20px] md:p-[40px] lg:p-[70px] my-[70px] flex items-center justify-center">
         <div className="flex items-center justify-center max-w-[450px] md:max-w-[580px] flex-col w-full">
           <h2 className="text-m-h1 md:text-h3 lg:text-h1 font-semibold mb-5 lg:mb-10 text-center">
-            З Поверненням
+            З Поверненням!
           </h2>
-          <form
-            className="flex flex-col w-full"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className="flex flex-col gap-2 md:gap-3 lg:gap-5 mb-2 md:mb-3.5">
-              <div className="flex flex-col gap-1 w-full">
-                <Input
-                  {...register('email')}
-                  type="email"
-                  placeholder="Пошта"
-                  defaultValue={getRememberedEmail() ?? ''}
-                  className={`${errors.email && 'border-destructive focus-visible:border-destructive'}`}
-                />
-                {errors.email && (
-                  <span className="text-destructive text-m-p md:text-p">
-                    {errors.email.message}
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-col gap-1 w-full">
-                <Input
-                  {...register('password')}
-                  type="password"
-                  placeholder="Пароль"
-                  className={`${errors.password && 'border-destructive focus-visible:border-destructive'}`}
-                />
-                {errors.password && (
-                  <span className="text-destructive text-m-p md:text-p">
-                    {errors.password.message}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="flex justify-between items-center mb-5 lg:mb-10">
-              <label
-                htmlFor="remember"
-                className="flex items-center gap-3 cursor-pointer select-none"
-              >
-                <Checkbox
-                  id="remember"
-                  defaultChecked={isRememberMe}
-                  onCheckedChange={(value: boolean) => setIsRememberMe(value)}
-                />
-                <span className="text-m-p font-light">Запам'ятати мене</span>
-              </label>
-              <Link className="text-m-p font-light" href="/reset-password">
-                Забули пароль?
-              </Link>
-            </div>
-            <Button
-              className="py-2 md:py-4"
-              disabled={isSubmitting}
-              type="submit"
+          <Form {...form}>
+            <form
+              className="flex flex-col w-full"
+              onSubmit={form.handleSubmit(onSubmit)}
             >
-              Увійти
-            </Button>
-            <p className="text-m-p font-light text-center md:hidden mt-[10px] select-none">
-              Немає акаунту?{' '}
-              <Link
-                className="hover:text-[#99a5fc] transition"
-                href="/register"
+              <div className="flex flex-col gap-2 md:gap-3 lg:gap-5 mb-2 md:mb-3.5">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input type="email" placeholder="Пошта" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Пароль"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex justify-between items-center mb-5 lg:mb-10">
+                <FormField
+                  control={form.control}
+                  name="rememberMe"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center space-y-0 gap-2 md:gap-3">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormLabel className="text-m-p md:text-p">
+                        Запам'ятати мене
+                      </FormLabel>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Link className="text-m-p font-light" href="/reset-password">
+                  Забули пароль?
+                </Link>
+              </div>
+              <Button
+                className="py-2 md:py-4"
+                disabled={form.formState.isSubmitting}
+                type="submit"
               >
-                Зареєструватися
-              </Link>
-            </p>
-          </form>
+                Увійти
+              </Button>
+              <p className="text-m-p font-light text-center md:hidden mt-[10px] select-none">
+                Немає акаунту?{' '}
+                <Link
+                  className="hover:text-[#99a5fc] transition"
+                  href="/register"
+                >
+                  Зареєструватися
+                </Link>
+              </p>
+            </form>
+          </Form>
         </div>
       </div>
     </>
   );
-};
-
-export default LoginPage;
+}

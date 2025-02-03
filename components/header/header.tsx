@@ -4,21 +4,22 @@ import { Menu, X } from 'lucide-react';
 import { UserIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 import Links from '@/components/header/components/links';
 import { Button } from '@/components/ui/button';
-import useAuth from '@/hooks/useAuth';
+import { User } from '@/types/auth/user';
 
-const Header = () => {
+interface Props {
+  user: User | null;
+}
+
+export function Header({ user }: Props) {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  const { loggedIn, logout } = useAuth();
+  const loggedIn = !!user;
+
   const handleOpen = () => {
     setOpen(!open);
   };
-
-  const iconClassName = 'size-[20px]  cursor-pointer';
 
   return (
     <header className="fixed bg-dark z-[100] w-full">
@@ -36,15 +37,9 @@ const Header = () => {
         <div className="hidden sm:flex sm:gap-[40px] md:gap-[60px] lg:gap-[100px]">
           <Links />
           {loggedIn ? (
-            pathname === '/profile' ? (
-              <Button variant="outline" onClick={() => logout()} size="sm">
-                Вийти
-              </Button>
-            ) : (
-              <Link href="/profile">
-                <UserIcon size={24} />
-              </Link>
-            )
+            <Link href="/profile">
+              <UserIcon size={24} />
+            </Link>
           ) : (
             <Link href="/login">
               <Button variant="outline" size="sm">
@@ -54,28 +49,21 @@ const Header = () => {
           )}
         </div>
         <div className="flex items-center h-full gap-[9px] sm:hidden">
-          <Link href="/profile" className="sm:hidden">
-            <UserIcon size={20} />
-          </Link>
+          {loggedIn && (
+            <Link href="/profile" className="sm:hidden">
+              <UserIcon size={20} />
+            </Link>
+          )}
           {open ? (
-            <X className={iconClassName} onClick={handleOpen} />
+            <X className="size-[20px] cursor-pointer" onClick={handleOpen} />
           ) : (
-            <Menu className={iconClassName} onClick={handleOpen} />
+            <Menu className="size-[20px] cursor-pointer" onClick={handleOpen} />
           )}
         </div>
       </div>
       {open && (
         <div className="sm:hidden flex-col items-center gap-5 pt-[8px] pb-[30px] sm:[15px] lg:py-[23px] px-[14px] md:px-[32px] lg:px-[64px] xl:px-[100px]">
-          {loggedIn ? (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => logout()}
-              className="w-full font-regular mb-[30px]"
-            >
-              Вийти
-            </Button>
-          ) : (
+          {!loggedIn && (
             <Link href="/login">
               <Button
                 variant="outline"
@@ -91,6 +79,4 @@ const Header = () => {
       )}
     </header>
   );
-};
-
-export default Header;
+}

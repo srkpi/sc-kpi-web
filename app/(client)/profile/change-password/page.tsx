@@ -11,14 +11,12 @@ import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/toast/use-toast';
-import useAuth from '@/hooks/useAuth';
 import { api } from '@/lib/api';
 import { useProfileStore } from '@/store/profile-store';
 
 import { ChangePasswordFormData, changePasswordSchema } from './_validation';
 
 const ChangePassword = () => {
-  const { loggedIn } = useAuth();
   const form = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordSchema),
   });
@@ -36,7 +34,6 @@ const ChangePassword = () => {
   } = form;
 
   const onSubmit = async (data: ChangePasswordFormData) => {
-    if (!loggedIn) return;
     const dto = {
       oldPassword: data.oldPassword,
       newPassword: data.newPassword,
