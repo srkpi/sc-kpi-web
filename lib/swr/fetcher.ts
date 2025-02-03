@@ -1,6 +1,3 @@
-import { api, campusApi } from '../api';
-
-export const axiosFetcher = (url: string) => api.get(url).then(res => res.data);
-
+import { campusApi } from '../api';
 export const axiosCampusFetcher = (url: string) =>
   campusApi.get(url).then(res => res.data);

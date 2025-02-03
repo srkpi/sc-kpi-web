@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { signUp } from '@/app/actions/auth.actions';
 import FacultySelect from '@/components/auth/selects/FacultySelect';
 import GroupSelect from '@/components/auth/selects/GroupSelect';
 import { Button } from '@/components/ui/button';
@@ -15,10 +16,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast/use-toast';
-import useAuth from '@/hooks/useAuth';
 import { Faculty } from '@/types/faculty';
 import { Group } from '@/types/group';
 
@@ -27,12 +28,22 @@ import { RegisterFormData, registerSchema } from './_validation';
 const RegisterPage = () => {
   const [selectedFaculty, setSelectedFaculty] = useState<Faculty>();
   const [selectedGroup, setSelectedGroup] = useState<Group>();
-  const { register: registerAuth } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: '',
+      firstName: '',
+      lastName: '',
+      middleName: '',
+      group: '',
+      faculty: '',
+      password: '',
+      confirmPassword: '',
+      terms: false,
+    },
   });
 
   const {
@@ -40,45 +51,10 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    setError,
   } = form;
 
   const onSubmit = async (data: RegisterFormData) => {
-    const dto = {
-      email: data.email,
-      password: data.password,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      faculty: data.faculty,
-      group: data.group,
-      ...(data.middleName && { middleName: data.middleName }),
-    };
-
-    const { error, success } = await registerAuth(dto);
-    if (!success && error) {
-      switch (error) {
-        case 'User with this email already exists':
-          setError('email', {
-            type: 'manual',
-            message: 'Користувач з такою поштою вже існує',
-          });
-          break;
-        case 'password is not strong enough':
-          setError('password', {
-            type: 'manual',
-            message: 'Пароль не достатньо надійний',
-          });
-          break;
-        default:
-          toast({
-            variant: 'destructive',
-            title: 'Трапилась помилка',
-            description: error,
-          });
-          break;
-      }
-      return;
-    }
+    await signUp(data);
     router.push('/');
     toast({
       title: 'Ви успішно зареєструвалися',
@@ -89,75 +65,67 @@ const RegisterPage = () => {
     <>
       <div className="w-full md:w-1/2 h-auto p-[20px] md:p-[40px] lg:p-[70px] my-[60px] flex items-center justify-center">
         <div className="flex items-center justify-center max-w-[450px] md:max-w-[580px] flex-col w-full">
+          <h2 className="text-m-h1 md:text-h3 lg:text-h1 font-semibold mb-5 lg:mb-10 text-center">
+            Ласкаво просимо
+          </h2>
           <Form {...form}>
-            <h2 className="text-m-h1 md:text-h3 lg:text-h1 font-semibold mb-5 lg:mb-10 text-center">
-              Ласкаво просимо
-            </h2>
             <form
               className="flex flex-col w-full"
-              method="POST"
-              action=""
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className="flex flex-col gap-2 md:gap-3 lg:gap-5 mb-2 md:mb-3.5">
-                <div className="flex flex-col gap-1 w-full">
-                  <Input
-                    {...register('email', { required: true })}
-                    type="email"
-                    name="email"
-                    placeholder="Пошта"
-                    className={`${errors.email && 'border-destructive focus-visible:border-destructive'}`}
-                  />
-                  {errors.email && (
-                    <span className="text-destructive text-m-p md:text-p">
-                      {errors.email.message}
-                    </span>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input type="email" placeholder="Пошта" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </div>
-                <div className="flex flex-col gap-1 w-full">
-                  <Input
-                    {...register('lastName', { required: true })}
-                    type="text"
-                    name="lastName"
-                    placeholder="Прізвище"
-                    className={`${errors.lastName && 'border-destructive focus-visible:border-destructive'}`}
-                  />
-                  {errors.lastName && (
-                    <span className="text-destructive text-m-p md:text-p">
-                      {errors.lastName.message}
-                    </span>
+                />
+
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input placeholder="Прізвище" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </div>
-                <div className="flex gap-2  md:gap-3 lg:gap-5 flex-nowrap md:flex-wrap xl:flex-nowrap">
-                  <div className="flex flex-col gap-1 w-full">
-                    <Input
-                      {...register('firstName', { required: true })}
-                      type="text"
-                      name="firstName"
-                      placeholder="Ім'я"
-                      className={` ${errors.firstName && 'border-destructive focus-visible:border-destructive'}`}
-                    />
-                    {errors.firstName && (
-                      <span className="text-destructive text-m-p md:text-p">
-                        {errors.firstName.message}
-                      </span>
+                />
+                <div className="flex gap-2 md:gap-3 lg:gap-5 flex-nowrap md:flex-wrap xl:flex-nowrap">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormControl>
+                          <Input placeholder="Ім'я" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                  </div>
-                  <div className="flex flex-col gap-1 w-full">
-                    <Input
-                      {...register('middleName', { required: true })}
-                      type="text"
-                      name="middleName"
-                      placeholder="По батькові"
-                      className={`${errors.middleName && 'border-destructive focus-visible:border-destructive'}`}
-                    />
-                    {errors.middleName && (
-                      <span className="text-destructive text-m-p md:text-p">
-                        {errors.middleName.message}
-                      </span>
+                  />
+                  <FormField
+                    control={form.control}
+                    name="middleName"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormControl>
+                          <Input placeholder="По батькові" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
-                  </div>
+                  />
                 </div>
+
                 <div className="flex gap-2 md:gap-3 lg:gap-5 flex-nowrap md:flex-wrap xl:flex-nowrap">
                   <div className="flex flex-col gap-1 w-[calc(50%-4px)] md:w-full xl:w-[calc(50%-10px)]">
                     <FacultySelect
@@ -189,34 +157,39 @@ const RegisterPage = () => {
                     )}
                   </div>
                 </div>
-                <div className="flex flex-col gap-1 w-full">
-                  <Input
-                    {...register('password', { required: true })}
-                    type="password"
-                    name="password"
-                    placeholder="Пароль"
-                    className={`${errors.password && 'border-destructive focus-visible:border-destructive'} select-none`}
-                  />
-                  {errors.password && (
-                    <span className="text-destructive text-m-p md:text-p">
-                      {errors.password.message}
-                    </span>
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Пароль"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </div>
-                <div className="flex flex-col gap-1 w-full">
-                  <Input
-                    {...register('confirmPassword', { required: true })}
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Підтвердіть пароль"
-                    className={`${errors.password && 'border-destructive focus-visible:border-destructive'} select-none`}
-                  />
-                  {errors.confirmPassword && (
-                    <span className="text-destructive text-m-p md:text-p">
-                      {errors.confirmPassword.message}
-                    </span>
+                />
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Підтвердіть пароль"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-                </div>
+                />
                 <FormField
                   control={form.control}
                   name="terms"
@@ -229,19 +202,11 @@ const RegisterPage = () => {
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <FormLabel
-                          className={`font-normal ${errors.terms && 'text-destructive'}`}
-                        >
-                          <span className="text-m-p md:text-p">
-                            Даю згоду на обробку персональних даних
-                          </span>
+                        <FormLabel className="text-m-p md:text-p">
+                          Даю згоду на обробку персональних даних
                         </FormLabel>
                       </FormItem>
-                      {errors.terms && (
-                        <span className="text-destructive text-m-p md:text-p">
-                          {errors.terms.message}
-                        </span>
-                      )}
+                      <FormMessage />
                     </div>
                   )}
                 />

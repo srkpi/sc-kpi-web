@@ -1,26 +1,14 @@
-import { LoginDto } from '@/types/auth';
 import { RegisterDto } from '@/types/auth/';
 
 import { api } from '../api';
 
 import { errorHandler } from './api.helpers';
-
-export const signIn = async (credentials: LoginDto) => {
-  const response = await api.post('/auth/local/sign-in', credentials);
-  return response.data;
-};
-
 export const signUp = async (
   data: RegisterDto,
 ): Promise<{ accessToken: string } | null> => {
   const response = await api.post('/auth/local/sign-up', data);
   return response.data;
 };
-
-export const signOut = async () => {
-  await api.post('/auth/logout');
-};
-
 export const refreshToken = async (): Promise<string | null> => {
   const response = await api.post('/auth/refresh');
   return response.data.accessToken;
