@@ -34,8 +34,6 @@ const FaqContainer: FC<Props> = ({ categories, faqs }) => {
     return faqs?.filter(faq => faq.category.name === selectedCategory);
   }, [faqs, selectedCategory]);
 
-  if (categories.length === 0 || faqs.length === 0) return null;
-
   return (
     <>
       <main className="flex xsm:flex-col sm:gap-2 xsm:gap-2 mt-[20px] md:mt-[65px] lg:gap-32 sm:flex-col md:flex-col lg:flex-row min-[390px]:flex-col max-[390px]:flex-col">

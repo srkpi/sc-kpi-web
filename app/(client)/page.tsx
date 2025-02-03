@@ -23,24 +23,22 @@ const documents = [
   },
 ];
 
-export const dynamic = 'force-dynamic';
-
 export default async function Home() {
   const { data: departments } = await api.get<Department[]>('/departments');
   const { data: services } = await api.get<Service[]>('/services');
 
   return (
     <div className="mb-[144px] md:mb-[200px]">
-      {departments.length >= 3 && (
-        <section className="overflow-hidden pb-[150px]">
+      {departments.length >= 2 && (
+        <section className="overflow-hidden pb-[70px]">
           <SliderMainPageDepartments departments={departments} />
         </section>
       )}
-      <section className="max-w-[1520px] mx-auto px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[120px] md:mb-[245px]">
+      <section className="max-w-[1520px] mx-auto px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px]">
         <div className="overflow-hidden min-h-[300px] rounded-[20px] bg-[linear-gradient(270deg,_rgba(236,237,248,0.10)_0.26%,rgba(236,237,248,0.00)_95.06%)] relative py-[30px] px-[14px] md:py-[70px] md:px-[130px]">
           <div className="flex flex-col lg:max-w-[60%] min-[1520px]:max-w-[80%] items-start">
             <h1 className="text-[20px] md:text-h1 max-w-[calc(100%-110px)] sm:max-w-full font-semibold text-blue mb-[14px] md:mb-[5px] leading-[110%]">
-              Студентська рада КПІ
+              Студентська рада КПІ ім. Ігоря Сікорського
             </h1>
             <p className="text-p md:text-h3 mb-[30px] max-w-[calc(100%-150px)] sm:max-w-[calc(40%+150px)] lg:max-w-[490px]">
               це ком'юніті згуртованих та ініціативних студентів, які роблять
@@ -94,7 +92,7 @@ export default async function Home() {
         </div>
       </section>
       {services.length > 0 && (
-        <section className="flex flex-col gap-[30px] md:gap-[80px] items-center _container mb-[120px] md:mb-[300px]">
+        <section className="flex flex-col gap-[30px] md:gap-[80px] items-center _container mb-[60px]">
           <h2 className="font-h1 text-blue">Служби</h2>
           {services.map((service, index: number) => (
             <div
@@ -150,7 +148,7 @@ export default async function Home() {
                 key={document.title}
                 className="flex flex-col flex-auto items-center"
               >
-                <h4 className="text-[20px] md:text-[30px] font-medium self-start sm:self-center sm:text-center mb-[30px] md:mb-[50px]">
+                <h4 className="text-[20px] md:text-[30px] font-medium self-center sm:text-center mb-[30px] md:mb-[50px]">
                   {document.title}
                 </h4>
                 <div className="overflow-hidden bg-[linear-gradient(270deg,rgba(236,237,248,0.1)_0.26%,_rgba(236,237,248,0)_100%)] min-h-[300px] md:min-h-[500px] px-[14px] sm:px-[50px] py-[20px] max-w-[350px] md:max-w-none md:w-[400px] rounded-[20px] backdrop-blur-[10px] flex-auto">
@@ -162,15 +160,19 @@ export default async function Home() {
                     href={document.link}
                     download
                   >
-                    <div className="hidden md:inline-block">
-                      <FileInputIcon color="white" size={40} />
-                    </div>
-                    <div className="inline-block md:hidden">
-                      <FileInputIcon color="white" size={30} />
-                    </div>
+                    <FileInputIcon
+                      className="hidden md:inline-block"
+                      color="white"
+                      size={40}
+                    />
+                    <FileInputIcon
+                      className="inline-block md:hidden"
+                      color="white"
+                      size={30}
+                    />
                     <span className="underline text-p">{document.title}</span>
                   </Link>
-                  <p className="text-m-p md:text-p leading-[110%] font-light">
+                  <p className="text-m-p md:text-p  font-light">
                     {document.description}
                   </p>
                 </div>
