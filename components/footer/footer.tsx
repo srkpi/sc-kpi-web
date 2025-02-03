@@ -33,13 +33,19 @@ const Footer = () => {
         </div>
         <FooterColumn className="block lg:hidden" items={otherItems} />
         <FooterMedia className="block lg:hidden" items={mediaItems} />
-        <Image
-          className="md:self-end self-center size-[100px] md:size-[200px]"
-          src="/images/qrcode.png"
-          alt="qrcode"
-          width={200}
-          height={200}
-        />
+        <a
+          href="https://send.monobank.ua/jar/4w5h9F38LB"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            className="md:self-end self-center size-[100px] md:size-[200px]"
+            src="/images/qrcode.png"
+            alt="qrcode"
+            width={200}
+            height={200}
+          />
+        </a>
       </div>
       <div className="flex gap-[9px] items-center mt-[10px]">
         <CopyrightIcon className="size-[15px] md:size-[20px]" />
