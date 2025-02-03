@@ -2,7 +2,7 @@
 import React, { FC, useMemo, useState } from 'react';
 import { SortAsc, SortDesc } from 'lucide-react';
 
-import Event from '@/app/(client)/events/_components/event';
+import Event from '@/app/(client)/events/event';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -33,7 +33,6 @@ export const EventsPage: FC<Props> = ({ events }) => {
   const [isDesc, setIsDesc] = useState(false);
   const [filterKey, setFilterKey] = useState('');
   const [sortBy, setSortBy] = useState<SortBy | null>(null);
-  const [focused, setFocused] = useState(false);
 
   const filteredEvents = useMemo(() => {
     let filtered = events || [];
@@ -65,20 +64,14 @@ export const EventsPage: FC<Props> = ({ events }) => {
     <>
       <div className="flex flex-wrap gap-5">
         <div className="max-w-[408px] flex-auto">
-          <Command
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            className="bg-transparent relative overflow-visible"
-          >
+          <Command className="bg-transparent relative overflow-visible focus-within:!overflow-visible">
             <CommandInput
               placeholder="Пошук"
               value={filterKey}
               customContainerClasses="border-white rounded-1 md:rounded-[6px] max-h-[30px] md:max-h-12"
               onValueChange={setFilterKey}
             />
-            <CommandList
-              className={`mt-[5px] bg-dark border-white border-[1px] no-scrollbar rounded-b-[10px] max-h-[35vh] absolute w-full top-full ${!focused && 'hidden'} z-10`}
-            >
+            <CommandList className="mt-[5px] bg-dark border-white border-[1px] no-scrollbar rounded-b-[10px] max-h-[35vh] absolute w-full top-full hidden focus-within:block z-10">
               <CommandEmpty className="bg-dark p-2 text-m-p md:text-p">
                 Результатів не знайдено
               </CommandEmpty>
@@ -96,7 +89,6 @@ export const EventsPage: FC<Props> = ({ events }) => {
                       className="py-1 md:py-3"
                       onSelect={() => {
                         setFilterKey(event.title);
-                        setFocused(false);
                       }}
                     >
                       {event.title}
@@ -136,7 +128,7 @@ export const EventsPage: FC<Props> = ({ events }) => {
         </div>
       </div>
       <div
-        className="grid gap-[10px] sm:gap-5 md:gap-[28px]"
+        className="grid gap-[10px] mt-5 sm:gap-5 md:gap-[28px]"
         style={{
           gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
         }}
