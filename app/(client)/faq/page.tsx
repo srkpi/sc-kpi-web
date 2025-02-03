@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Cable, Layers } from 'lucide-react';
 
+import FaqContainer from '@/app/(client)/faq/faq-container';
 import SubClientLayout from '@/app/(client)/sub-client-layout';
 import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
-import FaqContainer from '@/containers/faq-container';
 import { api } from '@/lib/api';
 import { Category } from '@/types/category';
 import { FAQ } from '@/types/faq';
