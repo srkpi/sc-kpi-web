@@ -241,7 +241,7 @@ export default function EditClubPage({ club }: EditClubPageProps) {
             />
           </div>
           <h2 className="text-h2 font-semibold">Проєкти</h2>
-          <Table>
+          <Table className="mt-6">
             <TableHeader>
               <TableRow>
                 <TableHead>Назва</TableHead>

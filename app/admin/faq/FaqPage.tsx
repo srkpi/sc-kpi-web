@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
-import { AxiosError } from 'axios';
 import { Plus, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { deleteFAQ } from '@/app/actions/faq.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -16,7 +16,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { FAQ } from '@/types/faq';
 
 interface Props {
@@ -31,20 +30,16 @@ export default function FaqPage({ faqs }: Props) {
 
   const handleDelete = async (id: number) => {
     try {
-      await api.delete(`/faq/${id}`);
-
+      await deleteFAQ(id);
       toast({
         title: `Питання успішно видалено`,
       });
       router.refresh();
     } catch (error) {
-      if (error instanceof AxiosError) {
-        toast({
-          variant: 'destructive',
-          title: `Стался помилка при видаленні питання`,
-          description: error.message,
-        });
-      }
+      toast({
+        variant: 'destructive',
+        title: `Помилка при видаленні питання`,
+      });
     }
   };
 

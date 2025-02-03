@@ -198,7 +198,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
         </form>
       </Form>
       <h2 className="text-h2 font-semibold">Проєкти</h2>
-      <Table>
+      <Table className="mt-6">
         <TableHeader>
           <TableRow>
             <TableHead>Назва</TableHead>

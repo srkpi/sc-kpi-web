@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { KeyRound, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { logout } from '@/app/actions/auth.actions';
+import { deleteUser, logout } from '@/app/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -26,9 +26,21 @@ export function Sidebar({ user }: Props) {
     state => state,
   );
 
-  const handleDeleteUser = async () => {
+  const handleLogout = async () => {
     try {
       await logout();
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Помилка виходу з акаунту',
+        description: 'Спробуйте ще раз',
+      });
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      await deleteUser();
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -84,7 +96,7 @@ export function Sidebar({ user }: Props) {
         <Button
           variant="outline"
           className="w-full"
-          onClick={() => logout()}
+          onClick={handleLogout}
           size="sm"
         >
           Вийти

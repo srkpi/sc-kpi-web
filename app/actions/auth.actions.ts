@@ -28,7 +28,6 @@ export async function login(
   const payload = {
     email,
     password,
-    rememberMe,
   };
   try {
     const response = await client('/auth/local/sign-in', {
@@ -61,28 +60,33 @@ export async function login(
 
     const { accessToken } = jsonResponse;
 
-    const tokenExpiresAt = new Date(36000 * 1000);
+    const tokenExpiresAt = new Date(360 * 1000);
 
-    const user = await userResponse.json();
-
-    const expires = payload.rememberMe ? tokenExpiresAt : undefined;
+    const expires = rememberMe ? tokenExpiresAt : undefined;
 
     cookies().set('token', accessToken, {
       httpOnly: true,
       expires,
     });
 
-    return user;
+    redirect('/profile/personal-data');
   } catch (error) {
     return null;
   }
 }
 
 export async function logout() {
-  await client('/auth/user', {
+  cookies().delete('token');
+  redirect('/');
+}
+
+export async function deleteUser() {
+  const res = await client('/auth/user', {
     method: 'DELETE',
   });
-
+  if (!res.ok) {
+    throw new Error(res.statusText);
+  }
   redirect('/');
 }
 

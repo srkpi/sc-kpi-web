@@ -1,8 +1,7 @@
+import { getFAQList } from '@/app/actions/faq.actions';
 import FaqPage from '@/app/admin/faq/FaqPage';
-import { api } from '@/lib/api';
-import { FAQ } from '@/types/faq';
 
 export default async function Page() {
-  const { data } = await api.get<FAQ[]>('/faq');
+  const data = await getFAQList();
   return <FaqPage faqs={data} />;
 }
