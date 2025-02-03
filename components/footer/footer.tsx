@@ -34,7 +34,7 @@ const Footer = () => {
         <FooterColumn className="block lg:hidden" items={otherItems} />
         <FooterMedia className="block lg:hidden" items={mediaItems} />
         <a
-          href="https://send.monobank.ua/jar/4w5h9F38LB"
+          href={process.env.NEXT_PUBLIC_MONOBANL_JAR_URL}
           target="_blank"
           rel="noopener noreferrer"
         >
