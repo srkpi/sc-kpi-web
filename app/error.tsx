@@ -3,13 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import Header from '@/components/header/header';
 import { Button } from '@/components/ui/button';
 
 export default function ErrorPage() {
   return (
     <div className="w-screen h-full">
-      <Header />
       <div className="h-screen">
         <div className="flex flex-row h-screen max-[1280px]:flex-col">
           <div className="w-full flex items-center max-[1280px]:h-screen">
@@ -30,7 +28,7 @@ export default function ErrorPage() {
                 <li className="w-full flex justify-center items-center mt-6 max-[1280px]:mt-3">
                   <Link href="/" className="w-1/2 max-[1280px]:w-3/4">
                     <Button className="min-[389px]:text-[16px] w-full">
-                      Головна
+                      Повернутися на головну
                     </Button>
                   </Link>
                 </li>
