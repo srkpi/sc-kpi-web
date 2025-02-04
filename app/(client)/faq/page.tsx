@@ -3,10 +3,8 @@ import { Cable, Layers } from 'lucide-react';
 
 import FaqContainer from '@/app/(client)/faq/faq-container';
 import SubClientLayout from '@/app/(client)/sub-client-layout';
+import { getFAQCategoryList, getFAQList } from '@/app/actions/faq.actions';
 import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
-import { api } from '@/lib/api';
-import { Category } from '@/types/category';
-import { FAQ } from '@/types/faq';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
@@ -22,8 +20,8 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
 ];
 
 export default async function Page() {
-  const { data: faqs } = await api.get<FAQ[]>('/faq');
-  const { data: categories } = await api.get<Category[]>('/faq/categories');
+  const faqs = await getFAQList();
+  const categories = await getFAQCategoryList();
 
   if (categories?.length === 0 || faqs?.length === 0) return null;
 

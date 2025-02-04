@@ -1,10 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { AxiosError } from 'axios';
 import { Plus, Search } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
+import { deleteClub } from '@/app/actions/club.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -16,7 +15,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { Club } from '@/types/club';
 
 interface Props {
@@ -27,21 +25,15 @@ export default function ClubsPage({ clubs }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const { toast } = useToast();
-  const router = useRouter();
 
   const handleDelete = async (id: number) => {
     try {
-      await api.delete(`/clubs/${id}`);
-
-      router.refresh();
+      await deleteClub(id);
     } catch (error) {
-      if (error instanceof AxiosError) {
-        toast({
-          variant: 'destructive',
-          title: `Стался помилка при видаленні студ. об'єднання`,
-          description: error.message,
-        });
-      }
+      toast({
+        variant: 'destructive',
+        title: `Стался помилка при видаленні студ. об'єднання`,
+      });
     }
   };
 

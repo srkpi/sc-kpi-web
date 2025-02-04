@@ -2,7 +2,7 @@
 import React, { FC, useMemo, useState } from 'react';
 import { SortAsc, SortDesc } from 'lucide-react';
 
-import Event from '@/app/(client)/events/event';
+import EventCard from '@/app/(client)/events/event-card';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -134,7 +134,7 @@ export const EventsPage: FC<Props> = ({ events }) => {
         }}
       >
         {filteredEvents.map(event => (
-          <Event
+          <EventCard
             key={event.id}
             title={event.title}
             shortDescription={event.shortDescription}

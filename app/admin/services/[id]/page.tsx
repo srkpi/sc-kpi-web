@@ -1,6 +1,5 @@
 import EditServicePage from '@/app/admin/services/[id]/EditServicePage';
-import { api } from '@/lib/api';
-import { Service } from '@/types/service';
+import { getServiceById } from '@/app/actions/service.actions';
 
 interface EditServicePageProps {
   params: {
@@ -9,6 +8,6 @@ interface EditServicePageProps {
 }
 
 export default async function Page({ params }: EditServicePageProps) {
-  const { data } = await api.get<Service>(`/services/${params.id}`);
+  const data = await getServiceById(params.id);
   return <EditServicePage service={data} />;
 }

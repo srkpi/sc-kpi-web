@@ -4,9 +4,9 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import dynamic from 'next/dynamic';
-import * as z from 'zod';
 
 import { createFAQ } from '@/app/actions/faq.actions';
+import { FormDataType, FormSchema } from '@/app/admin/faq/validation';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -32,14 +32,6 @@ const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
   ssr: false,
 });
 
-const FormSchema = z.object({
-  question: z.string().trim().min(1, { message: 'Обов’язкове поле' }),
-  categoryId: z.string().trim().min(1, { message: 'Обов’язкове поле' }),
-  answer: z.string().trim().min(1, { message: 'Обов’язкове поле' }),
-});
-
-export type FormData = z.infer<typeof FormSchema>;
-
 interface Props {
   categories: Category[];
 }
@@ -56,7 +48,7 @@ export function CreateFaqPage({ categories }: Props) {
     },
   });
 
-  const handleFormSubmit = async (data: FormData) => {
+  const handleFormSubmit = async (data: FormDataType) => {
     try {
       await createFAQ(data);
       toast({

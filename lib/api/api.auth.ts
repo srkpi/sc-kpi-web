@@ -1,19 +1,6 @@
-import { RegisterDto } from '@/types/auth/';
-
 import { api } from '../api';
 
 import { errorHandler } from './api.helpers';
-export const signUp = async (
-  data: RegisterDto,
-): Promise<{ accessToken: string } | null> => {
-  const response = await api.post('/auth/local/sign-up', data);
-  return response.data;
-};
-export const refreshToken = async (): Promise<string | null> => {
-  const response = await api.post('/auth/refresh');
-  return response.data.accessToken;
-};
-
 export const recoveryPassword = async (
   email: string,
 ): Promise<{ error: string | null; success: boolean }> => {

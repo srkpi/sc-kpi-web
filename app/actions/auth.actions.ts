@@ -11,8 +11,8 @@ import { User } from '@/types/auth/user';
 
 export async function signUp(
   data: RegisterDto,
-): Promise<{ accessToken: string } | null> {
-  const response = await client('/auth/local/sign-up', {
+) {
+  const response = await client<{ accessToken: string } >('/auth/local/sign-up', {
     method: 'POST',
     body: qs.stringify(data),
   });
@@ -30,7 +30,7 @@ export async function login(
     password,
   };
   try {
-    const response = await client('/auth/local/sign-in', {
+    const response = await client<{accessToken:string}>('/auth/local/sign-in', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -60,7 +60,7 @@ export async function login(
 
     const { accessToken } = jsonResponse;
 
-    const tokenExpiresAt = new Date(360 * 1000);
+    const tokenExpiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000); // 365 days from now
 
     const expires = rememberMe ? tokenExpiresAt : undefined;
 

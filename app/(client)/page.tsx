@@ -4,9 +4,8 @@ import Link from 'next/link';
 
 import SliderMainPageDepartments from '@/components/sliders/SliderMainPageDepartments';
 import { Button } from '@/components/ui/button';
-import { api } from '@/lib/api';
-import { Department } from '@/types/departments';
-import { Service } from '@/types/service';
+import { getServiceList } from '@/app/actions/service.actions';
+import { getDepartmentList } from '@/app/actions/department.actions';
 
 const documents = [
   {
@@ -24,8 +23,8 @@ const documents = [
 ];
 
 export default async function Home() {
-  const { data: departments } = await api.get<Department[]>('/departments');
-  const { data: services } = await api.get<Service[]>('/services');
+  const services = await getServiceList();
+  const departments = await getDepartmentList();
 
   return (
     <div className="mb-[144px] md:mb-[200px]">
