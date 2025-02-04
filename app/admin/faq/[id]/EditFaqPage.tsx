@@ -1,11 +1,22 @@
 'use client';
 
-import { FC, useState } from 'react';
-import { AxiosError } from 'axios';
+import React, { FC, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import dynamic from 'next/dynamic';
 
+import { updateFAQ } from '@/app/actions/faq.actions';
+import { FormDataType, FormSchema } from '@/app/admin/faq/validation';
 import EditCategoryModal from '@/components/admin/edit-category-modal';
 import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -16,7 +27,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { Category } from '@/types/category';
 import { FAQ } from '@/types/faq';
 
@@ -32,30 +42,28 @@ interface EditDepartmentPageProps {
 const EditFaqPage: FC<EditDepartmentPageProps> = ({ categories, faq }) => {
   const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [updatedFaq, setUpdatedFaq] = useState<Partial<FAQ>>({});
 
-  const handleChange = (field: keyof FAQ, value: string | number) => {
-    setUpdatedFaq(prev => ({ ...prev, [field]: value }));
-  };
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      question: faq.question,
+      categoryId: faq.categoryId.toString(),
+      answer: faq.answer,
+    },
+  });
 
-  const handleSave = async () => {
+  const handleFormSubmit = async (data: FormDataType) => {
     try {
-      await api.patch('/faq', {
-        id: faq?.id,
-        ...updatedFaq,
-      });
+      await updateFAQ(faq.id, data);
 
       toast({
         title: 'Питання успішно оновлено',
       });
     } catch (error) {
-      if (error instanceof AxiosError) {
-        toast({
-          variant: 'destructive',
-          title: 'Сталася помилка при оновленні питання',
-          description: error.message,
-        });
-      }
+      toast({
+        variant: 'destructive',
+        title: 'Сталася помилка при оновленні питання',
+      });
     }
   };
 
@@ -64,66 +72,108 @@ const EditFaqPage: FC<EditDepartmentPageProps> = ({ categories, faq }) => {
   );
 
   return (
-    <div className="flex flex-col">
-      <div className="flex justify-between mb-[57px]">
-        <h1 className="text-h1 font-semibold">Редагування FAQ</h1>
-      </div>
-      <div className="flex items-end gap-6">
-        <div className="flex flex-col gap-1">
-          <Input
-            id="question"
-            placeholder="Питання"
-            className="w-[1056px] border-x-0 border-t-0 rounded-none pl-0"
-            defaultValue={faq?.question}
-            onChange={e => handleChange('question', e.target.value)}
+    <Form {...form}>
+      <form
+        className="flex flex-col gap-6"
+        onSubmit={form.handleSubmit(handleFormSubmit)}
+      >
+        <div className="flex flex-col">
+          <div className="flex justify-between mb-[57px]">
+            <h1 className="text-h1 font-semibold">Редагування FAQ</h1>
+          </div>
+          <div className="flex items-end gap-6">
+            <FormField
+              control={form.control}
+              name="question"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Питання"
+                      className="w-[1056px] border-x-0 border-t-0 rounded-none pl-0"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={initialCategory?.id.toString()}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Категорія" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {categories?.map(category => (
+                          <SelectItem
+                            key={category.id}
+                            value={category.id.toString()}
+                          >
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              variant="default"
+              className="w-[188px] h-[39px] "
+              onClick={() => setIsModalOpen(true)}
+            >
+              Змінити категорії
+            </Button>
+          </div>
+          <FormField
+            control={form.control}
+            name="answer"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="name">Відповідь</FormLabel>
+                <EditorComponent
+                  setText={text => form.setValue('answer', text)}
+                  initialValue={field.value}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/*<div className="mt-3">*/}
+          {/*  */}
+          {/*  <EditorComponent*/}
+          {/*    setText={text => handleChange('answer', text)}*/}
+          {/*    initialValue={faq?.answer}*/}
+          {/*  />*/}
+          {/*</div>*/}
+
+          <Button
+            variant="default"
+            type="submit"
+            className="w-[165px] h-[50px] mt-[48px]"
+          >
+            Зберегти зміни
+          </Button>
+          <EditCategoryModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            initialCategories={categories || []}
           />
         </div>
-        <Select
-          defaultValue={initialCategory?.id.toString()}
-          onValueChange={value => handleChange('categoryId', parseInt(value))}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={initialCategory?.name} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {categories?.map(category => (
-                <SelectItem key={category.id} value={category.id.toString()}>
-                  {category.name}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Button
-          variant="default"
-          className="w-[188px] h-[39px] "
-          onClick={() => setIsModalOpen(true)}
-        >
-          Змінити категорії
-        </Button>
-      </div>
-      <p className="mt-[57px] mb-[30px]">Відповідь</p>
-      <div className="mt-3">
-        <EditorComponent
-          setText={text => handleChange('answer', text)}
-          initialValue={faq?.answer}
-        />
-      </div>
-
-      <Button
-        variant="default"
-        className="w-[165px] h-[50px] mt-[48px]"
-        onClick={handleSave}
-      >
-        Зберегти зміни
-      </Button>
-      <EditCategoryModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        initialCategories={categories || []}
-      />
-    </div>
+      </form>
+    </Form>
   );
 };
 

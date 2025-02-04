@@ -19,7 +19,7 @@ const Client = (basePath: string) => {
       headers: {
         Accept: 'application/json',
         Authorization: jwt ? `Bearer ${jwt}` : '',
-        'x-api-key': process.env.NEXT_PUBLIC_API_KEY,
+        'x-api-key': process.env.NEXT_PUBLIC_API_KEY!,
         'Content-Type': contentType,
         ...headers,
       },
@@ -35,4 +35,4 @@ const Client = (basePath: string) => {
   };
 };
 
-export const client = Client(process.env.NEXT_PUBLIC_API_BASE_URL!);
+export const client = Client(process.env.API_BASE_URL!);

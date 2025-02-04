@@ -1,8 +1,7 @@
 import ServicesPage from '@/app/admin/services/ServicesPage';
-import { api } from '@/lib/api';
-import { Service } from '@/types/service';
+import { getServiceList } from '@/app/actions/service.actions';
 
 export default async function Page() {
-  const { data } = await api.get<Service[]>('/services');
+  const data = await getServiceList()
   return <ServicesPage services={data} />;
 }

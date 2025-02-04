@@ -11,7 +11,7 @@ interface EventInterface {
   endDate: string;
 }
 
-const Event = ({
+const EventCard = ({
   title,
   shortDescription,
   location,
@@ -74,4 +74,4 @@ const Event = ({
   );
 };
 
-export default Event;
+export default EventCard;

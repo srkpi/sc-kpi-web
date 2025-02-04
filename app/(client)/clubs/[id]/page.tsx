@@ -1,8 +1,7 @@
 import { FC } from 'react';
 
+import { getClubById } from '@/app/actions/club.actions';
 import ClubOrDepartmentPage from '@/components/club-or-department/club-or-department';
-import { api } from '@/lib/api';
-import { Department } from '@/types/departments';
 
 interface ClubPageProps {
   params: {
@@ -11,7 +10,7 @@ interface ClubPageProps {
 }
 
 const ClubPage: FC<ClubPageProps> = async ({ params }) => {
-  const { data: club } = await api.get<Department>(`/clubs/${params.id}`);
+  const club = await getClubById(params.id);
   return <ClubOrDepartmentPage clubOrDepartment={club} />;
 };
 

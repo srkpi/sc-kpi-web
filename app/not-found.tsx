@@ -20,7 +20,7 @@ export default function NotFound() {
           </p>
           <Link className="w-full mt-[30px] lg:mt-[60px]" href="/">
             <Button className="w-full h-[40px] lg:h-[60px]" title="Повернутися">
-              Повернутися
+              Повернутися на головну сторінку
             </Button>
           </Link>
         </div>
