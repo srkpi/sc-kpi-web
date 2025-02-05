@@ -1,38 +1,32 @@
 'use server';
 
+import axios from 'axios';
 import { cookies } from 'next/headers';
 
-const Client = (basePath: string) => {
-  return async <T>(url: string | URL, options: RequestInit = {}) => {
-    const { headers = {}, ...otherOptions } = options;
-    const jwt = cookies().get('token')?.value;
+export const apiClient = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
+  headers: {
+    Accept: 'application/json',
+    'x-api-key': process.env.NEXT_PUBLIC_API_KEY!,
+  },
+  withCredentials: true,
+});
 
-    const input = new URL(url, basePath).href;
+apiClient.interceptors.request.use(async config => {
+  const jwt = (await cookies()).get('token')?.value;
+  if (jwt) {
+    config.headers.Authorization = `Bearer ${jwt}`;
+  }
+  return config;
+});
 
-    const contentType =
-      new Headers(headers).get('Content-type') ?? 'application/json';
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    const response = await fetch<T>(input, {
-      cache: 'no-cache',
-      headers: {
-        Accept: 'application/json',
-        Authorization: jwt ? `Bearer ${jwt}` : '',
-        'x-api-key': process.env.NEXT_PUBLIC_API_KEY!,
-        'Content-Type': contentType,
-        ...headers,
-      },
-      ...otherOptions,
-    });
-
-    // if (response.status === 401) {
-    //   cookies().delete('token');
-    //   redirect('/');
-    // }
-
-    return response;
-  };
-};
-
-export const client = Client(process.env.API_BASE_URL!);
+// apiClient.interceptors.response.use(
+//   response => response,
+//   error => {
+//     if (error.response?.status === 401) {
+//       cookies().delete('token');
+//       redirect('/');
+//     }
+//     return Promise.reject(error);
+//   },
+// );

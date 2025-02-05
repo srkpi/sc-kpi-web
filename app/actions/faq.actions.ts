@@ -3,18 +3,24 @@
 import { revalidatePath } from 'next/cache';
 
 import { FormDataType } from '@/app/admin/faq/validation';
-import { client } from '@/lib/client';
+import { api } from '@/lib/api';
+import { apiClient } from '@/lib/client';
 import { Category } from '@/types/category';
 import { FAQ } from '@/types/faq';
 
 export async function getFAQList() {
-  const res = await client<FAQ[]>('/faq');
-  return res.json();
+  const res = await apiClient<FAQ[]>('/faq');
+  return res.data;
+}
+
+export async function getFAQById(id: string) {
+  const { data } = await apiClient.get<FAQ>(`/faq/${id}`);
+  return data;
 }
 
 export async function getFAQCategoryList() {
-  const res = await client<Category[]>('/faq/categories');
-  return res.json();
+  const res = await apiClient<Category[]>('/faq/categories');
+  return res.data;
 }
 
 export async function createFAQ(data: FormDataType) {
@@ -23,36 +29,25 @@ export async function createFAQ(data: FormDataType) {
     categoryId: parseInt(data.categoryId),
     answer: data.answer,
   };
-  const res = await client('/faq', {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) {
-    throw new Error(res.statusText);
-  }
+  await apiClient.post('/faq', payload);
   revalidatePath('/admin/faq');
 }
 
 export async function updateFAQ(id: number, data: FormDataType) {
-  const payload = { ...data, id };
-  console.log(JSON.stringify(payload));
-  const res = await client('/faq', {
-    method: 'PATCH',
-    body: JSON.stringify(payload),
-  });
-  console.log(res);
-  if (!res.ok) {
-    throw new Error(res.statusText);
-  }
+  const payload = { ...data, id, categoryId: parseInt(data.categoryId) };
+  await apiClient.patch('/faq', payload);
+  revalidatePath('/admin/faq');
 }
 
 export async function deleteFAQ(id: number) {
-  const res = await client(`/faq/${id}`, {
-    method: 'DELETE',
-  });
-  if (!res.ok) {
-    throw new Error(res.statusText);
-  }
+  await apiClient.delete(`/faq/${id}`);
 
   revalidatePath('/admin/faq');
+}
+export async function updateFAQCategory(id: number, name: string) {
+  await api.put('/faq/categories', { id, name });
+}
+
+export async function deleteFAQCategory(id: number) {
+  await apiClient.delete(`/faq/categories/${id}`);
 }

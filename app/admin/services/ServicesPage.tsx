@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { Plus, Search } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
+import { deleteService } from '@/app/actions/service.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -15,7 +15,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { Service } from '@/types/service';
 
 interface Props {
@@ -24,20 +23,18 @@ interface Props {
 
 export default function ServicesPage({ services }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
-  const router = useRouter();
 
   const { toast } = useToast();
 
   const handleDelete = async (id: number) => {
     try {
-      await api.delete(`/services/${id}`);
+      await deleteService(id);
     } catch (error) {
       toast({
         variant: 'destructive',
         title: `Стался помилка при видаленні служби`,
       });
     }
-    router.refresh();
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {

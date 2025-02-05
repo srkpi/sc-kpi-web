@@ -1,8 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import Slider, { Slider as SliderComponent } from 'react-slick';
+import Slider from 'react-slick';
 
 import ArrowLeft from '@/components/sliders/ArrowLeft';
 import ArrowRight from '@/components/sliders/ArrowRight';
@@ -12,7 +10,6 @@ import DepartmentCardPicture from './DepartmentCardPicture';
 import DepartmentCardText from './DepartmentCardText';
 import DepartmentMoblieCard from './DepartmentMobileCard';
 import IconBottomLeftCornerCur from './IconBottomLeftCornerCut';
-import SkeletonDepartmentCard from './SkeletonDepartmentCard';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -66,15 +63,13 @@ const SliderProjects = ({ projects }: { projects: DepartmentProject[] }) => {
       },
     ],
   };
-  if (!projects.length) {
-    return <SkeletonDepartmentCard />;
-  }
+
   return (
     <div
       className={`relative md:flex ${projects.length < minProjectsToMakeComplexSlider ? 'justify-center' : ''}`}
     >
       <div className="md:w-[45%] 2xl:w-[40%] slider-container md:flex md:flex-col">
-        <SliderComponent
+        <Slider
           asNavFor={nav2 ? nav2 : undefined}
           ref={(slider1: React.SetStateAction<Slider | null>) =>
             setNav1(slider1)
@@ -95,7 +90,7 @@ const SliderProjects = ({ projects }: { projects: DepartmentProject[] }) => {
               />
             </React.Fragment>
           ))}
-        </SliderComponent>
+        </Slider>
       </div>
       <div
         className={`hidden md:block md:w-[55%] ${projects.length >= minProjectsToMakeComplexSlider ? '2xl:w-[2300px] ' : 'max-w-[720px]'} slider-container relative`}
@@ -103,7 +98,7 @@ const SliderProjects = ({ projects }: { projects: DepartmentProject[] }) => {
         {projects.length >= minProjectsToMakeComplexSlider && (
           <div className="absolute hidden 2xl:block right-[-3px] top-0 h-full w-[500px] bg-gradient-to-r from-transparent to-dark to-80% z-10"></div>
         )}
-        <SliderComponent
+        <Slider
           asNavFor={nav1 ? nav1 : undefined}
           ref={(slider2: React.SetStateAction<Slider | null>) => {
             setNav2(slider2);
@@ -111,8 +106,8 @@ const SliderProjects = ({ projects }: { projects: DepartmentProject[] }) => {
           {...generalSettingsSlider}
           {...settingsForSlider2}
         >
-          {projects.map((project: DepartmentProject, index: number) => (
-            <React.Fragment key={index}>
+          {projects.map((project: DepartmentProject) => (
+            <React.Fragment key={project.id}>
               <DepartmentCardPicture
                 project={project}
                 isMarginRight={
@@ -121,7 +116,7 @@ const SliderProjects = ({ projects }: { projects: DepartmentProject[] }) => {
               />
             </React.Fragment>
           ))}
-        </SliderComponent>
+        </Slider>
         {projects.length > 1 && (
           <div className="flex gap-1 self-end absolute bottom-0 left-0 z-10 px-8 py-5 origin-bottom-left scale-90 lg:scale-100">
             <ArrowLeft onClick={previous} />

@@ -3,21 +3,17 @@
 import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import qs from 'query-string';
 
-import { client } from '@/lib/client';
+import { apiClient } from '@/lib/client';
 import { DecodedTokenType, RegisterDto, Role } from '@/types/auth';
 import { User } from '@/types/auth/user';
 
-export async function signUp(
-  data: RegisterDto,
-) {
-  const response = await client<{ accessToken: string } >('/auth/local/sign-up', {
-    method: 'POST',
-    body: qs.stringify(data),
-  });
-  const { accessToken } = await response.json();
-  return accessToken;
+export async function signUp(data: RegisterDto) {
+  const { data: res } = await apiClient.post<{ accessToken: string }>(
+    '/auth/local/sign-up',
+    data,
+  );
+  return res.accessToken;
 }
 
 export async function login(
@@ -30,33 +26,31 @@ export async function login(
     password,
   };
   try {
-    const response = await client<{accessToken:string}>('/auth/local/sign-in', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+    const response = await apiClient.post<{ accessToken: string }>(
+      '/auth/local/sign-in',
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       },
-      body: qs.stringify(payload),
-    });
+    );
 
     if (response.status < 200 || response.status >= 300) {
       return null;
     }
 
-    const jsonResponse = await response.json();
+    const jsonResponse = response.data;
 
     if (!jsonResponse) {
       return null;
     }
 
-    const userResponse = await client('/user', {
+    await apiClient.get('/user', {
       headers: {
         Authorization: `Bearer ${jsonResponse.accessToken}`,
       },
     });
-
-    if (!userResponse.ok) {
-      return null;
-    }
 
     const { accessToken } = jsonResponse;
 
@@ -64,7 +58,7 @@ export async function login(
 
     const expires = rememberMe ? tokenExpiresAt : undefined;
 
-    cookies().set('token', accessToken, {
+    (await cookies()).set('token', accessToken, {
       httpOnly: true,
       expires,
     });
@@ -76,21 +70,17 @@ export async function login(
 }
 
 export async function logout() {
-  cookies().delete('token');
+  (await cookies()).delete('token');
   redirect('/');
 }
 
 export async function deleteUser() {
-  const res = await client('/auth/user', {
-    method: 'DELETE',
-  });
-  if (!res.ok) {
-    throw new Error(res.statusText);
-  }
+  await apiClient.delete('/auth/user');
+
   redirect('/');
 }
 
-export async function isAdmin(): Promise<boolean> {
+export async function checkIsAdmin(): Promise<boolean> {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
   if (!token) {
@@ -101,11 +91,11 @@ export async function isAdmin(): Promise<boolean> {
 }
 
 export async function getUserInfo(): Promise<User | null> {
-  const userResponse = await client<User>('/user');
-
-  if (!userResponse.ok) {
+  try {
+    const res = await apiClient<User>('/user');
+    console.log('getUserInfo', res);
+    return res.data;
+  } catch (error) {
     return null;
   }
-
-  return userResponse.json();
 }

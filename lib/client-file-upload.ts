@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 const FileUpload = (basePath: string) => {
   return async (url: string | URL, formData: FormData) => {
-    const jwt = cookies().get('token')?.value;
+    const jwt = (await cookies()).get('token')?.value;
 
     if (!jwt) {
       redirect('/');
@@ -19,17 +19,19 @@ const FileUpload = (basePath: string) => {
       body: formData,
       headers: {
         Authorization: `Bearer ${jwt}`,
+        'x-api-key': process.env.NEXT_PUBLIC_API_KEY!,
       },
     });
 
-    if (response.status === 401) {
-      cookies().delete('token');
-      redirect('/');
-    }
+    // if (response.status === 401) {
+    //   cookies().delete('token');
+    //   redirect('/');
+    // }
 
     if (!response.ok) {
       throw new Error('Error uploading file.');
     }
+    return response;
   };
 };
 

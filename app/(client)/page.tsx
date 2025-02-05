@@ -2,10 +2,10 @@ import React from 'react';
 import { FileInputIcon } from 'lucide-react';
 import Link from 'next/link';
 
+import { getDepartmentList } from '@/app/actions/department.actions';
+import { getServiceList } from '@/app/actions/service.actions';
 import SliderMainPageDepartments from '@/components/sliders/SliderMainPageDepartments';
 import { Button } from '@/components/ui/button';
-import { getServiceList } from '@/app/actions/service.actions';
-import { getDepartmentList } from '@/app/actions/department.actions';
 
 const documents = [
   {

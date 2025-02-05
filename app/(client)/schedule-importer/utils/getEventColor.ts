@@ -1,6 +1,6 @@
 import { EventTypeMapper } from '@/app/(client)/schedule-importer/constants';
 
-const getEventColor = (eventType: string): string => {
+export const getEventColor = (eventType: string): string => {
   let res = '';
   for (const value of Object.values(EventTypeMapper)) {
     if (value.text === eventType) {
@@ -9,5 +9,3 @@ const getEventColor = (eventType: string): string => {
   }
   return res;
 };
-
-export default getEventColor;

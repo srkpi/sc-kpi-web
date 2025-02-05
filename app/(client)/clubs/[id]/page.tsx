@@ -4,13 +4,14 @@ import { getClubById } from '@/app/actions/club.actions';
 import ClubOrDepartmentPage from '@/components/club-or-department/club-or-department';
 
 interface ClubPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const ClubPage: FC<ClubPageProps> = async ({ params }) => {
-  const club = await getClubById(params.id);
+  const id = (await params).id;
+  const club = await getClubById(id);
   return <ClubOrDepartmentPage clubOrDepartment={club} />;
 };
 

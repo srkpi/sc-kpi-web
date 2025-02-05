@@ -1,13 +1,14 @@
-import EditServicePage from '@/app/admin/services/[id]/EditServicePage';
 import { getServiceById } from '@/app/actions/service.actions';
+import EditServicePage from '@/app/admin/services/[id]/EditServicePage';
 
 interface EditServicePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function Page({ params }: EditServicePageProps) {
-  const data = await getServiceById(params.id);
+  const id = (await params).id;
+  const data = await getServiceById(id);
   return <EditServicePage service={data} />;
 }
