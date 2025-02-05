@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
@@ -15,10 +16,14 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
         <span className="absolute top-2 left-6 font-m-button text-white bg-blue bg-opacity-75 flex items-center justify-center px-3 py-3 md:px-5 md:py-3 rounded text-m-p md:text-p h-[38px] md:h-[48px]">
           {category.toLocaleLowerCase()}
         </span>
-        <img
-          src={image || '/placeholder.png'}
-          alt={name}
+        <Image
+          // className="w-full h-auto rounded-[20px] aspect-video object-cover order-first lg:order-last"
           className="w-[290px] h-[300px] md:w-[408px] md:h-[338px] object-cover rounded-lg"
+          src={image}
+          alt="image"
+          quality={100}
+          width={725}
+          height={414}
         />
       </div>
       <h2 className="font-m-h1 md:font-h3 mt-4">{name}</h2>

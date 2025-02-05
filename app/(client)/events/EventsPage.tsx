@@ -19,11 +19,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { CalendarEvent } from '@/types/calendar-event';
-
-enum SortBy {
-  Time = 'Час',
-  Name = 'Назва',
-}
+import { SortBy } from '@/types/sort-by';
 
 interface Props {
   events: CalendarEvent[];
