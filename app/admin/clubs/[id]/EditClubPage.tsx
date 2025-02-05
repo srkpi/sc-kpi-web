@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 
+import { deleteClubProject, updateClub } from '@/app/actions/club.actions';
 import CreateModal from '@/components/admin/create-project-modal';
 import EditModal from '@/components/admin/edit-project-modal';
 import ImageUpload from '@/components/ImageUpload';
@@ -38,7 +38,6 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import CLUB_CATEGORIES from '@/constants/club-categories';
-import { api } from '@/lib/api';
 import { Club } from '@/types/club';
 
 interface EditClubPageProps {
@@ -46,16 +45,13 @@ interface EditClubPageProps {
 }
 
 export default function EditClubPage({ club }: EditClubPageProps) {
-  const router = useRouter();
-
   const [file, setFile] = useState<File | null>(null);
 
   const { toast } = useToast();
 
-  const handleDelete = async (projectId: number) => {
+  const handleDeleteProject = async (projectId: number) => {
     try {
-      await api.delete(`/clubs/projects/${projectId}`);
-      router.refresh();
+      await deleteClubProject(projectId);
 
       toast({
         title: 'Проєкт успішно видалений',
@@ -100,19 +96,10 @@ export default function EditClubPage({ club }: EditClubPageProps) {
 
   const handleFormSubmit = async (data: FormData) => {
     try {
-      await api.patch('/clubs', {
-        id: club.id,
-        ...data,
-      });
-
       const formData = new FormData();
       if (file) {
         formData.append('image', file);
-        await api.patch(`/clubs/image/${club.id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        await updateClub(club.id, data, formData);
       }
 
       toast({
@@ -260,7 +247,7 @@ export default function EditClubPage({ club }: EditClubPageProps) {
                       <Button
                         variant="outline"
                         className="w-[110px] h-[35px]"
-                        onClick={() => handleDelete(project.id)}
+                        onClick={() => handleDeleteProject(project.id)}
                       >
                         Видалити
                       </Button>

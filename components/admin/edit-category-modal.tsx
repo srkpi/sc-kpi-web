@@ -1,6 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 
+import {
+  deleteFAQCategory,
+  updateFAQCategory,
+} from '@/app/actions/faq.actions';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -50,7 +54,7 @@ const EditCategoryModal: FC<EditCategoryModalProps> = ({
 
   const handleDelete = async (id: number) => {
     try {
-      await api.delete(`/faq/categories/${id}`);
+      await deleteFAQCategory(id);
       setCategories(categories.filter(category => category.id !== id));
       toast({
         title: 'Категорію успішно видалено',
@@ -65,7 +69,7 @@ const EditCategoryModal: FC<EditCategoryModalProps> = ({
 
   const handleSave = async (id: number, name: string) => {
     try {
-      await api.put('/faq/categories', { id, name });
+      await updateFAQCategory(id, name);
       toast({
         title: 'Категорію успішно оновлено',
       });

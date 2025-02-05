@@ -26,7 +26,7 @@ const ResetPassword = () => {
     const validToken = token instanceof Array ? token[0] : token;
     const { error, success } = await resetPassword({
       newPassword: data.password,
-      token: validToken,
+      token: validToken || '',
     });
 
     if (error && !success) {

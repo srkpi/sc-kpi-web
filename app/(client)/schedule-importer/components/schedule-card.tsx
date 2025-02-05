@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Plus } from 'lucide-react';
 
-import getEventColor from '@/app/(client)/schedule-importer/utils/getEventColor';
+import { getEventColor } from '@/app/(client)/schedule-importer/utils/getEventColor';
 import { ScheduleEvent } from '@/types/schedule-event';
 
 interface ScheduleCardProps {

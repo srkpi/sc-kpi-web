@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { isAdmin } from '@/app/actions/auth.actions';
+import { checkIsAdmin } from '@/app/actions/auth.actions';
 
 import { navbarLinks } from './constants';
 
@@ -12,8 +12,9 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userIsAdmin = await isAdmin();
-  if (!userIsAdmin) {
+  const isAdmin = await checkIsAdmin();
+
+  if (!isAdmin) {
     redirect('/');
   }
   return (

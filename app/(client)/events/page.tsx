@@ -2,9 +2,8 @@ import { CalendarDays, Layers } from 'lucide-react';
 
 import { EventsPage } from '@/app/(client)/events/EventsPage';
 import SubClientLayout from '@/app/(client)/sub-client-layout';
+import { getEventList } from '@/app/actions/event.actions';
 import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
-import { api } from '@/lib/api';
-import { CalendarEvent } from '@/types/calendar-event';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
@@ -20,7 +19,7 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
 ];
 
 export default async function Page() {
-  const { data } = await api.get<CalendarEvent[]>('/calendar/event');
+  const data = await getEventList();
   return (
     <SubClientLayout
       pageTitle="Розклад заходів"
