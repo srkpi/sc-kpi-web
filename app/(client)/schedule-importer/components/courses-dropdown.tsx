@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import {
   Select,
   SelectContent,
@@ -7,28 +5,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useScheduleStore } from '@/store/schedule-store';
 
 import { COURSES } from '../constants/index';
 
 const CoursesDropdown = () => {
-  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedCourse = sessionStorage.getItem('course');
-    if (storedCourse) {
-      setSelectedCourse(storedCourse);
-    }
-  }, []);
+  const { course, setCourse } = useScheduleStore();
 
   const handleChange = (value: string) => {
-    setSelectedCourse(value);
-    sessionStorage.setItem('course', value);
+    setCourse(value);
   };
 
   return (
     <Select onValueChange={handleChange}>
       <SelectTrigger className="w-[140px] md:w-[180px]">
-        <SelectValue placeholder={selectedCourse || 'Оберіть курс'} />
+        <SelectValue placeholder={course || 'Оберіть курс'} />
       </SelectTrigger>
       <SelectContent>
         {COURSES.map(course => (

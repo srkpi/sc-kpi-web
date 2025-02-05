@@ -2,7 +2,7 @@ import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import SliderProjects from '@/components/sliders/SliderProjects';
+// import SliderProjects from '@/components/sliders/SliderProjects';
 import { Button } from '@/components/ui/button';
 import { Department } from '@/types/departments';
 
@@ -45,7 +45,7 @@ const ClubOrDepartmentPage: FC<ClubOrDepartmentProps> = ({
             Наші проєкти
           </h2>
           <div className="_container">
-            <SliderProjects projects={projects} />
+            {/*<SliderProjects projects={projects} />*/}
           </div>
         </section>
       )}
