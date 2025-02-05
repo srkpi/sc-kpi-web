@@ -1,7 +1,6 @@
 'use client';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
 
 import ScheduleCard from '@/app/(client)/schedule-importer/components/schedule-card';
 import ScheduleImport from '@/app/(client)/schedule-importer/components/schedule-import';
@@ -10,36 +9,53 @@ import {
   DAYS_SHORT_FORM,
   TIMES,
 } from '@/app/(client)/schedule-importer/constants';
-import { EventsData, WeekType } from '@/app/(client)/schedule-importer/types';
+import {
+  EventsData,
+  EventsResponse,
+} from '@/app/(client)/schedule-importer/types';
 import createEventsTable from '@/app/(client)/schedule-importer/utils/createEventsTable';
+import { campusApi } from '@/lib/api';
+import { useScheduleStore } from '@/store/schedule-store';
 import { ScheduleEvent } from '@/types/schedule-event';
 
-interface ScheduleTableProps {
-  eventsData: EventsData;
-}
-
-const ScheduleTable: FC<ScheduleTableProps> = ({ eventsData }) => {
-  const searchParams = useSearchParams();
-
-  const [events, setEvents] = useState<EventsData>(eventsData);
+const ScheduleTable = () => {
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
+  const [events, setEvents] = useState<EventsData>({
+    groupCode: '',
+    scheduleFirstWeek: [],
+    scheduleSecondWeek: [],
+  });
 
   const thRefs = useRef<(HTMLTableCellElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const week = searchParams.get('week') as WeekType;
-  const scheduleWeek =
-    week === 'first' ? events.scheduleFirstWeek : events.scheduleSecondWeek;
-  const groupName = searchParams.get('name');
+  const { groupId, groupName, week } = useScheduleStore();
 
-  const table = createEventsTable(scheduleWeek);
+  const scheduleWeek =
+    week === 'first' ? events?.scheduleFirstWeek : events?.scheduleSecondWeek;
+
+  const table = createEventsTable(scheduleWeek!);
 
   useEffect(() => {
-    setEvents(eventsData);
-  }, [groupName]);
+    const fetchEvents = async () => {
+      const { data: eventsResponse } = await campusApi.get<EventsResponse>(
+        '/schedule/lessons',
+        {
+          params: {
+            groupName: groupName,
+            groupId: groupId,
+          },
+        },
+      );
+      setEvents(eventsResponse?.data);
+    };
+    if (groupId && groupName) {
+      fetchEvents();
+    }
+  }, [groupId, groupName]);
 
   const handleDelete = (eventToDelete: ScheduleEvent) => {
-    const updatedSchedule = scheduleWeek.map(({ day, pairs }) => ({
+    const updatedSchedule = scheduleWeek?.map(({ day, pairs }) => ({
       day,
       pairs: pairs.filter(pair => pair !== eventToDelete),
     }));
