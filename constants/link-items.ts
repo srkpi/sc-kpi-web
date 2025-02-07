@@ -6,15 +6,11 @@ export const linkItems: LinkItem[] = [
     href: '/schedule-importer',
   },
   {
-    name: "Cтуд. об'єднання",
+    name: "Cтудентські об'єднання",
     href: '/clubs',
   },
   {
     name: 'FAQ',
     href: '/faq',
-  },
-  {
-    name: 'Заходи',
-    href: '/events',
   },
 ];
