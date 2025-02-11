@@ -2,11 +2,13 @@ import { Suspense } from 'react';
 
 import Schedule from '@/app/(client)/schedule-importer/components/schedule';
 import ScheduleTable from '@/app/(client)/schedule-importer/components/schedule-table';
-import { GroupsResponse } from '@/app/(client)/schedule-importer/types';
 import Spinner from '@/components/ui/spinner';
 import { campusApi } from '@/lib/api';
+import { GroupsResponse } from '@/types/group';
 
-export default async function ScheduleImporter() {
+export const dynamic = 'force-dynamic';
+
+export default async function Page() {
   const { data: groups } =
     await campusApi.get<GroupsResponse>('/schedule/groups');
 

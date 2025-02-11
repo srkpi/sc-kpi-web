@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { z } from 'zod';
 
 import { login } from '@/app/actions/auth.actions';
 import { Button } from '@/components/ui/button';
@@ -18,9 +19,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import { LoginFormData, loginSchema } from './_validation';
+const loginSchema = z.object({
+  email: z.string().email('Некоректна пошта'),
+  password: z.string().min(8, 'Пароль має містити не менше 8 символів'),
+  rememberMe: z.boolean(),
+});
 
-export default function LoginPage() {
+type LoginFormData = z.infer<typeof loginSchema>;
+
+export default function Page() {
   const router = useRouter();
 
   const form = useForm<LoginFormData>({
