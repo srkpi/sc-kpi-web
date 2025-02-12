@@ -15,7 +15,7 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
     icon: Cable,
     href: '/faq',
-    label: 'Часті питання',
+    label: 'FAQ',
   },
 ];
 
@@ -26,7 +26,7 @@ export default async function Page() {
   if (categories?.length === 0 || faqs?.length === 0) return null;
 
   return (
-    <SubClientLayout pageTitle="Часті питання" breadcrumbs={BREADCRUMBS_ITEMS}>
+    <SubClientLayout pageTitle="FAQ" breadcrumbs={BREADCRUMBS_ITEMS}>
       <FaqContainer faqs={faqs} categories={categories} />
     </SubClientLayout>
   );

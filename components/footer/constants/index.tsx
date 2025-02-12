@@ -17,7 +17,7 @@ import { LinkItem } from '@/types/link-item';
 
 export const supportItems: LinkItem[] = [
   {
-    name: 'Часті питання',
+    name: 'FAQ',
     href: '/faq',
     icon: <CableIcon className="size-[15px] md:size-[20px]" />,
   },
