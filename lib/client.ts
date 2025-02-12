@@ -1,8 +1,9 @@
 'use server';
 
 import axios from 'axios';
+import https from 'https';
 import { cookies } from 'next/headers';
-
+const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
@@ -10,6 +11,7 @@ export const apiClient = axios.create({
     'x-api-key': process.env.NEXT_PUBLIC_API_KEY!,
   },
   withCredentials: true,
+  httpsAgent,
 });
 
 apiClient.interceptors.request.use(async config => {

@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache';
 
 import { FormDataType } from '@/app/admin/faq/validation';
-import { api } from '@/lib/api';
 import { apiClient } from '@/lib/client';
 import { Category } from '@/types/category';
 import { FAQ } from '@/types/faq';
@@ -45,7 +44,7 @@ export async function deleteFAQ(id: number) {
   revalidatePath('/admin/faq');
 }
 export async function updateFAQCategory(id: number, name: string) {
-  await api.put('/faq/categories', { id, name });
+  await apiClient.put('/faq/categories', { id, name });
 }
 
 export async function deleteFAQCategory(id: number) {

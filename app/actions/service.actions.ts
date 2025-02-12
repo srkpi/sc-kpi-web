@@ -24,6 +24,31 @@ export async function getServiceById(id: string) {
   return res.data;
 }
 
+export async function updateService(
+  id: number,
+  data: {
+    name: string;
+    description: string;
+    buttonLink: string;
+  },
+  formData: FormData,
+) {
+  try {
+    await apiClient.patch('/services', {
+      id,
+      ...data,
+    });
+
+    await apiClient.patch(`/services/image/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function deleteService(id: number) {
   await apiClient.delete(`/services/${id}`);
   revalidatePath('/admin/services');
