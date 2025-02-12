@@ -9,12 +9,9 @@ import {
   DAYS_SHORT_FORM,
   TIMES,
 } from '@/app/(client)/schedule-importer/constants';
-import {
-  EventsData,
-  EventsResponse,
-} from '@/app/(client)/schedule-importer/types';
+import { EventsData } from '@/app/(client)/schedule-importer/types';
 import createEventsTable from '@/app/(client)/schedule-importer/utils/createEventsTable';
-import { campusApi } from '@/lib/api';
+import { getPairs } from '@/app/actions/schedule.actions';
 import { useScheduleStore } from '@/store/schedule-store';
 import { ScheduleEvent } from '@/types/schedule-event';
 
@@ -38,16 +35,8 @@ const ScheduleTable = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const { data: eventsResponse } = await campusApi.get<EventsResponse>(
-        '/schedule/lessons',
-        {
-          params: {
-            groupName: groupName,
-            groupId: groupId,
-          },
-        },
-      );
-      setEvents(eventsResponse?.data);
+      const events = await getPairs(groupName, groupId);
+      setEvents(events);
     };
     if (groupId && groupName) {
       fetchEvents();

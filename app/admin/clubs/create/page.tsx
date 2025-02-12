@@ -7,6 +7,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 
+import { createClub } from '@/app/actions/club.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,7 +29,6 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import CLUB_CATEGORIES from '@/constants/club-categories';
-import { api } from '@/lib/api';
 
 const CreateClubPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -67,15 +67,15 @@ const CreateClubPage: FC = () => {
     const formData = new FormData();
     if (file) {
       formData.append('image', file);
-      formData.append('json', JSON.stringify(data));
     }
+    formData.append('json', JSON.stringify(data));
+
     try {
-      await api.post('/clubs', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      await createClub(formData);
+      router.push('/admin/clubs');
+      toast({
+        title: 'СО успішно створено',
       });
-      router.push(`/admin/clubs`);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({

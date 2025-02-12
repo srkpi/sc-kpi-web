@@ -52,13 +52,13 @@ const ImageUpload = ({ photoSrc = '', onFileUpload }: Props) => {
         width={100}
         height={100}
         quality={100}
-        src={previewImage}
+        src={previewImage ?? ''}
         alt="Image"
         className="rounded-[18px]"
         ref={imageRef}
       />
       <div className="flex flex-col justify-center items-start">
-        <p className="text-p mb-[20px] text-center font-light">
+        <p className="text-p mb-[20px] font-light">
           Розмір та формат зображення, яка найкраще підійде для завантаження:
           25MB, JPG, PNG, JPEG.
         </p>

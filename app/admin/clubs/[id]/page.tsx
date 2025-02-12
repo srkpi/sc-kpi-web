@@ -1,8 +1,7 @@
 import { FC } from 'react';
 
+import { getClubById } from '@/app/actions/club.actions';
 import EditClubPage from '@/app/admin/clubs/[id]/EditClubPage';
-import { api } from '@/lib/api';
-import { Club } from '@/types/club';
 
 interface EditClubPageProps {
   params: Promise<{
@@ -12,9 +11,9 @@ interface EditClubPageProps {
 
 const Page: FC<EditClubPageProps> = async ({ params }) => {
   const id = (await params).id;
-  const { data } = await api.get<Club>(`/clubs/${id}`);
+  const club = await getClubById(id);
 
-  return <EditClubPage club={data} />;
+  return <EditClubPage club={club} />;
 };
 
 export default Page;

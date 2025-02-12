@@ -4,9 +4,9 @@ import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 
+import { createDepartment } from '@/app/actions/department.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,11 +19,9 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 
 const CreateDepartmentPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
-  const router = useRouter();
 
   const { toast } = useToast();
 
@@ -56,16 +54,14 @@ const CreateDepartmentPage: FC = () => {
     const formData = new FormData();
     if (file) {
       formData.append('image', file);
-      formData.append('json', JSON.stringify(data));
     }
+    formData.append('json', JSON.stringify(data));
 
     try {
-      await api.post('/departments', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      await createDepartment(formData);
+      toast({
+        title: 'Департамент успішно додано',
       });
-      router.push(`/admin/departments`);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({

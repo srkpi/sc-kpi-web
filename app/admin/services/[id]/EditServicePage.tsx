@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
+import { updateService } from '@/app/actions/service.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +19,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { Service } from '@/types/service';
 
 interface EditServicePageProps {
@@ -51,30 +51,15 @@ const EditServicePage: FC<EditServicePageProps> = ({ service }) => {
   });
 
   const handleFormSubmit = async (data: FormData) => {
-    try {
-      await api.patch('/services', {
-        id: service.id,
-        ...data,
-      });
+    const formData = new FormData();
+    if (file) {
+      formData.append('image', file);
 
-      const formData = new FormData();
-      if (file) {
-        formData.append('image', file);
-        await api.patch(`/services/image/${service.id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-      }
-      toast({
-        title: 'Успішно оновлено',
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Сталася помилка при оновленні служби',
-      });
+      await updateService(service.id, data, formData);
     }
+    toast({
+      title: 'Успішно оновлено',
+    });
   };
 
   return (

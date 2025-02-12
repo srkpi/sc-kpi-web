@@ -1,8 +1,9 @@
 'use server';
 
 import axios from 'axios';
+import https from 'https';
 import { cookies } from 'next/headers';
-
+const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
@@ -10,6 +11,7 @@ export const apiClient = axios.create({
     'x-api-key': process.env.NEXT_PUBLIC_API_KEY!,
   },
   withCredentials: true,
+  httpsAgent,
 });
 
 apiClient.interceptors.request.use(async config => {
@@ -22,9 +24,9 @@ apiClient.interceptors.request.use(async config => {
 
 // apiClient.interceptors.response.use(
 //   response => response,
-//   error => {
+//   async error => {
 //     if (error.response?.status === 401) {
-//       cookies().delete('token');
+//       (await cookies()).delete('token');
 //       redirect('/');
 //     }
 //     return Promise.reject(error);

@@ -4,44 +4,34 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 
+import { recoveryPassword } from '@/app/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { recoveryPassword } from '@/lib/api/api.auth';
+import { useToast } from '@/components/ui/toast/use-toast';
 
 import { ResetPasswordFormData, resetPasswordSchema } from './_validation';
 
 const ResetPassword = () => {
   const [isShowSuccess, setIsShowSuccess] = useState(false);
+  const { toast } = useToast();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setError,
   } = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
   });
 
   const onSubmit = async (data: ResetPasswordFormData) => {
-    const { error, success } = await recoveryPassword(data.email);
-    if (error && !success) {
-      switch (error) {
-        case 'Request failed with status code 429':
-        case 'Suspicious activity has been detected. Please try again later':
-          setError('email', {
-            type: 'manual',
-            message: 'Забагато запитів. Спробуйте пізніше',
-          });
-          break;
-        default:
-          setError('email', {
-            type: 'manual',
-            message: error,
-          });
-          break;
-      }
-      return;
-    } else {
+    try {
+      await recoveryPassword(data.email);
       setIsShowSuccess(true);
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Сталася помилка',
+      });
     }
   };
   return (

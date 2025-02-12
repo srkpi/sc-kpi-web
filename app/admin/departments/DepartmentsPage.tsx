@@ -1,9 +1,11 @@
 'use client';
+
 import { useState } from 'react';
 import { Plus, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { deleteDepartment } from '@/app/actions/department.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -15,7 +17,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { Department } from '@/types/departments';
 
 interface Props {
@@ -30,14 +31,10 @@ export default function DepartmentsPage({ departments }: Props) {
   const { toast } = useToast();
 
   const handleDelete = async (id: number) => {
-    try {
-      await api.delete(`/departments/${id}`);
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: `Стался помилка при видаленні департаменту`,
-      });
-    }
+    await deleteDepartment(id);
+    toast({
+      title: `Департамент успішно видалено`,
+    });
     router.refresh();
   };
 

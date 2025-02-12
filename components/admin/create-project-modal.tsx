@@ -5,6 +5,8 @@ import { AxiosError } from 'axios';
 import { Plus } from 'lucide-react';
 import * as z from 'zod';
 
+import { createClubProject } from '@/app/actions/club.actions';
+import { createDepartmentProject } from '@/app/actions/department.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,7 +24,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { api } from '@/lib/api';
 
 import { useToast } from '../ui/toast/use-toast';
 
@@ -65,16 +66,12 @@ const CreateProjectModal: FC<CreateProjectModalProps> = ({ id, variant }) => {
 
     formData.append('json', JSON.stringify(updatedJsonData));
 
-    const endpoint =
-      variant === 'department' ? '/departments/projects' : '/clubs/projects';
-
     try {
-      await api.post(endpoint, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
+      if (variant === 'department') {
+        await createDepartmentProject(formData);
+      } else {
+        await createClubProject(formData);
+      }
       toast({
         title: 'Проєкт успішно створений',
       });

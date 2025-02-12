@@ -49,9 +49,9 @@ const CreateServicePage: FC = () => {
       const formData = new FormData();
       if (file) {
         formData.append('image', file);
-        formData.append('json', JSON.stringify(data));
       }
-      await createService(data);
+      formData.append('json', JSON.stringify(data));
+      await createService(formData);
     } catch (error) {
       toast({
         variant: 'destructive',

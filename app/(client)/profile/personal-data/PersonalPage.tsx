@@ -56,14 +56,7 @@ export const PersonalPage: FC<Props> = ({ user }) => {
 
   const onSubmit = async (data: ChangeProfileFormData) => {
     try {
-      const dto = {
-        lastName: data.lastName,
-        firstName: data.firstName,
-        middleName: data.middleName || '',
-        faculty: data.faculty,
-        group: data.group,
-      };
-      await api.patch('/user', dto);
+      await api.patch('/user', data);
 
       toast({
         variant: 'default',

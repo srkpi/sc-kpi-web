@@ -2,16 +2,15 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AxiosError } from 'axios';
 import { ChevronLeft, KeyRoundIcon } from 'lucide-react';
 import Link from 'next/link';
 
+import { changePassword } from '@/app/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { useProfileStore } from '@/store/profile-store';
 
 import { ChangePasswordFormData, changePasswordSchema } from './_validation';
@@ -38,40 +37,17 @@ const ChangePassword = () => {
       oldPassword: data.oldPassword,
       newPassword: data.newPassword,
     };
-    const changePassword = async () => {
-      try {
-        await api.put('/auth/password', dto);
 
-        toast({
-          variant: 'default',
-          title: 'Пароль було успішно змінено',
-        });
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          if (error.response?.status === 403) {
-            setError('oldPassword', {
-              type: 'manual',
-              message: 'Неправильний старий пароль',
-            });
-          } else if (
-            error.response?.data.message === 'New password should be different'
-          ) {
-            setError('newPassword', {
-              type: 'manual',
-              message: 'Новий пароль повинен відрізнятися від старого',
-            });
-          } else {
-            toast({
-              variant: 'destructive',
-              title: 'Помилка зміни паролю',
-            });
-          }
-        }
-      }
-    };
-    changePassword();
+    const { success, error } = await changePassword(dto);
+
+    if (success) {
+      toast({ variant: 'default', title: 'Пароль було успішно змінено' });
+    } else if (error === 'Неправильний старий пароль') {
+      setError('oldPassword', { type: 'manual', message: error });
+    } else if (error === 'Новий пароль повинен відрізнятися від старого') {
+      setError('newPassword', { type: 'manual', message: error });
+    }
   };
-
   return (
     <div
       className={`w-full max-w-[420px] sm:w-2/3 sm:max-w-[700px] ${isProfileMenuActive && 'hidden'} sm:block`}

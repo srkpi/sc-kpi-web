@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const errorHandler = (error: any): string => {
   const message = error.response?.data?.message;
 

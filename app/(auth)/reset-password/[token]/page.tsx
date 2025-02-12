@@ -5,48 +5,38 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
+import { resetPassword } from '@/app/actions/auth.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { resetPassword } from '@/lib/api/api.auth';
+import { useToast } from '@/components/ui/toast/use-toast';
 
 import { ResetPasswordFormData, resetPasswordSchema } from './_validation';
 
 const ResetPassword = () => {
   const { token } = useParams();
   const router = useRouter();
+  const { toast } = useToast();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setError,
   } = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
   });
   const onSubmit = async (data: ResetPasswordFormData) => {
     const validToken = token instanceof Array ? token[0] : token;
-    const { error, success } = await resetPassword({
-      newPassword: data.password,
-      token: validToken || '',
-    });
+    try {
+      await resetPassword({
+        newPassword: data.password,
+        token: validToken || '',
+      });
 
-    if (error && !success) {
-      switch (error) {
-        case 'Time is up. Please try again':
-          setError('confirmPassword', {
-            type: 'manual',
-            message:
-              'Посилання вже використане або час вийшов. Спробуйте ще раз',
-          });
-          break;
-        default:
-          setError('confirmPassword', {
-            type: 'manual',
-            message: error,
-          });
-          break;
-      }
-    } else {
       router.push('/login');
+    } catch (e) {
+      toast({
+        variant: 'destructive',
+        title: 'Сталася помилка',
+      });
     }
   };
   return (

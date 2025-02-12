@@ -1,6 +1,5 @@
+import { getDepartmentById } from '@/app/actions/department.actions';
 import EditDepartmentPage from '@/app/admin/departments/[id]/EditDepartmentPage';
-import { api } from '@/lib/api';
-import { Department } from '@/types/departments';
 
 interface Props {
   params: Promise<{
@@ -10,7 +9,8 @@ interface Props {
 
 export default async function Page({ params }: Props) {
   const id = (await params).id;
-  const response = await api.get<Department>(`/departments/${id}`);
 
-  return <EditDepartmentPage department={response.data} />;
+  const department = await getDepartmentById(id);
+
+  return <EditDepartmentPage department={department} />;
 }

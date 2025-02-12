@@ -1,5 +1,6 @@
 'use server';
 
+import { AxiosError } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -93,9 +94,42 @@ export async function checkIsAdmin(): Promise<boolean> {
 export async function getUserInfo(): Promise<User | null> {
   try {
     const res = await apiClient<User>('/user');
-    console.log('getUserInfo', res);
     return res.data;
   } catch (error) {
     return null;
+  }
+}
+
+export async function recoveryPassword(email: string) {
+  await apiClient.post('/auth/recovery', { email });
+}
+
+export async function resetPassword(credentials: {
+  newPassword: string;
+  token: string;
+}) {
+  await apiClient.put('/auth/reset-password', credentials);
+}
+
+export async function changePassword(dto: {
+  oldPassword: string;
+  newPassword: string;
+}): Promise<{ error: string | null; success: boolean }> {
+  try {
+    await apiClient.put('/auth/password', dto);
+    return { success: true, error: null };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (error.response?.status === 403) {
+        return { success: false, error: 'Неправильний старий пароль' };
+      }
+      if (error.response?.data.message === 'New password should be different') {
+        return {
+          success: false,
+          error: 'Новий пароль повинен відрізнятися від старого',
+        };
+      }
+    }
+    return { success: false, error: 'Помилка зміни паролю' };
   }
 }

@@ -5,6 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import * as z from 'zod';
 
+import {
+  deleteDepartmentProject,
+  updateDepartment,
+} from '@/app/actions/department.actions';
 import CreateModal from '@/components/admin/create-project-modal';
 import EditModal from '@/components/admin/edit-project-modal';
 import ImageUpload from '@/components/ImageUpload';
@@ -28,7 +32,6 @@ import {
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { Department } from '@/types/departments';
 
 interface EditDepartmentPageProps {
@@ -43,7 +46,7 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
 
   const handleDelete = async (projectId: number) => {
     try {
-      await api.delete(`/departments/projects/${projectId}`);
+      await deleteDepartmentProject(projectId);
       setProjects(projects.filter(project => project.id !== projectId));
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -83,33 +86,14 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
 
   const handleFormSubmit = async (data: FormData) => {
     try {
-      await api.patch('/departments', {
-        id: department.id,
-        ...data,
-      });
-
-      const formData = new FormData();
       if (file) {
-        formData.append('image', file);
-
-        await api.patch(`/departments/image/${department.id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        await updateDepartment(department.id, data, file);
       }
-
-      toast({
-        title: 'Успішно оновлено',
-      });
     } catch (error) {
-      if (error instanceof AxiosError) {
-        toast({
-          variant: 'destructive',
-          title: 'Сталася помилка при оновленні проєкту',
-          description: error.message,
-        });
-      }
+      toast({
+        variant: 'destructive',
+        title: 'Сталася помилка при оновленні департаменту',
+      });
     }
   };
 

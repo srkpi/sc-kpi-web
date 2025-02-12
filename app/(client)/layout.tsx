@@ -8,6 +8,7 @@ export default async function ClientLayout({
   children: React.ReactNode;
 }>) {
   const user = await getUserInfo();
+
   return (
     <>
       <Header user={user} />

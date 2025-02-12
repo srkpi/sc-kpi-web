@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import * as z from 'zod';
 
+import { updateProject } from '@/app/actions/department.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,7 +16,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { api } from '@/lib/api';
 import { DepartmentProject } from '@/types/departments';
 
 import {
@@ -51,19 +51,7 @@ const EditProjectModal: FC<EditProjectModalProps> = ({ project }) => {
 
   const handleFormSubmit = async (data: FormData) => {
     try {
-      const dataWithId = { ...data, id: project.id };
-      await api.patch('/departments/projects', dataWithId);
-
-      const formData = new FormData();
-      if (file) {
-        formData.append('image', file);
-
-        await api.patch(`/departments/projects/image/${project.id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-      }
+      await updateProject(project.id, data, file);
 
       toast({
         title: 'Проєкт успішно змінений',

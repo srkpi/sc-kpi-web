@@ -15,6 +15,16 @@ export async function getClubById(id: string) {
   return res.data;
 }
 
+export async function createClub(formData: FormData) {
+  await apiClient.post('/clubs', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  revalidatePath('/admin/clubs');
+}
+
 export async function updateClub(
   id: number,
   data: {
@@ -42,6 +52,14 @@ export async function deleteClub(id: number) {
   await apiClient.delete(`/clubs/${id}`);
 
   revalidatePath('/admin/clubs');
+}
+
+export async function createClubProject(formData: FormData) {
+  await apiClient.post('/clubs/projects', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
 
 export async function deleteClubProject(projectId: number) {
