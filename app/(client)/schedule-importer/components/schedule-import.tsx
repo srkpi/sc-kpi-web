@@ -8,7 +8,6 @@ import {
 } from '@/app/(client)/schedule-importer/types';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
 import { useScheduleStore } from '@/store/schedule-store';
 
 interface ScheduleImportProps {
