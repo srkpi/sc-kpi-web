@@ -1,11 +1,10 @@
 import React from 'react';
-import { EmblaOptionsType } from 'embla-carousel';
 import { FileInputIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { getDepartmentList } from '@/app/actions/department.actions';
 import { getServiceList } from '@/app/actions/service.actions';
-import EmblaCarousel from '@/components/carousel/EmblaCarousel';
+import SliderMainPageDepartments from '@/components/sliders/SliderMainPageDepartments';
 import { Button } from '@/components/ui/button';
 
 const documents = [
@@ -23,7 +22,7 @@ const documents = [
   },
 ];
 
-const OPTIONS: EmblaOptionsType = { loop: true, duration: 10 };
+// const OPTIONS: EmblaOptionsType = { loop: true, duration: 10 };
 
 export default async function Home() {
   const services = await getServiceList();
@@ -31,13 +30,13 @@ export default async function Home() {
 
   return (
     <div className="mb-[144px] md:mb-[200px]">
-      {/*{departments.length >= 2 && (*/}
-      {/*  <section className="overflow-hidden pb-[70px]">*/}
-      {/*    <SliderMainPageDepartments departments={departments} />*/}
-      {/*  </section>*/}
-      {/*)}*/}
+      {departments.length >= 2 && (
+        <section className="overflow-hidden pb-[70px]">
+          <SliderMainPageDepartments departments={departments} />
+        </section>
+      )}
       <section className="max-w-[1520px] mx-auto px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px]">
-        <EmblaCarousel slides={departments} options={OPTIONS} />
+        {/*<EmblaCarousel slides={departments} options={OPTIONS} />*/}
         <div className="overflow-hidden min-h-[300px] rounded-[20px] bg-[linear-gradient(270deg,_rgba(236,237,248,0.10)_0.26%,rgba(236,237,248,0.00)_95.06%)] relative py-[30px] px-[14px] md:py-[70px] md:px-[130px]">
           <div className="flex flex-col lg:max-w-[60%] min-[1520px]:max-w-[80%] items-start">
             <h1 className="text-[20px] md:text-h1 max-w-[calc(100%-110px)] sm:max-w-full font-semibold text-blue mb-[14px] md:mb-[5px] leading-[110%]">
