@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 
 import {
+  addFaqCategory,
   deleteFAQCategory,
   updateFAQCategory,
 } from '@/app/actions/faq.actions';
@@ -14,12 +15,12 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast/use-toast';
-import { api } from '@/lib/api';
+import { Category } from '@/types/category';
 
 interface EditCategoryModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialCategories: { id: number; name: string }[];
+  initialCategories: Category[];
 }
 
 const EditCategoryModal: FC<EditCategoryModalProps> = ({
@@ -83,21 +84,14 @@ const EditCategoryModal: FC<EditCategoryModalProps> = ({
   };
 
   const handleAdd = async () => {
-    const newCategory = { name: newCategoryName };
     try {
-      const response = await api.post('/faq/categories', newCategory);
-      const createdCategory = response.data;
-      setCategories([...categories, createdCategory]);
+      const newCategory = await addFaqCategory(newCategoryName);
+      setCategories([...categories, newCategory]);
       setNewCategoryName('');
       setIsAdding(false);
-      toast({
-        title: 'Категорію успішно додано',
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Не вдалося додати категорію',
-      });
+      toast({ title: 'Категорію успішно додано' });
+    } catch (e) {
+      toast({ variant: 'destructive', title: 'Помилка додавання категорії' });
     }
   };
 

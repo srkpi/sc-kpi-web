@@ -132,6 +132,7 @@ const EditFaqPage: FC<EditDepartmentPageProps> = ({ categories, faq }) => {
               />
               <Button
                 variant="default"
+                type="button"
                 className="w-[188px] h-[39px] "
                 onClick={() => setIsModalOpen(true)}
               >
@@ -152,14 +153,6 @@ const EditFaqPage: FC<EditDepartmentPageProps> = ({ categories, faq }) => {
                 </FormItem>
               )}
             />
-            {/*<div className="mt-3">*/}
-            {/*  */}
-            {/*  <EditorComponent*/}
-            {/*    setText={text => handleChange('answer', text)}*/}
-            {/*    initialValue={faq?.answer}*/}
-            {/*  />*/}
-            {/*</div>*/}
-
             <Button
               variant="default"
               type="submit"

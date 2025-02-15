@@ -50,3 +50,8 @@ export async function updateFAQCategory(id: number, name: string) {
 export async function deleteFAQCategory(id: number) {
   await apiClient.delete(`/faq/categories/${id}`);
 }
+
+export async function addFaqCategory(name: string) {
+  const response = await apiClient.post<Category>('/faq/categories', { name });
+  return response.data;
+}
