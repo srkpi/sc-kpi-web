@@ -8,6 +8,7 @@ import {
 } from '@/app/(client)/schedule-importer/types';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/toast/use-toast';
+import { api } from '@/lib/api';
 import { useScheduleStore } from '@/store/schedule-store';
 
 interface ScheduleImportProps {
@@ -27,7 +28,6 @@ const ScheduleImport: FC<ScheduleImportProps> = ({ events }) => {
       return;
     }
     try {
-      // const authUrl = await oauthGoogleCalendar();
       const { data } = await api.get<ScheduleAuthResponse>('/schedule/auth');
       router.push(data.authUrl);
       await api.post('/schedule/create', {
@@ -36,7 +36,6 @@ const ScheduleImport: FC<ScheduleImportProps> = ({ events }) => {
         scheduleFirstWeek: events.scheduleFirstWeek,
         scheduleSecondWeek: events.scheduleSecondWeek,
       });
-      // await importSchedule(groupName, courseIdentifier, events);
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
