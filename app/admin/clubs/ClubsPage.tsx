@@ -72,7 +72,7 @@ export default function ClubsPage({ clubs }: Props) {
           {filteredClubs.map(club => (
             <TableRow key={club.id}>
               <TableCell>{club.name}</TableCell>
-              <TableCell>{club.description}</TableCell>
+              <TableCell>{club.shortDescription}</TableCell>
               <TableCell>
                 <div className="flex space-x-4">
                   <Link href={`/admin/clubs/${club.id}`}>
