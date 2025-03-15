@@ -17,13 +17,12 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
           {category.toLocaleLowerCase()}
         </span>
         <Image
-          // className="w-full h-auto rounded-[20px] aspect-video object-cover order-first lg:order-last"
           className="w-[290px] h-[300px] md:w-[408px] md:h-[338px] object-cover rounded-lg"
           src={image}
           alt="image"
           quality={100}
-          width={725}
-          height={414}
+          width={500}
+          height={500}
         />
       </div>
       <h2 className="font-m-h1 md:font-h3 mt-4">{name}</h2>

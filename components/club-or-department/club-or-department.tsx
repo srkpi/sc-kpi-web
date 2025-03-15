@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import SliderProjects from '@/components/sliders/SliderProjects';
-// import SliderProjects from '@/components/sliders/SliderProjects';
 import { Button } from '@/components/ui/button';
 import { Department } from '@/types/departments';
 
@@ -32,12 +31,12 @@ const ClubOrDepartmentPage: FC<ClubOrDepartmentProps> = ({
           </Link>
         </div>
         <Image
-          className="w-full h-auto rounded-[20px] aspect-video object-cover order-first lg:order-last"
+          className="w-full h-auto rounded-[20px] object-cover order-first lg:order-last"
           src={image}
           alt="image"
           quality={100}
-          width={725}
-          height={414}
+          width={500}
+          height={500}
         />
       </section>
       {projects.length > 0 && (
