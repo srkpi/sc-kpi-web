@@ -31,12 +31,12 @@ const ClubOrDepartmentPage: FC<ClubOrDepartmentProps> = ({
           </Link>
         </div>
         <Image
-          className="w-full h-auto rounded-[20px] object-cover order-first lg:order-last"
+          className="mx-auto rounded-[20px] object-cover order-first lg:order-last"
           src={image}
           alt="image"
           quality={100}
-          width={500}
-          height={500}
+          width={400}
+          height={400}
         />
       </section>
       {projects.length > 0 && (
