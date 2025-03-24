@@ -2,38 +2,33 @@
 
 import { revalidatePath } from 'next/cache';
 
-import CLUB_CATEGORIES from '@/constants/club-categories';
 import { apiClient } from '@/lib/client';
+import { Category } from '@/types/category';
 
 export async function getCategoriesList() {
-  // const res = await apiClient.get<string[]>('/categories');
-  // return res.data;
-
-  return CLUB_CATEGORIES;
+  const response = await apiClient.get<Category[]>('/clubs/category');
+  return response.data;
 }
 
 export async function createCategory(category: string) {
-  // await apiClient.post('/categories', { category });
-
-  CLUB_CATEGORIES.push(category);
-
-  revalidatePath('/admin/categories');
-}
-
-export async function updateCategory(category: string, newCategory: string) {
-  // await apiClient.put(`/categories/${category}`, { category: newCategory });
-
-  const categoryIndex = CLUB_CATEGORIES.indexOf(category);
-  CLUB_CATEGORIES[categoryIndex] = newCategory;
+  await apiClient.post<Category>('/clubs/category', {
+    name: category,
+  });
 
   revalidatePath('/admin/categories');
 }
 
-export async function deleteCategory(category: string) {
-  // await apiClient.delete(`/categories/${category}`);
+export async function updateCategory(categoryId: number, newName: string) {
+  await apiClient.patch<Category>(`/clubs/category`, {
+    id: categoryId,
+    name: newName,
+  });
 
-  const categoryIndex = CLUB_CATEGORIES.indexOf(category);
-  CLUB_CATEGORIES.splice(categoryIndex, 1);
+  revalidatePath('/admin/categories');
+}
+
+export async function deleteCategory(categoryId: number) {
+  await apiClient.delete(`/clubs/category/${categoryId}`);
 
   revalidatePath('/admin/categories');
 }

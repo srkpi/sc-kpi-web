@@ -1,49 +1,25 @@
 'use client';
 import { useState } from 'react';
-import { Plus, Search } from 'lucide-react';
-import Link from 'next/link';
+import { Search } from 'lucide-react';
 
-import { deleteClub } from '@/app/actions/club.actions';
-import CategoryItem from '@/components/admin/categories/CategoryItem';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { useToast } from '@/components/ui/toast/use-toast';
 import CategoryCreate from '@/components/admin/categories/CategoryCreate';
+import CategoryItem from '@/components/admin/categories/CategoryItem';
+import { Input } from '@/components/ui/input';
+import { Category } from '@/types/category';
 
 interface Props {
-  categories: string[];
+  categories: Category[];
 }
 
 export default function CategoriesPage({ categories }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
-
-  const { toast } = useToast();
-
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteClub(id);
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: `Стался помилка при видаленні студ. об'єднання`,
-      });
-    }
-  };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
   const filteredCategories = categories.filter(category =>
-    category.toLowerCase().includes(searchQuery.toLowerCase()),
+    category.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -60,7 +36,11 @@ export default function CategoriesPage({ categories }: Props) {
 
       <div className="flex flex-col w-full gap-2">
         {filteredCategories.map(category => (
-          <CategoryItem category={category} key={category} />
+          <CategoryItem
+            id={category.id}
+            name={category.name}
+            key={category.id}
+          />
         ))}
       </div>
 
