@@ -19,16 +19,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import CLUB_CATEGORIES from '@/constants/club-categories';
+import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 
 const CreateClubPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -48,7 +42,7 @@ const CreateClubPage: FC = () => {
       .trim()
       .url('Посилання має бути валідним URL')
       .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-    category: z.string().trim(),
+    category: z.array(z.string()).min(1, { message: 'Оберіть хоча б одну категорію' }),
   });
   type FormData = z.infer<typeof FormSchema>;
 
@@ -59,7 +53,7 @@ const CreateClubPage: FC = () => {
       description: '',
       shortDescription: '',
       buttonLink: '',
-      category: '',
+      category: [],
     },
   });
 
@@ -86,6 +80,11 @@ const CreateClubPage: FC = () => {
     }
   };
 
+  const categoriesOptions: Option[] = CLUB_CATEGORIES.map(category => ({
+    value: category,
+    label: category,
+  }));
+
   return (
     <Form {...form}>
       <form
@@ -109,23 +108,12 @@ const CreateClubPage: FC = () => {
           name="category"
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Категорія" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="all" className="md:hidden bg-white">
-                    Всі категорії
-                  </SelectItem>
-                  {CLUB_CATEGORIES.map(category => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <MultipleSelector
+                value={field.value}
+                onChange={field.onChange}
+                options={categoriesOptions}
+                placeholder="Оберіть категорії"
+              />
               <FormMessage />
             </FormItem>
           )}
