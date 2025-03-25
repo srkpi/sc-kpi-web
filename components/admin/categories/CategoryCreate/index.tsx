@@ -6,11 +6,10 @@ import { Button } from '@/components/ui/button';
 const CategoryCreate = () => {
   const [category, setCategory] = useState('');
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setCategory(event.target.value);
-  };
 
-  async function addCategory() {
+  async function handleAddCategory() {
     if (!category) return;
 
     await createCategory(category);
@@ -26,11 +25,7 @@ const CategoryCreate = () => {
         placeholder="Введіть назву категорії"
       />
       <div className="flex gap-2">
-        <Button
-          variant="default"
-          className="w-36"
-          onClick={() => addCategory()}
-        >
+        <Button variant="default" className="w-36" onClick={handleAddCategory}>
           Додати
         </Button>
       </div>
