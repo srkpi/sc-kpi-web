@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import MultipleSelector from '@/components/ui/multiple-selector';
 import {
   Table,
   TableBody,
@@ -32,7 +33,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import CLUB_CATEGORIES from '@/constants/club-categories';
 import { Club } from '@/types/club';
-import MultipleSelector from '@/components/ui/multiple-selector';
 
 interface EditClubPageProps {
   club: Club;
@@ -42,7 +42,11 @@ const FormSchema = z.object({
   name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
   description: z.string().min(1, { message: 'Опис обов’язковий' }),
   shortDescription: z.string().min(1, { message: 'Стислий опис обов’язковий' }),
-  buttonLink: z.string().trim().url('Посилання має бути валідним URL').min(1, { message: 'Посилання на вступ є обов’язковим' }),
+  buttonLink: z
+    .string()
+    .trim()
+    .url('Посилання має бути валідним URL')
+    .min(1, { message: 'Посилання на вступ є обов’язковим' }),
   category: z.array(z.string()).min(1, 'Оберіть хоча б одну категорію'),
 });
 
@@ -87,10 +91,14 @@ export default function EditClubPage({ club }: EditClubPageProps) {
       if (file) {
         formData.append('image', file);
       }
-      await updateClub(club.id, {
-        ...data,
-        category: data.category[0],
-      }, formData);
+      await updateClub(
+        club.id,
+        {
+          ...data,
+          category: data.category[0],
+        },
+        formData,
+      );
       toast({ title: `Студ. об'єднання успішно оновлено` });
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -130,8 +138,13 @@ export default function EditClubPage({ club }: EditClubPageProps) {
                 <FormControl>
                   <MultipleSelector
                     value={field.value.map(val => ({ label: val, value: val }))}
-                    onChange={opts => field.onChange(opts.map(opt => opt.value))}
-                    options={CLUB_CATEGORIES.map(cat => ({ label: cat, value: cat }))}
+                    onChange={opts =>
+                      field.onChange(opts.map(opt => opt.value))
+                    }
+                    options={CLUB_CATEGORIES.map(cat => ({
+                      label: cat,
+                      value: cat,
+                    }))}
                     placeholder="Оберіть категорію"
                     hidePlaceholderWhenSelected
                   />

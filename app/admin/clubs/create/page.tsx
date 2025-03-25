@@ -19,10 +19,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import CLUB_CATEGORIES from '@/constants/club-categories';
-import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 
 const CreateClubPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -42,7 +42,9 @@ const CreateClubPage: FC = () => {
       .trim()
       .url('Посилання має бути валідним URL')
       .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-    category: z.array(z.string()).min(1, { message: 'Оберіть хоча б одну категорію' }),
+    category: z
+      .array(z.string())
+      .min(1, { message: 'Оберіть хоча б одну категорію' }),
   });
   type FormData = z.infer<typeof FormSchema>;
 
