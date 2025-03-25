@@ -35,8 +35,10 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
 
   function saveChanges() {
     try {
-      categorySchema.parse(category);
-      updateCategory(id, category);
+      if (category !== name) {
+        categorySchema.parse(category);
+        updateCategory(id, category);
+      }
       setIsEditing(false);
     } catch (e) {
       if (e instanceof ZodError) {
@@ -59,7 +61,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
         <input
           className="text-xl w-full p-3 rounded-xl bg-transparent border border-blue disabled:border-greyBlue disabled:opacity-75 transition duration-500"
           style={{ borderColor: error ? '#FF0000' : '' }}
-          value={name}
+          value={category}
           onChange={handleCategoryChange}
           disabled={!isEditing}
         />
@@ -69,17 +71,13 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
       <div className="flex gap-2">
         {isEditing ? (
           <>
-            <Button
-              variant="default"
-              className="w-36"
-              onClick={() => saveChanges()}
-            >
+            <Button variant="default" className="w-36" onClick={saveChanges}>
               Зберегти
             </Button>
             <Button
               variant="destructive"
               className="w-36"
-              onClick={() => discardChanges()}
+              onClick={discardChanges}
             >
               Скасувати
             </Button>
