@@ -9,12 +9,12 @@ const CategoryCreate = () => {
   const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setCategory(event.target.value);
 
-  async function handleAddCategory() {
+  const handleAddCategory = async () => {
     if (!category) return;
 
     await createCategory(category);
     setCategory('');
-  }
+  };
 
   return (
     <div className="flex items-center justify-between gap-4">

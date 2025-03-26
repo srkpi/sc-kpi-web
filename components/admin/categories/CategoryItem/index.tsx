@@ -36,7 +36,6 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
   });
 
   async function handleFormSubmit(data: FormData) {
-    console.log('form submit');
     try {
       if (data.name !== name) await updateCategory(id, data.name);
       setIsEditing(false);
@@ -51,21 +50,21 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
     }
   }
 
-  function handleDiscardChanges(event: MouseEvent) {
+  const handleDiscardChanges = (event: MouseEvent) => {
     event.preventDefault();
     form.setValue('name', name);
     setIsEditing(false);
-  }
+  };
 
-  function handleEditing(event: MouseEvent) {
+  const handleEditing = (event: MouseEvent) => {
     event.preventDefault();
     setIsEditing(true);
-  }
+  };
 
-  function handleDeleteCategory(event: MouseEvent) {
+  const handleDeleteCategory = (event: MouseEvent) => {
     event.preventDefault();
     deleteCategory(id);
-  }
+  };
 
   return (
     <Form {...form}>
@@ -86,7 +85,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
               <FormMessage />
             </FormItem>
           )}
-        ></FormField>
+        />
 
         <div className="flex gap-2">
           {isEditing ? (
