@@ -1,6 +1,7 @@
 import {
   BriefcaseBusinessIcon,
   CableIcon,
+  LibraryIcon,
   PaletteIcon,
   PaperclipIcon,
 } from 'lucide-react';
@@ -16,6 +17,11 @@ export const navbarLinks: Props[] = [
     icon: <PaletteIcon width={28} height={28} />,
     href: '/admin/clubs',
     title: "Cтуд. об'єднання",
+  },
+  {
+    icon: <LibraryIcon width={28} height={28} />,
+    href: '/admin/categories',
+    title: 'Категорії',
   },
   {
     icon: <PaperclipIcon width={28} height={28} />,
