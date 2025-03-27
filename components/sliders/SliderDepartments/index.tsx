@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import Slider from 'react-slick';
+import React, { useState, useCallback } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
 
 import { Department } from '@/types/departments';
 
@@ -20,20 +20,26 @@ interface SliderDepartmentsProps {
 const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
   departments,
 }) => {
-  const [nav1, setNav1] = useState<Slider | null>(null);
-  const [nav2, setNav2] = useState<Slider | null>(null);
+  const [emblaRef1, emblaApi1] = useEmblaCarousel({ loop: true });
+  const [emblaRef2, emblaApi2] = useEmblaCarousel({ loop: true });
 
-  const next = () => {
-    if (!nav1 || !nav2) return;
-    nav1.slickNext();
-    nav2.slickNext();
-  };
+  const next = useCallback(() => {
+    if (emblaApi1 && emblaApi2) {
+      emblaApi1.scrollNext();
+      emblaApi2.scrollNext();
+    }
+  }, [emblaApi1, emblaApi2]);
 
-  const previous = () => {
-    if (!nav1 || !nav2) return;
-    nav1.slickPrev();
-    nav2.slickPrev();
-  };
+  const previous = useCallback(() => {
+    if (emblaApi1 && emblaApi2) {
+      emblaApi1.scrollPrev();
+      emblaApi2.scrollPrev();
+    }
+  }, [emblaApi1, emblaApi2]);
+
+  if (!departments.length) {
+    return <SkeletonDepartmentCard />;
+  }
 
   const generalSettingsSlider = {
     dots: false,
@@ -74,37 +80,28 @@ const SliderDepartments: React.FC<SliderDepartmentsProps> = ({
   return (
     <div className="relative md:flex">
       <div className="md:w-[45%] 2xl:w-[40%] slider-container md:flex md:flex-col">
-        <Slider
-          asNavFor={nav2 ? nav2 : undefined}
-          ref={slider1 => setNav1(slider1)}
-          {...generalSettingsSlider}
-          {...settingsForSlider1}
-          className="flex-auto"
-        >
-          {departments.map((dep: Department, index: number) => (
-            <React.Fragment key={index}>
-              <DepartmentCardText dep={dep} next={next} prev={previous} />
-              <DepartmentMoblieCard dep={dep} next={next} prev={previous} />
-            </React.Fragment>
-          ))}
-        </Slider>
+        <div className="embla" ref={emblaRef1}>
+          <div className="embla__container">
+            {departments.map((dep: Department, index: number) => (
+              <div className="embla__slide" key={index}>
+                <DepartmentCardText dep={dep} next={next} prev={previous} />
+                <DepartmentMoblieCard dep={dep} next={next} prev={previous} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
       <div className="hidden md:block md:w-[55%] 2xl:w-[2300px] slider-container relative">
         <div className="absolute hidden 2xl:block right-[-3px] top-0 h-full w-[500px] bg-gradient-to-r from-transparent to-dark to-80% z-10"></div>
-        <Slider
-          asNavFor={nav1 ? nav1 : undefined}
-          ref={slider2 => {
-            setNav2(slider2);
-          }}
-          {...generalSettingsSlider}
-          {...settingsForSlider2}
-        >
-          {departments.map((dep: Department, index: number) => (
-            <React.Fragment key={index}>
-              <DepartmentCardPicture dep={dep} />
-            </React.Fragment>
-          ))}
-        </Slider>
+        <div className="embla" ref={emblaRef2}>
+          <div className="embla__container">
+            {departments.map((dep: Department, index: number) => (
+              <div className="embla__slide" key={index}>
+                <DepartmentCardPicture dep={dep} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
