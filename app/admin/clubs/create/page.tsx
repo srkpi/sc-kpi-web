@@ -82,8 +82,8 @@ const CreateClubPage: FC = () => {
     }
   };
 
-  const categoriesOptions: Option[] = CLUB_CATEGORIES.map(category => ({
-    value: category,
+  const categoriesOptions: Option[] = CLUB_CATEGORIES.map((category, index) => ({
+    value: String(index),
     label: category,
   }));
 
@@ -111,7 +111,10 @@ const CreateClubPage: FC = () => {
           render={({ field }) => (
             <FormItem>
               <MultipleSelector
-                value={field.value}
+                value={field.value.map(val => ({
+                  label: CLUB_CATEGORIES[Number(val)],
+                  value: val,
+                }))}
                 onChange={field.onChange}
                 options={categoriesOptions}
                 placeholder="Оберіть категорії"
