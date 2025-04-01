@@ -42,7 +42,7 @@ const CreateClubPage: FC = () => {
       .trim()
       .url('Посилання має бути валідним URL')
       .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-    category: z
+    categories: z
       .array(z.string())
       .min(1, { message: 'Оберіть хоча б одну категорію' }),
   });
@@ -55,7 +55,7 @@ const CreateClubPage: FC = () => {
       description: '',
       shortDescription: '',
       buttonLink: '',
-      category: [],
+      categories: [],
     },
   });
 
@@ -107,7 +107,7 @@ const CreateClubPage: FC = () => {
         <ImageUpload onFileUpload={setFile} />
         <FormField
           control={form.control}
-          name="category"
+          name="categories"
           render={({ field }) => (
             <FormItem>
               <MultipleSelector
