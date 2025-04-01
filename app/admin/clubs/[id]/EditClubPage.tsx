@@ -47,7 +47,7 @@ const FormSchema = z.object({
     .trim()
     .url('Посилання має бути валідним URL')
     .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-  categories: z.array(z.string()).min(1, 'Оберіть хоча б одну категорію'),
+  categories: z.array(z.number()).min(1, 'Оберіть хоча б одну категорію'),
 });
 
 type FormData = z.infer<typeof FormSchema>;
@@ -63,7 +63,7 @@ export default function EditClubPage({ club }: EditClubPageProps) {
       description: club.description,
       buttonLink: club.buttonLink,
       shortDescription: club.shortDescription,
-      categories: [club.category],
+      categories: [CLUB_CATEGORIES.indexOf(club.category)],
     },
   });
 
@@ -95,7 +95,7 @@ export default function EditClubPage({ club }: EditClubPageProps) {
         club.id,
         {
           ...data,
-          category: data.categories[0],
+          category: CLUB_CATEGORIES[data.categories[0]],
         },
         formData,
       );
@@ -137,13 +137,13 @@ export default function EditClubPage({ club }: EditClubPageProps) {
                 <FormLabel>Категорія</FormLabel>
                 <FormControl>
                   <MultipleSelector
-                    value={field.value.map(val => ({ label: val, value: val }))}
-                    onChange={opts =>
-                      field.onChange(opts.map(opt => opt.value))
+                    value={field.value.map(val => ({ label: CLUB_CATEGORIES[val], value: String(val) }))}
+                    onChange={opts => 
+                      field.onChange(opts.map(opt => Number(opt.value)))
                     }
-                    options={CLUB_CATEGORIES.map(cat => ({
+                    options={CLUB_CATEGORIES.map((cat, index) => ({
                       label: cat,
-                      value: cat,
+                      value: String(index),
                     }))}
                     placeholder="Оберіть категорію"
                     hidePlaceholderWhenSelected
