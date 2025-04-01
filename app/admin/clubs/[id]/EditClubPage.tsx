@@ -47,7 +47,7 @@ const FormSchema = z.object({
     .trim()
     .url('Посилання має бути валідним URL')
     .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-  category: z.array(z.string()).min(1, 'Оберіть хоча б одну категорію'),
+  categories: z.array(z.string()).min(1, 'Оберіть хоча б одну категорію'),
 });
 
 type FormData = z.infer<typeof FormSchema>;
@@ -63,7 +63,7 @@ export default function EditClubPage({ club }: EditClubPageProps) {
       description: club.description,
       buttonLink: club.buttonLink,
       shortDescription: club.shortDescription,
-      category: [club.category],
+      categories: [club.category],
     },
   });
 
@@ -95,7 +95,7 @@ export default function EditClubPage({ club }: EditClubPageProps) {
         club.id,
         {
           ...data,
-          category: data.category[0],
+          category: data.categories[0],
         },
         formData,
       );
@@ -131,7 +131,7 @@ export default function EditClubPage({ club }: EditClubPageProps) {
           <ImageUpload photoSrc={club.image} onFileUpload={setFile} />
           <FormField
             control={form.control}
-            name="category"
+            name="categories"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Категорія</FormLabel>
