@@ -20,13 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import {
   Table,
   TableBody,
@@ -44,10 +38,34 @@ interface EditClubPageProps {
   club: Club;
 }
 
+const FormSchema = z.object({
+  name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
+  description: z.string().min(1, { message: 'Опис обов’язковий' }),
+  shortDescription: z.string().min(1, { message: 'Стислий опис обов’язковий' }),
+  buttonLink: z
+    .string()
+    .trim()
+    .url('Посилання має бути валідним URL')
+    .min(1, { message: 'Посилання на вступ є обов’язковим' }),
+  categories: z.array(z.number()).min(1, 'Оберіть хоча б одну категорію'),
+});
+
+type FormData = z.infer<typeof FormSchema>;
+
 export default function EditClubPage({ club }: EditClubPageProps) {
   const [file, setFile] = useState<File | null>(null);
-
   const { toast } = useToast();
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: club.name,
+      description: club.description,
+      buttonLink: club.buttonLink,
+      shortDescription: club.shortDescription,
+      categories: [] as number[],
+    },
+  });
 
   const handleDeleteProject = async (projectId: number) => {
     try {
@@ -67,44 +85,16 @@ export default function EditClubPage({ club }: EditClubPageProps) {
     }
   };
 
-  const FormSchema = z.object({
-    name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
-    description: z.string().min(1, { message: 'Опис обов’язковий' }),
-    shortDescription: z
-      .string()
-      .min(1, { message: 'Стислий опис обов’язковий' }),
-    buttonLink: z
-      .string()
-      .trim()
-      .url('Посилання має бути валідним URL')
-      .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-    category: z.string(),
-  });
-
-  type FormData = z.infer<typeof FormSchema>;
-
-  const form = useForm({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      name: club.name,
-      description: club.description,
-      buttonLink: club.buttonLink,
-      shortDescription: club.shortDescription,
-      category: club.category,
-    },
-  });
-
   const handleFormSubmit = async (data: FormData) => {
     try {
       const formData = new FormData();
       if (file) {
         formData.append('image', file);
-        await updateClub(club.id, data, formData);
       }
+      formData.append('json', JSON.stringify(data));
 
-      toast({
-        title: `Студ. об'єднання успішно оновлено`,
-      });
+      await updateClub(club.id, data, formData);
+      toast({ title: `Студ. об'єднання успішно оновлено` });
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -115,6 +105,13 @@ export default function EditClubPage({ club }: EditClubPageProps) {
       }
     }
   };
+
+  const categoriesOptions: Option[] = CLUB_CATEGORIES.map(
+    (category, index) => ({
+      value: index.toString(),
+      label: category,
+    }),
+  );
 
   return (
     <>
@@ -136,29 +133,23 @@ export default function EditClubPage({ club }: EditClubPageProps) {
           <ImageUpload photoSrc={club.image} onFileUpload={setFile} />
           <FormField
             control={form.control}
-            name="category"
+            name="categories"
             render={({ field }) => (
               <FormItem>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Категорія" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="all" className="md:hidden bg-white">
-                      Всі категорії
-                    </SelectItem>
-                    {CLUB_CATEGORIES.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormLabel>Категорія</FormLabel>
+                <FormControl>
+                  <MultipleSelector
+                    value={field.value.map(val => ({
+                      label: CLUB_CATEGORIES[val],
+                      value: val.toString(),
+                    }))}
+                    onChange={opts =>
+                      field.onChange(opts.map(opt => +opt.value))
+                    }
+                    options={categoriesOptions}
+                    placeholder="Оберіть категорії"
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

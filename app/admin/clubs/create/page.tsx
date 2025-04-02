@@ -19,13 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import CLUB_CATEGORIES from '@/constants/club-categories';
@@ -48,7 +42,9 @@ const CreateClubPage: FC = () => {
       .trim()
       .url('Посилання має бути валідним URL')
       .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-    category: z.string().trim(),
+    categories: z
+      .array(z.number())
+      .min(1, { message: 'Оберіть хоча б одну категорію' }),
   });
   type FormData = z.infer<typeof FormSchema>;
 
@@ -59,7 +55,7 @@ const CreateClubPage: FC = () => {
       description: '',
       shortDescription: '',
       buttonLink: '',
-      category: '',
+      categories: [] as number[],
     },
   });
 
@@ -86,6 +82,13 @@ const CreateClubPage: FC = () => {
     }
   };
 
+  const categoriesOptions: Option[] = CLUB_CATEGORIES.map(
+    (category, index) => ({
+      value: index.toString(),
+      label: category,
+    }),
+  );
+
   return (
     <Form {...form}>
       <form
@@ -106,26 +109,18 @@ const CreateClubPage: FC = () => {
         <ImageUpload onFileUpload={setFile} />
         <FormField
           control={form.control}
-          name="category"
+          name="categories"
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Категорія" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="all" className="md:hidden bg-white">
-                    Всі категорії
-                  </SelectItem>
-                  {CLUB_CATEGORIES.map(category => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <MultipleSelector
+                value={field.value.map(val => ({
+                  label: CLUB_CATEGORIES[val],
+                  value: val.toString(),
+                }))}
+                onChange={opts => field.onChange(opts.map(opt => +opt.value))}
+                options={categoriesOptions}
+                placeholder="Оберіть категорії"
+              />
               <FormMessage />
             </FormItem>
           )}
