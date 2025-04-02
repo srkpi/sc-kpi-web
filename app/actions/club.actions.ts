@@ -32,7 +32,7 @@ export async function updateClub(
     description: string;
     shortDescription: string;
     buttonLink: string;
-    category: string;
+    categories: number[];
   },
   formData: FormData,
 ) {

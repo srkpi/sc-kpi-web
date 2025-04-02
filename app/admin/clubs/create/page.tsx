@@ -43,7 +43,7 @@ const CreateClubPage: FC = () => {
       .url('Посилання має бути валідним URL')
       .min(1, { message: 'Посилання на вступ є обов’язковим' }),
     categories: z
-      .array(z.string())
+      .array(z.number())
       .min(1, { message: 'Оберіть хоча б одну категорію' }),
   });
   type FormData = z.infer<typeof FormSchema>;
@@ -55,7 +55,7 @@ const CreateClubPage: FC = () => {
       description: '',
       shortDescription: '',
       buttonLink: '',
-      categories: [],
+      categories: [] as number[],
     },
   });
 
@@ -82,10 +82,12 @@ const CreateClubPage: FC = () => {
     }
   };
 
-  const categoriesOptions: Option[] = CLUB_CATEGORIES.map((category, index) => ({
-    value: String(index),
-    label: category,
-  }));
+  const categoriesOptions: Option[] = CLUB_CATEGORIES.map(
+    (category, index) => ({
+      value: index.toString(),
+      label: category,
+    }),
+  );
 
   return (
     <Form {...form}>
@@ -112,10 +114,10 @@ const CreateClubPage: FC = () => {
             <FormItem>
               <MultipleSelector
                 value={field.value.map(val => ({
-                  label: CLUB_CATEGORIES[Number(val)],
-                  value: val,
+                  label: CLUB_CATEGORIES[val],
+                  value: val.toString(),
                 }))}
-                onChange={field.onChange}
+                onChange={opts => field.onChange(opts.map(opt => +opt.value))}
                 options={categoriesOptions}
                 placeholder="Оберіть категорії"
               />

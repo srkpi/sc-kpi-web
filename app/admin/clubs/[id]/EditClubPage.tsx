@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import MultipleSelector from '@/components/ui/multiple-selector';
+import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import {
   Table,
   TableBody,
@@ -63,7 +63,7 @@ export default function EditClubPage({ club }: EditClubPageProps) {
       description: club.description,
       buttonLink: club.buttonLink,
       shortDescription: club.shortDescription,
-      categories: [CLUB_CATEGORIES.indexOf(club.category)],
+      categories: [] as number[],
     },
   });
 
@@ -91,14 +91,9 @@ export default function EditClubPage({ club }: EditClubPageProps) {
       if (file) {
         formData.append('image', file);
       }
-      await updateClub(
-        club.id,
-        {
-          ...data,
-          category: CLUB_CATEGORIES[data.categories[0]],
-        },
-        formData,
-      );
+      formData.append('json', JSON.stringify(data));
+
+      await updateClub(club.id, data, formData);
       toast({ title: `Студ. об'єднання успішно оновлено` });
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -110,6 +105,13 @@ export default function EditClubPage({ club }: EditClubPageProps) {
       }
     }
   };
+
+  const categoriesOptions: Option[] = CLUB_CATEGORIES.map(
+    (category, index) => ({
+      value: index.toString(),
+      label: category,
+    }),
+  );
 
   return (
     <>
@@ -137,16 +139,15 @@ export default function EditClubPage({ club }: EditClubPageProps) {
                 <FormLabel>Категорія</FormLabel>
                 <FormControl>
                   <MultipleSelector
-                    value={field.value.map(val => ({ label: CLUB_CATEGORIES[val], value: String(val) }))}
-                    onChange={opts => 
-                      field.onChange(opts.map(opt => Number(opt.value)))
-                    }
-                    options={CLUB_CATEGORIES.map((cat, index) => ({
-                      label: cat,
-                      value: String(index),
+                    value={field.value.map(val => ({
+                      label: CLUB_CATEGORIES[val],
+                      value: val.toString(),
                     }))}
-                    placeholder="Оберіть категорію"
-                    hidePlaceholderWhenSelected
+                    onChange={opts =>
+                      field.onChange(opts.map(opt => +opt.value))
+                    }
+                    options={categoriesOptions}
+                    placeholder="Оберіть категорії"
                   />
                 </FormControl>
                 <FormMessage />
