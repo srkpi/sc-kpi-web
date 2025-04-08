@@ -50,7 +50,6 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
           quality={100}
           width={500}
           height={500}
-          priority
         />
       </div>
 

@@ -1,12 +1,13 @@
 'use client';
 
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 
+import { getCategoriesList } from '@/app/actions/categories.actions';
 import { createClub } from '@/app/actions/club.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
@@ -22,14 +23,23 @@ import { Input } from '@/components/ui/input';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
-import CLUB_CATEGORIES from '@/constants/club-categories';
+import { Category } from '@/types/category';
 
 const CreateClubPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const router = useRouter();
 
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setCategories(await getCategoriesList());
+    };
+
+    fetchCategories();
+  }, []);
 
   const FormSchema = z.object({
     name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
@@ -42,7 +52,7 @@ const CreateClubPage: FC = () => {
       .trim()
       .url('Посилання має бути валідним URL')
       .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-    categories: z
+    categoriesIds: z
       .array(z.number())
       .min(1, { message: 'Оберіть хоча б одну категорію' }),
   });
@@ -55,7 +65,7 @@ const CreateClubPage: FC = () => {
       description: '',
       shortDescription: '',
       buttonLink: '',
-      categories: [] as number[],
+      categoriesIds: [] as number[],
     },
   });
 
@@ -82,12 +92,10 @@ const CreateClubPage: FC = () => {
     }
   };
 
-  const categoriesOptions: Option[] = CLUB_CATEGORIES.map(
-    (category, index) => ({
-      value: index.toString(),
-      label: category,
-    }),
-  );
+  const categoriesOptions: Option[] = categories.map(category => ({
+    value: category.id.toString(),
+    label: category.name,
+  }));
 
   return (
     <Form {...form}>
@@ -109,14 +117,19 @@ const CreateClubPage: FC = () => {
         <ImageUpload onFileUpload={setFile} />
         <FormField
           control={form.control}
-          name="categories"
+          name="categoriesIds"
           render={({ field }) => (
             <FormItem>
               <MultipleSelector
-                value={field.value.map(val => ({
-                  label: CLUB_CATEGORIES[val],
-                  value: val.toString(),
-                }))}
+                value={field.value.map(val => {
+                  const foundCategory = categories.find(
+                    category => category.id === val,
+                  );
+                  return {
+                    label: foundCategory ? foundCategory.name : '',
+                    value: val.toString(),
+                  };
+                })}
                 onChange={opts => field.onChange(opts.map(opt => +opt.value))}
                 options={categoriesOptions}
                 placeholder="Оберіть категорії"
