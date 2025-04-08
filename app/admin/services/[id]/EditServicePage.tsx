@@ -5,7 +5,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-import { updateService } from '@/app/actions/service.actions';
+import {
+  updateService,
+  updateServiceImage,
+} from '@/app/actions/service.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -51,12 +54,12 @@ const EditServicePage: FC<EditServicePageProps> = ({ service }) => {
   });
 
   const handleFormSubmit = async (data: FormData) => {
-    const formData = new FormData();
     if (file) {
-      formData.append('image', file);
-
-      await updateService(service.id, data, formData);
+      await updateServiceImage(service.id, file);
     }
+
+    await updateService(service.id, data);
+
     toast({
       title: 'Успішно оновлено',
     });

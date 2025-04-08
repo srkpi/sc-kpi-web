@@ -8,6 +8,7 @@ import * as z from 'zod';
 import {
   deleteDepartmentProject,
   updateDepartment,
+  updateDepartmentImage,
 } from '@/app/actions/department.actions';
 import CreateModal from '@/components/admin/create-project-modal';
 import EditModal from '@/components/admin/edit-project-modal';
@@ -87,8 +88,12 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
   const handleFormSubmit = async (data: FormData) => {
     try {
       if (file) {
-        await updateDepartment(department.id, data, file);
+        await updateDepartmentImage(department.id, file);
       }
+
+      await updateDepartment(department.id, data);
+
+      toast({ title: 'Департамент успішно оновлено' });
     } catch (error) {
       toast({
         variant: 'destructive',

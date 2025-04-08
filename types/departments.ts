@@ -11,7 +11,6 @@ export interface Department {
   id: number;
   name: string;
   description: string;
-  category: string;
   categories: Category[];
   shortDescription: string;
   image: string;
