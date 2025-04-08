@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { getCategoriesList } from '@/app/actions/categories.actions';
 import ClubCard from '@/components/clubs/club-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import CLUB_CATEGORIES from '@/constants/club-categories';
+import { Category } from '@/types/category';
 import { Club } from '@/types/club';
 
 interface Props {
@@ -24,6 +25,15 @@ const ClubsPage = ({ clubs }: Props) => {
   const [visibleCount, setVisibleCount] = useState(8);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setCategories(await getCategoriesList());
+    };
+
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const filterByCategoryAndSearch = () => {
@@ -31,7 +41,7 @@ const ClubsPage = ({ clubs }: Props) => {
 
       if (selectedCategory) {
         filtered = filtered.filter(club =>
-          club.category.includes(selectedCategory),
+          club.categories.some(category => category.name === selectedCategory),
         );
       }
 
@@ -72,9 +82,9 @@ const ClubsPage = ({ clubs }: Props) => {
             <SelectItem value="all" className="md:hidden bg-white">
               Всі категорії
             </SelectItem>
-            {CLUB_CATEGORIES.map(category => (
-              <SelectItem key={category} value={category}>
-                {category}
+            {categories.map(category => (
+              <SelectItem key={category.name} value={category.name}>
+                {category.name}
               </SelectItem>
             ))}
           </SelectContent>
