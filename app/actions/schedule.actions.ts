@@ -2,26 +2,25 @@
 
 import {
   EventsData,
-  EventsResponse,
   ScheduleAuthResponse,
 } from '@/app/(client)/schedule-importer/types';
 import { campusApi } from '@/lib/campusApi';
 import { apiClient } from '@/lib/client';
-import { GroupsResponse } from '@/types/group';
+import { Group } from '@/types/group';
 
 export async function getGroups() {
-  const { data: groups } = await campusApi<GroupsResponse>('/schedule/groups');
-  return groups.data;
+  const { data: groups } = await campusApi<Group[]>('/schedule/groups');
+  return groups;
 }
 
 export async function getPairs(groupName: string, groupId: string) {
-  const { data } = await campusApi.get<EventsResponse>('/schedule/lessons', {
+  const { data } = await campusApi.get<EventsData>('/schedule/lessons', {
     params: {
       groupName: groupName,
       groupId: groupId,
     },
   });
-  return data.data;
+  return data;
 }
 
 export async function oauthGoogleCalendar() {
