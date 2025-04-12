@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/popover';
 import { axiosCampusFetcher } from '@/lib/swr/fetcher';
 import { Faculty } from '@/types/faculty';
-import { Group, GroupsResponse } from '@/types/group';
+import { Group } from '@/types/group';
 
 type SetValueTypeProps = (
   name: 'faculty' | 'group',
