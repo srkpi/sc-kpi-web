@@ -10,10 +10,11 @@ export async function getServiceList() {
   return res.data;
 }
 
-export async function createService(data: FormData) {
+export async function createService(data: {
+  image: File | null;
+  json: string;
+}) {
   await apiClient.post('/services', data);
-
-  revalidatePath('/admin/services');
 }
 
 export async function getServiceById(id: string) {

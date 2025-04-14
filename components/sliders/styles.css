@@ -1,9 +1,9 @@
-.main-page-slider .slick-slide {
+.main-page-slider .embla-slide {
   opacity: 0.4;
   transition: opacity 0.3s ease;
 }
 
-.main-page-slider .slick-current {
+.main-page-slider .embla-current {
   opacity: 1;
 }
 
@@ -11,7 +11,7 @@
   height: 100%;
 }
 
-.slick-slide > div {
+.embla-slide > div {
   height: 100%;
 }
 
