@@ -23,10 +23,10 @@ export function Header({ user }: Props) {
 
   return (
     <header className="fixed bg-dark z-[100] w-full">
-      <div className="flex justify-between items-center py-[8px] sm:py-[15px] lg:py-[23px] px-[14px] md:px-[32px] lg:px-[64px] xl:px-[100px]">
+      <div className="flex justify-between items-center py-[8px] sm:py-[15px] lg:py-[23px] px-[14px] md:px-[24px] lg:px-[64px] xl:px-[100px]">
         <Link href="/">
           <Image
-            className="object-cover align-top w-[67px] md:w-[85px] lg:w-[104px] h-auto"
+            className="object-cover align-top w-[67px] md:w-[85px] lg:w-[104px] h-auto mr-[12px]"
             src="/images/Logo.png"
             alt="logo"
             quality={100}
@@ -34,7 +34,7 @@ export function Header({ user }: Props) {
             height={38}
           />
         </Link>
-        <div className="hidden sm:flex sm:gap-[40px] md:gap-[60px] lg:gap-[100px]">
+        <div className="hidden sm:flex sm:gap-[32px] md:gap-[36px] lg:gap-[72px] xl:gap-[90px] ml-[12px]">
           <Links />
           {loggedIn ? (
             <Link href="/profile">
