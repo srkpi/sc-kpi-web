@@ -12,7 +12,7 @@ export default async function ClientLayout({
   return (
     <>
       <Header user={user} />
-      <main className="pt-[53px] lg:pt-[84px] flex-auto">{children}</main>
+      <main className="pt-[41px] lg:pt-[84px] flex-auto">{children}</main>
       <Footer />
     </>
   );
