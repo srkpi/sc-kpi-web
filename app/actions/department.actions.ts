@@ -26,7 +26,15 @@ export async function createDepartment(formData: FormData) {
   revalidatePath('/admin/departments');
 }
 
-export async function updateDepartment(id: number, data: object) {
+export async function updateDepartment(
+  id: number,
+  data: {
+    name: string;
+    shortDescription: string;
+    buttonLink: string;
+    description: string;
+  },
+) {
   await apiClient.patch('/departments', {
     id,
     ...data,
@@ -52,7 +60,10 @@ export async function createDepartmentProject(formData: FormData) {
 
 export async function updateProject(
   id: number,
-  data: object,
+  data: {
+    name: string;
+    description: string;
+  },
   file?: File | null,
 ) {
   await apiClient.patch('/departments/projects', { id, ...data });
