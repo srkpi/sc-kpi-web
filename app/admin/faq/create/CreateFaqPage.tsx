@@ -77,12 +77,12 @@ export function CreateFaqPage({ categories }: Props) {
               control={form.control}
               name="question"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex-1">
                   <FormControl>
                     <Input
                       {...field}
                       placeholder="Питання"
-                      className="w-[1056px] border-x-0 border-t-0 rounded-none pl-0"
+                      className="w-full border-x-0 border-t-0 rounded-none pl-0"
                     />
                   </FormControl>
                   <FormMessage />
