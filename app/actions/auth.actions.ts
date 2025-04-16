@@ -133,3 +133,30 @@ export async function changePassword(dto: {
     return { success: false, error: 'Помилка зміни паролю' };
   }
 }
+
+export async function refresh(): Promise<string | null> {
+  try {
+    const response = await apiClient.post<{ accessToken: string }>(
+      '/auth/refresh',
+      null,
+      {
+        withCredentials: true,
+      },
+    );
+
+    const { accessToken } = response.data;
+
+    if (!accessToken) {
+      return null;
+    }
+
+    (await cookies()).set('token', accessToken, {
+      httpOnly: true,
+    });
+
+    return accessToken;
+  } catch (error) {
+    console.error('Не вдалося оновити accessToken:', error);
+    return null;
+  }
+}
