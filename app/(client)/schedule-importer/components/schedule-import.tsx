@@ -15,7 +15,7 @@ interface ScheduleImportProps {
   events: EventsData;
 }
 
-const ScheduleImport: FC<ScheduleImportProps> = ({ events }) => {
+const ScheduleImport: FC<ScheduleImportProps> = () => {
   const { groupId, groupName, course: courseIdentifier } = useScheduleStore();
   const { toast } = useToast();
   const router = useRouter();
