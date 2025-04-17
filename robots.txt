@@ -1,0 +1,10 @@
+User-agent: *
+
+Disallow: /admin/
+Disallow: /privacy/
+Disallow: /login/
+Disallow: /register/
+Disallow: /reset-password/
+Disallow: /profile/
+
+Sitemap: https://sc.kpi.ua/sitemap.xml
