@@ -1,9 +1,11 @@
 'use server';
 
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import https from 'https';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+
+import { refresh, logout } from '@/app/actions/auth.actions';
 
 const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 export const apiClient = axios.create({
@@ -27,9 +29,24 @@ apiClient.interceptors.request.use(async config => {
 apiClient.interceptors.response.use(
   response => response,
   async error => {
-    if (error.response?.status === 401) {
-      (await cookies()).delete('token');
-      redirect('/login');
+    const originalRequest: AxiosRequestConfig & { _retry?: boolean } = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const newAccessToken = await refresh();
+
+      if (newAccessToken) {
+        originalRequest.headers = {
+          ...originalRequest.headers,
+          Authorization: `Bearer ${newAccessToken}`,
+        };
+
+        return apiClient(originalRequest);
+      } else {
+        await logout();
+        redirect('/login');
+      }
     }
     return Promise.reject(error);
   },
