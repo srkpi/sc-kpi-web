@@ -11,6 +11,8 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
+COPY .husky/ .husky/
+ENV NODE_ENV=production
 RUN npm ci --legacy-peer-deps
 
 

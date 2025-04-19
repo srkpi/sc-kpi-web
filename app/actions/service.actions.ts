@@ -10,13 +10,11 @@ export async function getServiceList() {
   return res.data;
 }
 
-export async function createService(data: any) {
-  // await clientFileUpload('/services', data);
+export async function createService(data: {
+  image: File | null;
+  json: string;
+}) {
   await apiClient.post('/services', data);
-
-  // revalidatePath('/admin/services');
-  // const newService = await res.json();
-  // await clientFileUpload(`/services/image/${newService.id}`, data);
 }
 
 export async function getServiceById(id: string) {
@@ -31,22 +29,22 @@ export async function updateService(
     description: string;
     buttonLink: string;
   },
-  formData: FormData,
 ) {
-  try {
-    await apiClient.patch('/services', {
-      id,
-      ...data,
-    });
+  await apiClient.patch('/services', {
+    id,
+    ...data,
+  });
+}
 
-    await apiClient.patch(`/services/image/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-  } catch (error) {
-    console.error(error);
-  }
+export async function updateServiceImage(id: number, file: File) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  await apiClient.patch(`/services/image/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
 
 export async function deleteService(id: number) {

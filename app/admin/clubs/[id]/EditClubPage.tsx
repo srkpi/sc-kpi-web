@@ -1,12 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import * as z from 'zod';
 
-import { deleteClubProject, updateClub } from '@/app/actions/club.actions';
+import { getCategoriesList } from '@/app/actions/categories.actions';
+import {
+  deleteClubProject,
+  updateClub,
+  updateClubImage,
+} from '@/app/actions/club.actions';
 import CreateModal from '@/components/admin/create-project-modal';
 import EditModal from '@/components/admin/edit-project-modal';
 import ImageUpload from '@/components/ImageUpload';
@@ -20,13 +25,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import {
   Table,
   TableBody,
@@ -37,17 +36,50 @@ import {
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
-import CLUB_CATEGORIES from '@/constants/club-categories';
+import { Category } from '@/types/category';
 import { Club } from '@/types/club';
 
 interface EditClubPageProps {
   club: Club;
 }
 
+const FormSchema = z.object({
+  name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
+  description: z.string().min(1, { message: 'Опис обов’язковий' }),
+  shortDescription: z.string().min(1, { message: 'Стислий опис обов’язковий' }),
+  buttonLink: z
+    .string()
+    .trim()
+    .url('Посилання має бути валідним URL')
+    .min(1, { message: 'Посилання на вступ є обов’язковим' }),
+  categoriesIds: z.array(z.number()).min(1, 'Оберіть хоча б одну категорію'),
+});
+
+type FormData = z.infer<typeof FormSchema>;
+
 export default function EditClubPage({ club }: EditClubPageProps) {
   const [file, setFile] = useState<File | null>(null);
-
+  const [categories, setCategories] = useState<Category[]>([]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setCategories(await getCategoriesList());
+    };
+
+    fetchCategories();
+  }, []);
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: club.name,
+      description: club.description,
+      buttonLink: club.buttonLink,
+      shortDescription: club.shortDescription,
+      categoriesIds: club.categories.map(category => category.id),
+    },
+  });
 
   const handleDeleteProject = async (projectId: number) => {
     try {
@@ -67,44 +99,15 @@ export default function EditClubPage({ club }: EditClubPageProps) {
     }
   };
 
-  const FormSchema = z.object({
-    name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
-    description: z.string().min(1, { message: 'Опис обов’язковий' }),
-    shortDescription: z
-      .string()
-      .min(1, { message: 'Стислий опис обов’язковий' }),
-    buttonLink: z
-      .string()
-      .trim()
-      .url('Посилання має бути валідним URL')
-      .min(1, { message: 'Посилання на вступ є обов’язковим' }),
-    category: z.string(),
-  });
-
-  type FormData = z.infer<typeof FormSchema>;
-
-  const form = useForm({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      name: club.name,
-      description: club.description,
-      buttonLink: club.buttonLink,
-      shortDescription: club.shortDescription,
-      category: club.category,
-    },
-  });
-
   const handleFormSubmit = async (data: FormData) => {
     try {
-      const formData = new FormData();
       if (file) {
-        formData.append('image', file);
-        await updateClub(club.id, data, formData);
+        await updateClubImage(club.id, file);
       }
 
-      toast({
-        title: `Студ. об'єднання успішно оновлено`,
-      });
+      await updateClub(club.id, data);
+
+      toast({ title: `Студ. об'єднання успішно оновлено` });
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
@@ -115,6 +118,11 @@ export default function EditClubPage({ club }: EditClubPageProps) {
       }
     }
   };
+
+  const categoriesOptions: Option[] = categories.map(category => ({
+    value: category.id.toString(),
+    label: category.name,
+  }));
 
   return (
     <>
@@ -136,29 +144,28 @@ export default function EditClubPage({ club }: EditClubPageProps) {
           <ImageUpload photoSrc={club.image} onFileUpload={setFile} />
           <FormField
             control={form.control}
-            name="category"
+            name="categoriesIds"
             render={({ field }) => (
               <FormItem>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Категорія" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="all" className="md:hidden bg-white">
-                      Всі категорії
-                    </SelectItem>
-                    {CLUB_CATEGORIES.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormLabel>Категорія</FormLabel>
+                <FormControl>
+                  <MultipleSelector
+                    value={field.value.map(val => {
+                      const foundCategory = categories.find(
+                        category => category.id === val,
+                      );
+                      return {
+                        label: foundCategory ? foundCategory.name : '',
+                        value: val.toString(),
+                      };
+                    })}
+                    onChange={opts =>
+                      field.onChange(opts.map(opt => +opt.value))
+                    }
+                    options={categoriesOptions}
+                    placeholder="Оберіть категорії"
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

@@ -21,50 +21,49 @@ export async function getDepartmentById(id: string) {
 }
 
 export async function createDepartment(formData: FormData) {
-  await apiClient.post('/departments', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  await apiClient.post('/departments', formData);
 
   revalidatePath('/admin/departments');
 }
 
 export async function updateDepartment(
   id: number,
-  data: Record<string, any>,
-  file?: File,
+  data: {
+    name: string;
+    shortDescription: string;
+    buttonLink: string;
+    description: string;
+  },
 ) {
   await apiClient.patch('/departments', {
     id,
     ...data,
   });
 
-  if (file) {
-    const formData = new FormData();
-    formData.append('image', file);
-
-    await apiClient.patch(`/departments/image/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-  }
-
   revalidatePath('/admin/departments');
 }
 
-export async function createDepartmentProject(formData: FormData) {
-  await apiClient.post('/departments/projects', formData, {
+export async function updateDepartmentImage(id: number, file: File) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  await apiClient.patch(`/departments/image/${id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
 }
 
+export async function createDepartmentProject(formData: FormData) {
+  await apiClient.post('/departments/projects', formData);
+}
+
 export async function updateProject(
   id: number,
-  data: Record<string, any>,
+  data: {
+    name: string;
+    description: string;
+  },
   file?: File | null,
 ) {
   await apiClient.patch('/departments/projects', { id, ...data });

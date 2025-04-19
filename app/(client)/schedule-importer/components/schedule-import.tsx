@@ -15,7 +15,7 @@ interface ScheduleImportProps {
   events: EventsData;
 }
 
-const ScheduleImport: FC<ScheduleImportProps> = ({ events }) => {
+const ScheduleImport: FC<ScheduleImportProps> = () => {
   const { groupId, groupName, course: courseIdentifier } = useScheduleStore();
   const { toast } = useToast();
   const router = useRouter();
@@ -30,12 +30,6 @@ const ScheduleImport: FC<ScheduleImportProps> = ({ events }) => {
     try {
       const { data } = await api.get<ScheduleAuthResponse>('/schedule/auth');
       router.push(data.authUrl);
-      await api.post('/schedule/create', {
-        groupName,
-        courseIdentifier,
-        scheduleFirstWeek: events.scheduleFirstWeek,
-        scheduleSecondWeek: events.scheduleSecondWeek,
-      });
     } catch (error) {
       if (isAxiosError(error)) {
         toast({

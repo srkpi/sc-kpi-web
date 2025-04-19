@@ -3,6 +3,8 @@
 import axios from 'axios';
 import https from 'https';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+
 const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -22,13 +24,13 @@ apiClient.interceptors.request.use(async config => {
   return config;
 });
 
-// apiClient.interceptors.response.use(
-//   response => response,
-//   async error => {
-//     if (error.response?.status === 401) {
-//       (await cookies()).delete('token');
-//       redirect('/');
-//     }
-//     return Promise.reject(error);
-//   },
-// );
+apiClient.interceptors.response.use(
+  response => response,
+  async error => {
+    if (error.response?.status === 401) {
+      (await cookies()).delete('token');
+      redirect('/login');
+    }
+    return Promise.reject(error);
+  },
+);

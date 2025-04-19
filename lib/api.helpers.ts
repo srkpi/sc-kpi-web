@@ -1,8 +1,14 @@
-export const errorHandler = (error: any): string => {
+import { AxiosError } from 'axios';
+
+interface ErrorResponseData {
+  message?: string | string[];
+}
+
+export const errorHandler = (error: AxiosError<ErrorResponseData>): string => {
   const message = error.response?.data?.message;
 
   return message
-    ? typeof error.response.data.message === 'object'
+    ? typeof message === 'object'
       ? message[0]
       : message
     : error.message;

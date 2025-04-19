@@ -1,3 +1,5 @@
+import { Category } from './category';
+
 export interface DepartmentProject {
   id: number;
   name: string;
@@ -9,7 +11,7 @@ export interface Department {
   id: number;
   name: string;
   description: string;
-  category: string;
+  categories: Category[];
   shortDescription: string;
   image: string;
   buttonLink: string;

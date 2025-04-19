@@ -16,11 +16,7 @@ export async function getClubById(id: string) {
 }
 
 export async function createClub(formData: FormData) {
-  await apiClient.post('/clubs', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  await apiClient.post('/clubs', formData);
 
   revalidatePath('/admin/clubs');
 }
@@ -32,14 +28,20 @@ export async function updateClub(
     description: string;
     shortDescription: string;
     buttonLink: string;
-    category: string;
+    categoriesIds: number[];
   },
-  formData: FormData,
 ) {
-  await apiClient.patch(`/clubs/${id}`, {
+  await apiClient.patch(`/clubs`, {
     id: id,
     ...data,
   });
+
+  revalidatePath('/admin/clubs');
+}
+
+export async function updateClubImage(id: number, file: File) {
+  const formData = new FormData();
+  formData.append('image', file);
 
   await apiClient.patch(`/clubs/image/${id}`, formData, {
     headers: {

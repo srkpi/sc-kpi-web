@@ -46,12 +46,12 @@ const CreateServicePage: FC = () => {
 
   const handleFormSubmit = async (data: FormData) => {
     try {
-      const formData = new FormData();
-      if (file) {
-        formData.append('image', file);
-      }
-      formData.append('json', JSON.stringify(data));
-      await createService(formData);
+      const payload = {
+        image: file,
+        json: JSON.stringify(data),
+      };
+
+      await createService(payload);
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -59,6 +59,7 @@ const CreateServicePage: FC = () => {
       });
     }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleFormSubmit)}>

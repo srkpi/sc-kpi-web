@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/popover';
 import { axiosCampusFetcher } from '@/lib/swr/fetcher';
 import { Faculty } from '@/types/faculty';
-import { Group, GroupsResponse } from '@/types/group';
+import { Group } from '@/types/group';
 
 type SetValueTypeProps = (
   name: 'faculty' | 'group',
@@ -55,7 +55,7 @@ const GroupSelect = ({
   avoidCollisions = false,
 }: GroupSelectProps) => {
   const [open, setOpen] = useState(false);
-  const { data: allGroups } = useSWR<GroupsResponse>(
+  const { data: allGroups } = useSWR<Group[]>(
     '/schedule/groups',
     axiosCampusFetcher,
     {
@@ -111,7 +111,7 @@ const GroupSelect = ({
               Групу не знайдено
             </CommandEmpty>
             <CommandGroup className="bg-dark">
-              {allGroups?.data.map(group => (
+              {allGroups?.map(group => (
                 <CommandItem
                   key={group.id}
                   value={group.name}
