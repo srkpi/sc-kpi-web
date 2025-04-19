@@ -30,12 +30,9 @@ export const registerSchema = z
       .min(8, 'Пароль має містити щонайменше 8 символів'),
     faculty: z.string().min(1, 'Виберіть факультет'),
     group: z.string().min(1, 'Виберіть групу'),
-    terms: z
-      .boolean()
-      .default(false)
-      .refine(value => value, {
-        message: 'Погодьтесь з умовами користування',
-      }),
+    terms: z.boolean().refine(value => value, {
+      message: 'Погодьтесь з умовами користування',
+    }),
   })
   .refine(data => data.password === data.confirmPassword, {
     message: 'Паролі повинні збігатися',
