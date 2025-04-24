@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import dynamic from 'next/dynamic';
 import * as z from 'zod';
 
 import {
@@ -31,9 +32,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { Department } from '@/types/departments';
+
+const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
+  ssr: false,
+});
 
 interface EditDepartmentPageProps {
   department: Department;
@@ -155,13 +159,10 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
               render={({ field }) => (
                 <FormItem className="my-6 grid w-full items-center gap-2">
                   <FormLabel htmlFor="description">Опис департаменту</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px]"
-                      placeholder="Введіть опис департаменту"
-                      {...field}
-                    />
-                  </FormControl>
+                  <EditorComponent
+                    setText={text => form.setValue('description', text)}
+                    initialValue={field.value}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -172,13 +173,10 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
               render={({ field }) => (
                 <FormItem className="my-6 grid w-full items-center gap-2">
                   <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px] placeholder-top"
-                      placeholder="Тут має бути стислий опис"
-                      {...field}
-                    />
-                  </FormControl>
+                  <EditorComponent
+                    setText={text => form.setValue('shortDescription', text)}
+                    initialValue={field.value}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
