@@ -196,8 +196,14 @@ const EditDepartmentPage: FC<EditDepartmentPageProps> = ({ department }) => {
         <TableBody>
           {projects.map(project => (
             <TableRow key={project.id}>
-              <TableCell>{project.name}</TableCell>
-              <TableCell>{project.description}</TableCell>
+              <TableCell>
+                <div dangerouslySetInnerHTML={{ __html: project.name }} />
+              </TableCell>
+              <TableCell>
+                <div
+                  dangerouslySetInnerHTML={{ __html: project.description }}
+                />
+              </TableCell>
               <TableCell>
                 <div className="flex space-x-4">
                   <EditModal project={project} />
