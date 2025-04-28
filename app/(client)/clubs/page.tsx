@@ -1,4 +1,5 @@
 import { BicepsFlexed, Layers } from 'lucide-react';
+import { Metadata } from 'next';
 
 import ClubsPage from '@/app/(client)/clubs/ClubsPage';
 import SubClientLayout from '@/app/(client)/sub-client-layout';
@@ -17,6 +18,11 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
     label: "Cтудентські об'єднання",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Студентські об'єднання",
+  description: "Дізнайтеся більше про студентські об'єднання КПІ.",
+};
 
 export default async function Page() {
   const data = await getClubList();

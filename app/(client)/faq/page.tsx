@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Cable, Layers } from 'lucide-react';
+import { Metadata } from 'next';
 
 import FaqContainer from '@/app/(client)/faq/faq-container';
 import SubClientLayout from '@/app/(client)/sub-client-layout';
@@ -18,6 +19,12 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
     label: 'FAQ',
   },
 ];
+
+export const metadata: Metadata = {
+  title: 'FAQ',
+  description:
+    "Відповіді на часто задавані питання про наші проєкти, об'єднання та інші аспекти. Знайдіть необхідну інформацію швидко та зручно.",
+};
 
 export default async function Page() {
   const faqs = await getFAQList();

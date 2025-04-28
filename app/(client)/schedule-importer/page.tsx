@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 
 import Schedule from '@/app/(client)/schedule-importer/components/schedule';
 import ScheduleTable from '@/app/(client)/schedule-importer/components/schedule-table';
@@ -6,6 +7,12 @@ import { getGroups } from '@/app/actions/schedule.actions';
 import Spinner from '@/components/ui/spinner';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Розклад занять',
+  description:
+    'Перегляньте актуальний розклад занять для студентів КПІ ім. Ігоря Сікорського. Знайдіть інформацію про лекції, семінари та інші навчальні події.',
+};
 
 export default async function Page() {
   const groups = await getGroups();
