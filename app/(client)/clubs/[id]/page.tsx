@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   return {
     title: `${club.name}` || "Студентське об'єднання",
-    description: club.description || "Студентське об'єднання не має опису",
+    description: club.description || '',
   };
 }
 

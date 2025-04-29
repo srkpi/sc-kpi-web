@@ -18,7 +18,7 @@ export async function generateMetadata({
 
   return {
     title: `${department.name}` || 'Департамент',
-    description: department.description || 'Департамент не має опису',
+    description: department.description || '',
   };
 }
 
