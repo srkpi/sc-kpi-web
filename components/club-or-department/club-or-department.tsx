@@ -22,7 +22,10 @@ const ClubOrDepartmentPage: FC<ClubOrDepartmentProps> = ({
             <h1 className="text-m-h1 md:text-h3 lg:text-h1 font-semibold mb-[10px] lg:mb-[25px] xl:mb-[50px]">
               {name}
             </h1>
-            <p className="text-m-p lg:text-p mt-[21.5px]">{description}</p>
+            <div
+              className="text-m-p lg:text-p mt-[21.5px]"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
           </div>
           <Link href={buttonLink}>
             <Button className="w-full lg:w-[300px] mt-[14.5px]" size="sm">

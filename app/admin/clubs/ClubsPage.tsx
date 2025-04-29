@@ -71,8 +71,14 @@ export default function ClubsPage({ clubs }: Props) {
         <TableBody>
           {filteredClubs.map(club => (
             <TableRow key={club.id}>
-              <TableCell>{club.name}</TableCell>
-              <TableCell>{club.shortDescription}</TableCell>
+              <TableCell>
+                <div dangerouslySetInnerHTML={{ __html: club.name }} />
+              </TableCell>
+              <TableCell>
+                <div
+                  dangerouslySetInnerHTML={{ __html: club.shortDescription }}
+                />
+              </TableCell>
               <TableCell>
                 <div className="flex space-x-4">
                   <Link href={`/admin/clubs/${club.id}`}>

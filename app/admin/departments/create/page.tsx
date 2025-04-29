@@ -4,6 +4,7 @@ import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import dynamic from 'next/dynamic';
 import * as z from 'zod';
 
 import { createDepartment } from '@/app/actions/department.actions';
@@ -19,6 +20,10 @@ import {
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
+
+const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
+  ssr: false,
+});
 
 const CreateDepartmentPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -93,13 +98,10 @@ const CreateDepartmentPage: FC = () => {
               render={({ field }) => (
                 <FormItem className="my-6 grid w-full items-center gap-2">
                   <FormLabel htmlFor="name">Назва</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px] placeholder-top"
-                      placeholder="Тут має бути назва"
-                      {...field}
-                    />
-                  </FormControl>
+                  <EditorComponent
+                    setText={text => form.setValue('name', text)}
+                    initialValue={field.value}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -110,15 +112,12 @@ const CreateDepartmentPage: FC = () => {
               render={({ field }) => (
                 <FormItem className="my-6 grid w-full items-center gap-2">
                   <FormLabel htmlFor="shortDescription">
-                    Стислий опис департаменту
+                    Стислий опис департамент
                   </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px]"
-                      placeholder="Введіть стислий опис"
-                      {...field}
-                    />
-                  </FormControl>
+                  <EditorComponent
+                    setText={text => form.setValue('shortDescription', text)}
+                    initialValue={field.value}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -149,13 +148,10 @@ const CreateDepartmentPage: FC = () => {
             render={({ field }) => (
               <FormItem className="my-6 grid w-full items-center gap-2">
                 <FormLabel htmlFor="description">Опис служби</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-[120px]"
-                    placeholder="Введіть опис служби"
-                    {...field}
-                  />
-                </FormControl>
+                <EditorComponent
+                  setText={text => form.setValue('description', text)}
+                  initialValue={field.value}
+                />
                 <FormMessage />
               </FormItem>
             )}
