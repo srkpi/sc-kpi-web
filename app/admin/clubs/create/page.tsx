@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 
@@ -21,9 +22,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { Category } from '@/types/category';
+
+const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
+  ssr: false,
+});
 
 const CreateClubPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -145,9 +149,10 @@ const CreateClubPage: FC = () => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel htmlFor="name">Назва</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                <EditorComponent
+                  setText={text => form.setValue('name', text)}
+                  initialValue={field.value}
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -173,13 +178,10 @@ const CreateClubPage: FC = () => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel htmlFor="description">Опис СО</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-[120px]"
-                    placeholder="Введіть опис СО"
-                    {...field}
-                  />
-                </FormControl>
+                <EditorComponent
+                  setText={text => form.setValue('description', text)}
+                  initialValue={field.value}
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -190,13 +192,10 @@ const CreateClubPage: FC = () => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="h-[120px]"
-                    placeholder="Введіть стислий опис"
-                    {...field}
-                  />
-                </FormControl>
+                <EditorComponent
+                  setText={text => form.setValue('shortDescription', text)}
+                  initialValue={field.value}
+                />
                 <FormMessage />
               </FormItem>
             )}
