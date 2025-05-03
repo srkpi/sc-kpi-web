@@ -17,8 +17,8 @@ export async function generateMetadata({
   const club = await getClubById(id);
 
   return {
-    title: `${club.name}` || "Студентське об'єднання",
-    description: club.description || '',
+    title: `${club.name}`,
+    description: club.description,
   };
 }
 

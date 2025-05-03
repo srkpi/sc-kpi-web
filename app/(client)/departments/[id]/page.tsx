@@ -17,8 +17,8 @@ export async function generateMetadata({
   const department = await getDepartmentById(id);
 
   return {
-    title: `${department.name}` || 'Департамент',
-    description: department.description || '',
+    title: `${department.name}`,
+    description: department.description,
   };
 }
 
