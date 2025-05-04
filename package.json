@@ -9,7 +9,10 @@
     "lint": "next lint",
     "prepare": "node .husky/install.mjs",
     "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report"
   },
   "husky": {
     "hooks": {
@@ -63,11 +66,13 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.52.0",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@typescript-eslint/parser": "^7.15.0",
+    "dotenv": "^16.5.0",
     "eslint": "^8",
     "eslint-config-next": "15.3.1",
     "eslint-plugin-react": "^7.37.4",
