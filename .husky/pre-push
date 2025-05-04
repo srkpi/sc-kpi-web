@@ -1,1 +1,1 @@
-npx playwright test
+npm run test
