@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
+import dynamic from 'next/dynamic';
 import * as z from 'zod';
 
 import { getCategoriesList } from '@/app/actions/categories.actions';
@@ -34,10 +35,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { Category } from '@/types/category';
 import { Club } from '@/types/club';
+
+const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
+  ssr: false,
+});
 
 interface EditClubPageProps {
   club: Club;
@@ -205,13 +209,10 @@ export default function EditClubPage({ club }: EditClubPageProps) {
               render={({ field }) => (
                 <FormItem className="my-6 grid w-full items-center gap-2">
                   <FormLabel htmlFor="description">Опис департаменту</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px]"
-                      placeholder="Введіть опис департаменту"
-                      {...field}
-                    />
-                  </FormControl>
+                  <EditorComponent
+                    setText={text => form.setValue('description', text)}
+                    initialValue={field.value}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -222,13 +223,10 @@ export default function EditClubPage({ club }: EditClubPageProps) {
               render={({ field }) => (
                 <FormItem className="my-6 grid w-full items-center gap-2">
                   <FormLabel htmlFor="shortDescription">Стислий опис</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-[120px] placeholder-top"
-                      placeholder="Тут має бути стислий опис"
-                      {...field}
-                    />
-                  </FormControl>
+                  <EditorComponent
+                    setText={text => form.setValue('shortDescription', text)}
+                    initialValue={field.value}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -246,8 +244,14 @@ export default function EditClubPage({ club }: EditClubPageProps) {
             <TableBody>
               {club.projects.map(project => (
                 <TableRow key={project.id}>
-                  <TableCell>{project.name}</TableCell>
-                  <TableCell>{project.description}</TableCell>
+                  <TableCell>
+                    <div dangerouslySetInnerHTML={{ __html: project.name }} />
+                  </TableCell>
+                  <TableCell>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: project.description }}
+                    />
+                  </TableCell>
                   <TableCell>
                     <div className="flex space-x-4">
                       <EditModal project={project} />

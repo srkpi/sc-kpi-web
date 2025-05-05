@@ -133,9 +133,12 @@ const Slider = ({ departments }: SliderProps) => {
                     <div className="name font-h1 mb-[30px]">
                       {department.name}
                     </div>
-                    <div className="des mb-[40px]">
-                      {department.shortDescription}
-                    </div>
+                    <div
+                      className="des mb-[40px]"
+                      dangerouslySetInnerHTML={{
+                        __html: department.shortDescription,
+                      }}
+                    />
                     <Link href={`/departments/${department.id}`}>
                       <Button className="min-w-[200px] w-full max-w-[300px] bg-gradient-to-r from-accent to-blue border-none">
                         Дізнатись більше
@@ -179,9 +182,12 @@ const Slider = ({ departments }: SliderProps) => {
                 <div className="name text-[24px] font-semibold mb-[10px]">
                   {department.name}
                 </div>
-                <div className="des mb-[20px] text-[14px] font-light leading-[118%]">
-                  {department.shortDescription}
-                </div>
+                <div
+                  className="des mb-[20px] text-[14px] font-light leading-[118%]"
+                  dangerouslySetInnerHTML={{
+                    __html: department.shortDescription,
+                  }}
+                />
                 <Link href={`/departments/${department.id}`}>
                   <Button className="min-w-[200px] w-full py-[11px] text-[16px] font-semibold bg-gradient-to-r from-accent to-blue border-none">
                     Дізнатись більше

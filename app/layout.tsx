@@ -14,7 +14,10 @@ const fontSans = FontSans({
   display: 'auto',
 });
 
-const title = 'Студентська Рада | КПІ ім. Ігоря Сікорського';
+const title = {
+  template: '%s | КПІ ім. Ігоря Сікорського',
+  default: 'Студентська Рада | КПІ ім. Ігоря Сікорського',
+};
 const description =
   "Студентська рада КПІ — це ком'юніті згуртованих та ініціативних студентів, які роблять КПІ кращим.";
 
@@ -25,7 +28,16 @@ export const metadata: Metadata = {
     title,
     description,
     type: 'website',
-    images: '',
+    images: [
+      {
+        url: 'https://sc.kpi.ua/images/Logo.png',
+        secureUrl: 'https://sc.kpi.ua/images/Logo.png',
+        type: 'image/png',
+        width: 1200,
+        height: 630,
+        alt: "Preview image for Student's Council website",
+      },
+    ],
     url: 'https://sc.kpi.ua',
   },
 };
