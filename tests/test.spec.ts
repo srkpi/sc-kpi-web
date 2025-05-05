@@ -1,5 +1,6 @@
 import { test } from '@playwright/test';
 import * as crypto from 'crypto';
+import { generate as generatePassword } from 'generate-password';
 
 test('basic navigation', async ({ page, isMobile }) => {
   await page.goto('/');
@@ -38,7 +39,13 @@ test('auth flow', async ({ page }) => {
   const email = `${crypto.randomUUID()}@test.com`;
   const firstName = 'John';
   const lastName = 'Doe';
-  const password = `Abcdefg123_`;
+  const password = generatePassword({
+    lowercase: true,
+    uppercase: true,
+    numbers: true,
+    symbols: true,
+    length: 12,
+  });
 
   await page.goto('/register', { timeout: 15000 });
   await page.waitForSelector('input[type="email"]');

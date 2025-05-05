@@ -51,6 +51,7 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "generate-password": "^1.7.1",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.489.0",
     "next": "^15.1.6",
