@@ -45,6 +45,7 @@ test('auth flow', async ({ page }) => {
     numbers: true,
     symbols: true,
     length: 12,
+    strict: true,
   });
 
   await page.goto('/register', { timeout: 15000 });
