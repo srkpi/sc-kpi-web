@@ -96,9 +96,10 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
 
       <h2 className="font-m-h1 md:font-h3 mt-4 text-left">{name}</h2>
 
-      <div className="font-p md:font-m-p mt-2 flex-grow overflow-hidden min-h-[60px] text-left">
-        {shortDescription}
-      </div>
+      <div
+        className="font-p md:font-m-p mt-2 flex-grow overflow-hidden min-h-[60px] text-left"
+        dangerouslySetInnerHTML={{ __html: shortDescription }}
+      />
 
       <div className="flex justify-start mt-4 md:mt-auto space-x-2 md:space-x-1">
         <Link href={buttonLink}>

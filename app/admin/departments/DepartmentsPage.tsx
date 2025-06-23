@@ -72,8 +72,16 @@ export default function DepartmentsPage({ departments }: Props) {
         <TableBody>
           {filteredDepartments.map(department => (
             <TableRow key={department.id}>
-              <TableCell>{department.name}</TableCell>
-              <TableCell>{department.shortDescription}</TableCell>
+              <TableCell>
+                <div dangerouslySetInnerHTML={{ __html: department.name }} />
+              </TableCell>
+              <TableCell>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: department.shortDescription,
+                  }}
+                />
+              </TableCell>
               <TableCell>
                 <div className="flex space-x-4">
                   <Link href={`/admin/departments/${department.id}`}>

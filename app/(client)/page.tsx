@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileInputIcon } from 'lucide-react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { getDepartmentList } from '@/app/actions/department.actions';
@@ -21,6 +22,11 @@ const documents = [
       'Цей Закон встановлює основні правові, організаційні, фінансові засади функціонування системи вищої освіти, створює умови для посилення співпраці державних органів і бізнесу з закладами вищої освіти на принципах автономії закладів вищої освіти, поєднання освіти з наукою та виробництвом з метою підготовки конкурентоспроможного людського капіталу для високотехнологічного та інноваційного розвитку країни, самореалізації особистості, забезпечення потреб суспільства, ринку праці та держави у кваліфікованих фахівцях.',
   },
 ];
+
+export const metadata: Metadata = {
+  description:
+    "Ласкаво просимо на офіційну сторінку Студентської Ради КПІ ім. Ігоря Сікорського. Дізнайтеся більше про наші проєкти, об'єднання та події, які роблять студентське життя в КПІ цікавішим і активнішим.",
+};
 
 export default async function Home() {
   const services = await getServiceList();
@@ -60,7 +66,7 @@ export default async function Home() {
               хто бажає приєднатися, може будь-коли заповнити форму за
               посиланням нижче.
             </p>
-            <Link href="https://forms.gle/wXVo8zMxSpZZpmQ96">
+            <Link href="https://kpistats.onrender.com/sr_vstup">
               <Button className="self-center md:self-start py-2 md:py-4 px-8 md:px-6">
                 Приєднуйся до Студради КПІ
               </Button>

@@ -1,4 +1,5 @@
 import { FileCheck2, Layers } from 'lucide-react';
+import { Metadata } from 'next';
 
 import SubClientLayout from '@/app/(client)/sub-client-layout';
 import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
@@ -15,6 +16,12 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
     label: 'Політика конфіденційності',
   },
 ];
+
+export const metadata: Metadata = {
+  title: 'Політика конфіденційності',
+  description:
+    'Ознайомтесь з нашою політикою конфіденційності, щоб дізнатися, як ми збираємо, використовуємо та захищаємо ваші персональні дані.',
+};
 
 export default function Privacy() {
   return (
