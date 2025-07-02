@@ -5,8 +5,8 @@ import { AxiosError } from 'axios';
 import { Plus } from 'lucide-react';
 import * as z from 'zod';
 
-import { createClubProject } from '@/app/actions/club.actions';
-import { createDepartmentProject } from '@/app/actions/department.actions';
+import { createClubProject } from '@/app/[locale]/actions/club.actions';
+import { createDepartmentProject } from '@/app/[locale]/actions/department.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {

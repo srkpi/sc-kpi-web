@@ -4,10 +4,14 @@ import { Menu, X } from 'lucide-react';
 import { UserIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 
 import Links from '@/components/header/components/links';
 import { Button } from '@/components/ui/button';
 import { User } from '@/types/auth/user';
+
+import '@/public/icons/ua-flag.svg';
+import '@/public/icons/uk-flag.svg';
 
 interface Props {
   user: User | null;
@@ -16,9 +20,23 @@ interface Props {
 export function Header({ user }: Props) {
   const [open, setOpen] = useState(false);
   const loggedIn = !!user;
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const currentLocale = pathname.split('/')[1];
+  const nextLocale = currentLocale === 'ua' ? 'en' : 'ua';
+  const flagSrc =
+    nextLocale === 'en' ? '/icons/uk-flag.svg' : '/icons/ua-flag.svg';
+  const flagAlt = nextLocale === 'en' ? 'English' : 'Українська';
 
   const handleOpen = () => {
     setOpen(!open);
+  };
+
+  const handleLocaleChange = () => {
+    const segments = pathname.split('/');
+    segments[1] = nextLocale;
+    router.push(segments.join('/'));
   };
 
   return (
@@ -35,6 +53,14 @@ export function Header({ user }: Props) {
           />
         </Link>
         <div className="hidden sm:flex sm:gap-[32px] md:gap-[36px] lg:gap-[72px] xl:gap-[90px] ml-[12px]">
+          <Button
+            size="sm"
+            className="bg-transparent hover:bg-transparent shadow-none border-none p-0"
+            onClick={handleLocaleChange}
+            aria-label="Змінити мову"
+          >
+            <Image src={flagSrc} alt={flagAlt} width={28} height={20} />
+          </Button>
           <Links />
           {loggedIn ? (
             <Link href="/profile">

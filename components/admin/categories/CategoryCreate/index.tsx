@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { createCategory } from '@/app/actions/categories.actions';
+import { createCategory } from '@/app/[locale]/actions/categories.actions';
 import { Button } from '@/components/ui/button';
 
 const CategoryCreate = () => {

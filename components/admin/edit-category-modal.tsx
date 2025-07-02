@@ -5,7 +5,7 @@ import {
   addFaqCategory,
   deleteFAQCategory,
   updateFAQCategory,
-} from '@/app/actions/faq.actions';
+} from '@/app/[locale]/actions/faq.actions';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
