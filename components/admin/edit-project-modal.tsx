@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import * as z from 'zod';
 
-import { updateProject } from '@/app/actions/department.actions';
+import { updateProject } from '@/app/[locale]/actions/department.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {

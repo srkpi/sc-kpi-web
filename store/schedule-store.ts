@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { WeekType } from '@/app/(client)/schedule-importer/types';
+import { WeekType } from '@/app/[locale]/(client)/schedule-importer/types';
 
 type ScheduleStore = {
   groupId: string;

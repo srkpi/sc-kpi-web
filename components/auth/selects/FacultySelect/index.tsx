@@ -3,8 +3,8 @@ import { UseFormClearErrors, UseFormRegisterReturn } from 'react-hook-form';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import useSWR from 'swr';
 
-import { RegisterFormData } from '@/app/(auth)/register/_validation';
-import { ChangeProfileFormData } from '@/app/(client)/profile/_validation';
+import { RegisterFormData } from '@/app/[locale]/(auth)/register/_validation';
+import { ChangeProfileFormData } from '@/app/[locale]/(client)/profile/_validation';
 import { Button } from '@/components/ui/button';
 import {
   Command,
