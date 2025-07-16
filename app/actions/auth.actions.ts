@@ -10,11 +10,24 @@ import { DecodedTokenType, RegisterDto, Role } from '@/types/auth';
 import { User } from '@/types/auth/user';
 
 export async function signUp(data: RegisterDto) {
-  const { data: res } = await apiClient.post<{ accessToken: string }>(
-    '/auth/local/sign-up',
-    data,
-  );
-  return res.accessToken;
+  try {
+    const { data: res } = await apiClient.post<{ accessToken: string }>(
+      '/auth/local/sign-up',
+      data,
+    );
+    return res.accessToken;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response?.status === 400) {
+      throw new Error('Користувач з такою поштою вже існує.');
+    }
+    if (error instanceof AxiosError && error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    }
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Сталася помилка. Спробуйте ще раз.');
+  }
 }
 
 export async function login(

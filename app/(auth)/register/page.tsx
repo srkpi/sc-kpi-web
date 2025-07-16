@@ -53,12 +53,19 @@ const RegisterPage = () => {
     setValue,
   } = form;
 
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const onSubmit = async (data: RegisterFormData) => {
-    await signUp(data);
-    router.push('/');
-    toast({
-      title: 'Ви успішно зареєструвалися',
-    });
+    setSubmitError(null);
+    try {
+      await signUp(data);
+      router.push('/');
+      toast({
+        title: 'Ви успішно зареєструвалися',
+      });
+    } catch (error) {
+      const err = error as Error;
+      setSubmitError(err.message || 'Сталася помилка. Спробуйте ще раз.');
+    }
   };
 
   return (
@@ -210,7 +217,13 @@ const RegisterPage = () => {
                     </div>
                   )}
                 />
+                {submitError && (
+                  <div className="text-destructive text-center mb-2 text-m-p md:text-p">
+                    {submitError}
+                  </div>
+                )}
               </div>
+
               <Button
                 className="py-2 md:py-4"
                 disabled={isSubmitting}
