@@ -45,13 +45,18 @@ const CreateServicePage: FC = () => {
   });
 
   const handleFormSubmit = async (data: FormData) => {
-    try {
-      const payload = {
-        image: file,
-        json: JSON.stringify(data),
-      };
+    const formData = new FormData();
+    if (file) {
+      formData.append('image', file);
+    }
 
-      await createService(payload);
+    formData.append('json', JSON.stringify(data));
+
+    try {
+      await createService(formData);
+      toast({
+        title: 'Службу успішно додано',
+      });
     } catch (error) {
       toast({
         variant: 'destructive',

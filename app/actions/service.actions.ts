@@ -10,11 +10,8 @@ export async function getServiceList() {
   return res.data;
 }
 
-export async function createService(data: {
-  image: File | null;
-  json: string;
-}) {
-  await apiClient.post('/services', data);
+export async function createService(formData: FormData) {
+  await apiClient.post('/services', formData);
 }
 
 export async function getServiceById(id: string) {
