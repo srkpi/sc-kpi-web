@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/toast/use-toast';
 
 const loginSchema = z.object({
   email: z.string().email('Некоректна пошта'),
@@ -29,6 +30,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Page() {
   const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -41,7 +43,15 @@ export default function Page() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(data.email, data.password, data.rememberMe);
+      const success = await login(data.email, data.password, data.rememberMe);
+      if (success) {
+        router.push('/profile/personal-data');
+      } else {
+        toast({
+          title: 'Помилка входу',
+          variant: 'destructive',
+        });
+      }
       router.push('/profile');
     } catch (error) {
       switch (error) {

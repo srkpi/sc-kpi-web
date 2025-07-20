@@ -54,11 +54,18 @@ const RegisterPage = () => {
   } = form;
 
   const onSubmit = async (data: RegisterFormData) => {
-    await signUp(data);
-    router.push('/');
-    toast({
-      title: 'Ви успішно зареєструвалися',
-    });
+    const success = await signUp(data);
+    if (success) {
+      toast({
+        title: 'Ви успішно зареєструвалися',
+      });
+      router.push('/profile/personal-data');
+    } else {
+      toast({
+        title: 'Помилка реєстрації',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
