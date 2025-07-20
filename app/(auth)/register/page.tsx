@@ -56,14 +56,15 @@ const RegisterPage = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const onSubmit = async (data: RegisterFormData) => {
     setSubmitError(null);
-    const success = await signUp(data);
-    if (success) {
+    try {
+      await signUp(data);
       toast({
         title: 'Ви успішно зареєструвалися',
       });
       router.push('/profile/personal-data');
-    } else {
-      setSubmitError('Сталася помилка. Спробуйте ще раз.');
+    } catch (error) {
+      const e = error as Error;
+      setSubmitError(e.message || 'Сталася помилка. Спробуйте ще раз.');
     }
   };
 

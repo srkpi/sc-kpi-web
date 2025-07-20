@@ -10,7 +10,6 @@ import { apiClient } from '@/lib/client';
 import { DecodedTokenType, RegisterDto, Role, Tokens } from '@/types/auth';
 import { User } from '@/types/auth/user';
 
-
 export async function signUp(data: RegisterDto): Promise<boolean> {
   try {
     const response = await apiClient.post<Tokens>('/auth/local/sign-up', data, {
@@ -35,7 +34,15 @@ export async function signUp(data: RegisterDto): Promise<boolean> {
     await saveTokens(tokens, undefined);
     return true;
   } catch (error) {
-    return false;
+    if (error instanceof AxiosError && error.response?.status === 400) {
+      throw new Error('Користувач з такою поштою вже існує.');
+    } else if (error instanceof AxiosError && error.response?.data?.message) {
+      throw new Error(error.response.data.message);
+    } else if (error instanceof Error) {
+      throw error;
+    } else {
+      throw new Error('Сталася помилка. Спробуйте ще раз.');
+    }
   }
 }
 
