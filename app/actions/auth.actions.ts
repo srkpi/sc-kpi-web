@@ -10,6 +10,7 @@ import { apiClient } from '@/lib/client';
 import { DecodedTokenType, RegisterDto, Role, Tokens } from '@/types/auth';
 import { User } from '@/types/auth/user';
 
+
 export async function signUp(data: RegisterDto): Promise<boolean> {
   try {
     const response = await apiClient.post<Tokens>('/auth/local/sign-up', data, {

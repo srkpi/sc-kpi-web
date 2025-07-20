@@ -53,7 +53,9 @@ const RegisterPage = () => {
     setValue,
   } = form;
 
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const onSubmit = async (data: RegisterFormData) => {
+    setSubmitError(null);
     const success = await signUp(data);
     if (success) {
       toast({
@@ -61,10 +63,7 @@ const RegisterPage = () => {
       });
       router.push('/profile/personal-data');
     } else {
-      toast({
-        title: 'Помилка реєстрації',
-        variant: 'destructive',
-      });
+      setSubmitError('Сталася помилка. Спробуйте ще раз.');
     }
   };
 
@@ -217,7 +216,13 @@ const RegisterPage = () => {
                     </div>
                   )}
                 />
+                {submitError && (
+                  <div className="text-destructive text-center mb-2 text-m-p md:text-p">
+                    {submitError}
+                  </div>
+                )}
               </div>
+
               <Button
                 className="py-2 md:py-4"
                 disabled={isSubmitting}
