@@ -58,13 +58,13 @@ const RegisterPage = () => {
     setSubmitError(null);
     try {
       await signUp(data);
-      router.push('/');
       toast({
         title: 'Ви успішно зареєструвалися',
       });
+      router.push('/profile/personal-data');
     } catch (error) {
-      const err = error as Error;
-      setSubmitError(err.message || 'Сталася помилка. Спробуйте ще раз.');
+      const e = error as Error;
+      setSubmitError(e.message || 'Сталася помилка. Спробуйте ще раз.');
     }
   };
 

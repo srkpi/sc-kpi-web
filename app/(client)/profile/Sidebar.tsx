@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { KeyRound, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { deleteUser, logout } from '@/app/actions/auth.actions';
 import { Button } from '@/components/ui/button';
@@ -26,9 +27,12 @@ export function Sidebar({ user }: Props) {
     state => state,
   );
 
+  const router = useRouter();
+
   const handleLogout = async () => {
     try {
       await logout();
+      router.push('/');
     } catch (error) {
       toast({
         variant: 'destructive',
@@ -41,6 +45,7 @@ export function Sidebar({ user }: Props) {
   const handleDeleteUser = async () => {
     try {
       await deleteUser();
+      router.push('/');
     } catch (error) {
       toast({
         variant: 'destructive',
