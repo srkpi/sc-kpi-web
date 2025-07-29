@@ -39,9 +39,16 @@ export default async function Home() {
           <SliderMainPageDepartments departments={departments} />
         </section>
       )}
-      <section className="max-w-[1520px] mx-auto px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px]">
-        <div className="overflow-hidden min-h-[300px] rounded-[20px] bg-[linear-gradient(270deg,_rgba(236,237,248,0.10)_0.26%,rgba(236,237,248,0.00)_95.06%)] relative py-[30px] px-[14px] md:py-[70px] md:px-[130px]">
-          <div className="flex flex-col lg:max-w-[60%] min-[1520px]:max-w-[80%] items-start">
+      <section className="max-w-[1520px] mx-auto _container px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px] flex flex-col gap-[30px] md:gap-[80px] items-center">
+        <div className="relative max-w-[450px] md:max-w-full w-full flex flex-col md:flex-row-reverse md:min-h-[350px] lg:min-h-[500px] rounded-[20px] overflow-hidden">
+          <div className="md:w-1/2 aspect-[16/9] rounded-[20px] md:rounded-none overflow-hidden w-full relative md:block">
+            <img
+              className="h-full w-full object-cover absolute top-0 left-0"
+              src="/images/studcouncil.png"
+              alt="Студрада КПІ"
+            />
+          </div>
+          <div className="md:w-1/2 p-[14px] mt-[-20px] pt-[30px] md:p-[30px] lg:p-[50px] bg-gradient-to-b from-[#ecedf833] to-transparrent flex flex-col">
             <h1 className="text-[20px] md:text-h1 max-w-[calc(100%-110px)] sm:max-w-full font-semibold text-blue mb-[14px] md:mb-[5px] leading-[110%]">
               Студентська рада КПІ ім. Ігоря Сікорського
             </h1>
@@ -71,28 +78,6 @@ export default async function Home() {
                 Приєднуйся до Студради КПІ
               </Button>
             </Link>
-          </div>
-          <div className="absolute top-4 lg:top-1/2 lg:-translate-y-1/2 right-0 w-[480px] lg:h-[480px] aspect-square max-w-[calc(60%-200px)] min-w-[150px]">
-            <img
-              className="absolute top-0 left-0 h-full w-full"
-              src="/images/blue-hedgehog.svg"
-              alt="їжачок"
-            />
-            <img
-              className="absolute top-0 left-0 h-full w-full opacity-70"
-              src="/images/blue-hedgehog.svg"
-              alt="їжачок"
-            />
-            <img
-              className="absolute top-0 left-0 h-full w-full blur-[8px] brightness-[100] -z-10"
-              src="/images/blue-hedgehog.svg"
-              alt="їжачок"
-            />
-            <img
-              className="absolute top-0 left-0 h-full w-full blur-[8px] brightness-[100] -z-10"
-              src="/images/blue-hedgehog.svg"
-              alt="їжачок"
-            />
           </div>
         </div>
       </section>
