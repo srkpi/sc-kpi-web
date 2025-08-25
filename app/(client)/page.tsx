@@ -39,21 +39,21 @@ export default async function Home() {
           <SliderMainPageDepartments departments={departments} />
         </section>
       )}
-      <section className="max-w-[1520px] mx-auto _container px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px] flex flex-col gap-[30px] md:gap-[80px] items-center">
-        <div className="relative max-w-[450px] md:max-w-full w-full flex flex-col md:flex-row-reverse md:min-h-[350px] lg:min-h-[500px] rounded-[20px] overflow-hidden">
-          <div className="md:w-1/2 aspect-[16/9] rounded-[20px] md:rounded-none overflow-hidden w-full relative md:block">
+      <section className="max-w-[1520px]  mx-auto _container px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px] flex flex-col gap-[30px] md:gap-[80px] items-center">
+        <div className="relative max-w-[450px] md:p-0 p-[14px] md:max-w-full w-full flex flex-col md:flex-row-reverse md:min-h-[350px] lg:min-h-[500px] rounded-[20px] overflow-hidden">
+          <div className="md:w-1/2 aspect-[16/9] rounded-[20px] md:rounded-none overflow-hidden w-full relative md:block p-[14px]">
             <img
               className="h-full w-full object-cover absolute top-0 left-0"
-              src="/images/studcouncil.png"
+              src="/images/studcouncil.jpg"
               alt="Студрада КПІ"
             />
           </div>
           <div className="md:w-1/2 p-[14px] mt-[-20px] pt-[30px] md:p-[30px] lg:p-[50px] bg-gradient-to-b from-[#ecedf833] to-transparrent flex flex-col">
             <h1 className="text-[20px] md:text-h1 max-w-[calc(100%-110px)] sm:max-w-full font-semibold text-blue mb-[14px] md:mb-[5px] leading-[110%]">
-              Студентська рада КПІ ім. Ігоря Сікорського
+              Студрада КПІ
             </h1>
-            <p className="text-p md:text-h3 mb-[30px] max-w-[calc(100%-150px)] sm:max-w-[calc(40%+150px)] lg:max-w-[490px]">
-              це ком'юніті згуртованих та ініціативних студентів, які роблять
+            <p className="text-p md:text-h3 mb-[30px] w-full md:w-1/2 md:ml-auto md:mr-0">
+              — це ком'юніті згуртованих та ініціативних студентів, які роблять
               КПІ кращим.
             </p>
             <p className="text-[18px] md:text-h3 mb-[30px] md:mb-[10px] sm:max-w-[calc(40%+210px)] lg:max-w-[800px]">
