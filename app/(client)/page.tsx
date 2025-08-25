@@ -49,10 +49,10 @@ export default async function Home() {
             />
           </div>
           <div className="md:w-1/2 p-[14px] mt-[-20px] pt-[30px] md:p-[30px] lg:p-[50px] bg-gradient-to-b from-[#ecedf833] to-transparrent flex flex-col">
-            <h1 className="text-[20px] md:text-h1 max-w-[calc(100%-110px)] sm:max-w-full font-semibold text-blue mb-[14px] md:mb-[5px] leading-[110%]">
+            <h1 className="w-full text-center font-bold mb-[14px] md:mb-[5px] leading-[110%] text-blue text-3xl sm:text-5xl xl:text-6xl 2xl:text-[5.2rem]">
               Студрада КПІ
             </h1>
-            <p className="text-p md:text-h3 mb-[30px] w-full md:w-1/2 md:ml-auto md:mr-0">
+            <p className="text-p md:text-h3 mb-[30px] w-full md:w-3/4 md:ml-auto md:mr-0">
               — це ком'юніті згуртованих та ініціативних студентів, які роблять
               КПІ кращим.
             </p>
