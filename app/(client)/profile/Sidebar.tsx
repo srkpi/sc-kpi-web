@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { KeyRound, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import { deleteUser, logout } from '@/app/actions/auth.actions';
 import { Button } from '@/components/ui/button';
