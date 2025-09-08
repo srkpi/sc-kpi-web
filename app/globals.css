@@ -182,12 +182,15 @@
     user-select: none;
   }
 
-
   ._container {
     max-width: var(--max-width-container);
     box-sizing: content-box;
     margin: 0 auto;
     @apply px-[14px] md:px-[32px] lg:px-[64px] xl:px-[100px];
+  }
+
+  #faq-accordion a {
+    color: var(--blue);
   }
 }
 
