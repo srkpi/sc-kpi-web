@@ -6,8 +6,6 @@ test('basic navigation', async ({ page, isMobile }) => {
   await page.goto('/');
 
   if (isMobile) await page.getByRole('banner').locator('svg').click();
-  await page.getByRole('banner').getByRole('link', { name: 'Розклад' }).click();
-  await page.waitForURL('/schedule-importer', { timeout: 15000 });
 
   await page
     .getByRole('banner')

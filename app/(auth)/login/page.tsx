@@ -80,9 +80,8 @@ export default function Page() {
             Немає облікового запису?
           </h2>
           <p className="mb-5 md:mb-10 text-m-p md:text-p">
-            Приєднуйтесь до сайту студради! Тут ви зможете переглянути та
-            імпортувати розклад, переглянути студентські об'єднання та опис до
-            них
+            Приєднуйтесь до сайту студради! Тут ви зможетепереглянути
+            студентські об'єднання та опис до них
           </p>
           <Link className="self-stretch" href="/register">
             <Button className="min-w-[200px] max-w-[580px] w-full bg-dark border-dark py-2 md:py-4">
