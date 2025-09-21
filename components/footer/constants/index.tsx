@@ -51,7 +51,7 @@ export const otherItems: LinkItem[] = [
 
 export const mediaItems: LinkItem[] = [
   {
-    href: 'https://t.me/sr_kpi',
+    href: 'https://t.me/+eOL9MI1XaowzYjUy',
     icon: (
       <Image
         quality={100}
