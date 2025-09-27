@@ -247,8 +247,8 @@ const RegisterPage = () => {
             Вже маєте обліковий запис?
           </h2>
           <p className="mb-5 md:mb-10 text-m-p md:text-p">
-            Увідіть в акаунт. Тут ви зможете переглянути та завантажити розклад,
-            переглянути студентські об'єднання та опис до них
+            Увідіть в акаунт. Тут ви зможете переглянути студентські об'єднання
+            та опис до них
           </p>
           <Link className="self-stretch" href="/login">
             <Button className="min-w-[200px] max-w-[580px] w-full bg-dark border-dark py-2 md:py-4">
