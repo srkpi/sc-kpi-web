@@ -3,33 +3,33 @@ import { useState } from 'react';
 import { Search } from 'lucide-react';
 
 import {
-  createCategory,
-  deleteCategory,
-  updateCategory,
-} from '@/app/actions/categories.actions';
+  createSkill,
+  deleteSkill,
+  updateSkill,
+} from '@/app/actions/skills.actions';
 import EntityCreate from '@/components/admin/entities/EntityCreate';
 import EntityItem from '@/components/admin/entities/EntityItem';
 import { Input } from '@/components/ui/input';
-import { Category } from '@/types/category';
+import { Skill } from '@/types/skill';
 
 interface Props {
-  categories: Category[];
+  skills: Skill[];
 }
 
-export default function CategoriesPage({ categories }: Props) {
+export default function SkillsPage({ skills }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredCategories = categories.filter(category =>
-    category.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredSkills = skills.filter(skill =>
+    skill.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <>
-      <h1 className="text-h1 font-semibold mb-8">Категорії</h1>
+      <h1 className="text-h1 font-semibold mb-8">Навички</h1>
       <Input
         className="w-full text-p pl-16 mb-4"
         placeholder="Пошук..."
@@ -40,20 +40,20 @@ export default function CategoriesPage({ categories }: Props) {
       />
 
       <div className="flex flex-col w-full gap-2">
-        {filteredCategories.map(category => (
+        {filteredSkills.map(skill => (
           <EntityItem
-            key={category.id}
-            id={category.id}
-            name={category.name}
-            onUpdate={updateCategory}
-            onDelete={deleteCategory}
+            id={skill.id}
+            name={skill.name}
+            onUpdate={updateSkill}
+            onDelete={deleteSkill}
+            key={skill.id}
           />
         ))}
       </div>
 
       <div className="w-[90%] mx-auto my-5 rounded-full border-t border-greyBlue"></div>
 
-      <EntityCreate onCreate={createCategory} />
+      <EntityCreate onCreate={createSkill} />
     </>
   );
 }

@@ -4,30 +4,39 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { z } from 'zod';
 
-import {
-  deleteCategory,
-  updateCategory,
-} from '@/app/actions/categories.actions';
 import { Button } from '@/components/ui/button';
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/toast/use-toast';
 
-interface CategoryItemProps {
+interface EntityItemProps {
   id: number;
   name: string;
+  onUpdate: (id: number, name: string) => Promise<void>;
+  onDelete: (id: number) => Promise<void> | void;
+  placeholder?: string;
+  saveText?: string;
+  editText?: string;
+  deleteText?: string;
+  cancelText?: string;
 }
 
-const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
+const EntityItem: FC<EntityItemProps> = ({
+  id,
+  name,
+  onUpdate,
+  onDelete,
+  placeholder = 'Введіть назву',
+  saveText = 'Зберегти',
+  editText = 'Змінити',
+  deleteText = 'Видалити',
+  cancelText = 'Скасувати',
+}) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const FormSchema = z.object({
-    name: z
-      .string()
-      .trim()
-      .min(1, { message: 'Категорія повинна містити принаймні 1 символ' }),
+    name: z.string().trim().min(1, { message: 'Поле не може бути порожнім' }),
   });
-
   type FormData = z.infer<typeof FormSchema>;
 
   const form = useForm({
@@ -37,13 +46,13 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
 
   async function handleFormSubmit(data: FormData) {
     try {
-      if (data.name !== name) await updateCategory(id, data.name);
+      if (data.name !== name) await onUpdate(id, data.name);
       setIsEditing(false);
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
           variant: 'destructive',
-          title: 'Не вдалося змінити категорію',
+          title: 'Не вдалося змінити',
           description: error.message,
         });
       }
@@ -61,9 +70,9 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
     setIsEditing(true);
   };
 
-  const handleDeleteCategory = (event: MouseEvent) => {
+  const handleDelete = (event: MouseEvent) => {
     event.preventDefault();
-    deleteCategory(id);
+    onDelete(id);
   };
 
   return (
@@ -81,6 +90,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
                 name="name"
                 className="text-xl w-full p-3 rounded-xl bg-transparent border border-blue disabled:border-greyBlue disabled:opacity-75 transition duration-500"
                 disabled={!isEditing}
+                placeholder={placeholder}
               />
               <FormMessage />
             </FormItem>
@@ -91,7 +101,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
           {isEditing ? (
             <>
               <Button variant="default" className="w-36" type="submit">
-                Зберегти
+                {saveText}
               </Button>
               <Button
                 variant="destructive"
@@ -99,7 +109,7 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
                 onClick={handleDiscardChanges}
                 type="button"
               >
-                Скасувати
+                {cancelText}
               </Button>
             </>
           ) : (
@@ -110,15 +120,15 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
                 onClick={handleEditing}
                 type="button"
               >
-                Змінити
+                {editText}
               </Button>
               <Button
                 variant="destructive"
                 className="w-36"
-                onClick={handleDeleteCategory}
+                onClick={handleDelete}
                 type="button"
               >
-                Видалити
+                {deleteText}
               </Button>
             </>
           )}
@@ -128,4 +138,4 @@ const CategoryItem: FC<CategoryItemProps> = ({ id, name }) => {
   );
 };
 
-export default CategoryItem;
+export default EntityItem;
