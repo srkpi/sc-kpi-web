@@ -1,6 +1,7 @@
 import {
   BriefcaseBusinessIcon,
   CableIcon,
+  LaptopMinimalCheck,
   LibraryIcon,
   PaletteIcon,
   PaperclipIcon,
@@ -22,6 +23,11 @@ export const navbarLinks: Props[] = [
     icon: <LibraryIcon width={28} height={28} />,
     href: '/admin/categories',
     title: 'Категорії',
+  },
+  {
+    icon: <LaptopMinimalCheck width={28} height={28} />,
+    href: '/admin/skills',
+    title: 'Навички',
   },
   {
     icon: <PaperclipIcon width={28} height={28} />,
