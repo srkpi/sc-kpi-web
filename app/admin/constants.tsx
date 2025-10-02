@@ -5,6 +5,7 @@ import {
   LibraryIcon,
   PaletteIcon,
   PaperclipIcon,
+  Presentation,
 } from 'lucide-react';
 
 type Props = {
@@ -18,6 +19,11 @@ export const navbarLinks: Props[] = [
     icon: <PaletteIcon width={28} height={28} />,
     href: '/admin/clubs',
     title: "Cтуд. об'єднання",
+  },
+  {
+    icon: <Presentation width={28} height={28} />,
+    href: '/admin/projects',
+    title: 'Проєкти',
   },
   {
     icon: <LibraryIcon width={28} height={28} />,
