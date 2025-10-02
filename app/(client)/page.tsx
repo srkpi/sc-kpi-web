@@ -5,8 +5,11 @@ import Link from 'next/link';
 
 import { getDepartmentList } from '@/app/actions/department.actions';
 import { getServiceList } from '@/app/actions/service.actions';
+import ProjectCard from '@/components/projects/project-card';
 import SliderMainPageDepartments from '@/components/sliders/SliderMainPageDepartments';
 import { Button } from '@/components/ui/button';
+
+import { getProjectList } from '../actions/project.actions';
 
 const documents = [
   {
@@ -31,6 +34,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const services = await getServiceList();
   const departments = await getDepartmentList();
+  const projects = await getProjectList();
 
   return (
     <div className="mb-[144px] md:mb-[200px]">
@@ -124,6 +128,13 @@ export default async function Home() {
                 </div>
               )}
             </div>
+          ))}
+        </section>
+      )}
+      {projects.length > 0 && (
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-8 _container mb-16">
+          {projects.map(project => (
+            <ProjectCard key={project.id} project={project} />
           ))}
         </section>
       )}
