@@ -59,12 +59,14 @@ const FacultySelect = ({
       revalidateOnFocus: false,
     },
   );
-  const handleFacultyChange = (facultyName: Faculty) => {
-    setSelectedFaculty(facultyName);
-    setValue('faculty', facultyName.nameShort);
+
+  const handleFacultyChange = (faculty: Faculty) => {
+    setValue('faculty', faculty.name);
+    setSelectedFaculty(faculty);
     clearErrors('faculty');
     setOpen(false);
   };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
