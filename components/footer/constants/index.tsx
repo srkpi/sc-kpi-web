@@ -102,7 +102,7 @@ export const mediaItems: LinkItem[] = [
     ),
   },
   {
-    href: 'https://www.youtube.com/@studradakpi1998',
+    href: 'https://www.youtube.com/@sr_kpi',
     icon: <YoutubeIcon className="size-[15px] md:size-[20px]" />,
   },
   {
