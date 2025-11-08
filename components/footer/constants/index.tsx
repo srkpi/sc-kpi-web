@@ -1,15 +1,20 @@
 import React from 'react';
 import {
+  SiDiscord,
+  SiFacebook,
+  SiGithub,
+  SiInstagram,
+  SiTelegram,
+  SiTiktok,
+  SiX,
+  SiYoutube,
+} from '@icons-pack/react-simple-icons';
+import {
   BotIcon,
   CableIcon,
-  FacebookIcon,
-  GithubIcon,
-  InstagramIcon,
   MailIcon,
   MapPinIcon,
   ShieldCheckIcon,
-  TwitterIcon,
-  YoutubeIcon,
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -52,61 +57,47 @@ export const otherItems: LinkItem[] = [
 export const mediaItems: LinkItem[] = [
   {
     href: 'https://t.me/+eOL9MI1XaowzYjUy',
-    icon: (
-      <Image
-        quality={100}
-        src="/icons/telegram.png"
-        alt="telegram"
-        width={24}
-        height={24}
-        className="size-[15px] md:size-[20px]"
-      />
-    ),
+    icon: <SiTelegram className="size-[15px] md:size-[20px]" />,
   },
   {
     href: 'https://www.instagram.com/sr_kpi/',
-    icon: <InstagramIcon className="size-[15px] md:size-[20px]" />,
+    icon: <SiInstagram className="size-[15px] md:size-[20px]" />,
   },
   {
     href: 'https://www.tiktok.com/@sr_kpi',
-    icon: (
-      <Image
-        quality={100}
-        src="/icons/tik-tok.png"
-        alt="tik-tok"
-        width={24}
-        height={24}
-        className="size-[15px] md:size-[20px]"
-      />
-    ),
+    icon: <SiTiktok className="size-[15px] md:size-[20px]" />,
   },
   {
     href: 'https://www.facebook.com/srkpi/',
-    icon: <FacebookIcon className="size-[15px] md:size-[20px]" />,
+    icon: <SiFacebook className="size-[15px] md:size-[20px]" />,
   },
   {
     href: 'https://x.com/sr_kpi',
-    icon: <TwitterIcon className="size-[15px] md:size-[20px]" />,
+    icon: <SiX className="size-[15px] md:size-[20px]" />,
   },
   {
     href: 'https://discord.gg/V4YvUsYtSj',
+    icon: <SiDiscord className="size-[15px] md:size-[20px]" />,
+  },
+  {
+    href: 'https://www.youtube.com/@sr_kpi',
+    icon: <SiYoutube className="size-[15px] md:size-[20px]" />,
+  },
+  {
+    href: 'https://github.com/srkpi',
+    icon: <SiGithub className="size-[15px] md:size-[20px]" />,
+  },
+  {
+    href: 'https://kpistats.onrender.com/linkedin',
     icon: (
       <Image
         quality={100}
-        src="/icons/discord.png"
-        alt="tik-tok"
+        src="/icons/linkedin.svg"
+        alt="linkedin"
         width={24}
         height={24}
         className="size-[15px] md:size-[20px]"
       />
     ),
-  },
-  {
-    href: 'https://www.youtube.com/@sr_kpi',
-    icon: <YoutubeIcon className="size-[15px] md:size-[20px]" />,
-  },
-  {
-    href: 'https://github.com/srkpi',
-    icon: <GithubIcon className="size-[15px] md:size-[20px]" />,
   },
 ];
