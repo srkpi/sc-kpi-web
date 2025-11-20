@@ -14,7 +14,7 @@ const AnimatedLogo = () => {
       <Link className="z-10" href="/">
         <Image
           className="object-cover align-top w-[104px] md:w-[120px] lg:w-[133px] h-auto"
-          src="/images/Logo.png"
+          src="/images/Logo.svg"
           alt="logo"
           quality={100}
           width={133}

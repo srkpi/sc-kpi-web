@@ -23,7 +23,7 @@ export default async function AdminLayout({
         <Image
           width={130}
           height={47}
-          src="/images/Logo.png"
+          src="/images/Logo.svg"
           alt="Логотип"
           quality={100}
         />
