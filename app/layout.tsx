@@ -30,9 +30,9 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://sc.kpi.ua/images/Logo.png',
-        secureUrl: 'https://sc.kpi.ua/images/Logo.png',
-        type: 'image/png',
+        url: 'https://sc.kpi.ua/images/Logo.svg',
+        secureUrl: 'https://sc.kpi.ua/images/Logo.svg',
+        type: 'image/svg+xml',
         width: 1200,
         height: 630,
         alt: "Preview image for Student's Council website",

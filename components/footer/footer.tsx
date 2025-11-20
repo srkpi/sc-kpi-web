@@ -18,7 +18,7 @@ const Footer = () => {
         <div className="w-screen xl:w-auto mb-[20px]">
           <Image
             className="object-cover align-top w-[67px] md:w-[100px] lg:w-[200px] h-auto"
-            src="/images/Logo.png"
+            src="/images/Logo.svg"
             alt="logo"
             quality={100}
             width={200}

@@ -27,7 +27,7 @@ export function Header({ user }: Props) {
         <Link href="/">
           <Image
             className="object-cover align-top w-[67px] md:w-[85px] lg:w-[104px] h-auto mr-[12px]"
-            src="/images/Logo.png"
+            src="/images/Logo.svg"
             alt="logo"
             quality={100}
             width={104}
