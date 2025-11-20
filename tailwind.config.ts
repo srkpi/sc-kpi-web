@@ -40,7 +40,7 @@ const config = {
         semibold: '600',
       },
       fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
+        sans: ['e-Ukraine', ...fontFamily.sans],
       },
       colors: {
         transparent: 'transparent',
