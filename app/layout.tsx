@@ -1,18 +1,10 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
 import type { Metadata } from 'next';
-import { Roboto as FontSans } from 'next/font/google';
 
 import { Toaster } from '@/components/ui/toast/toaster';
 import { cn } from '@/lib/cn';
 
 import './globals.css';
-
-const fontSans = FontSans({
-  subsets: ['latin', 'cyrillic'],
-  variable: '--font-sans',
-  weight: ['300', '400', '500', '700'],
-  display: 'auto',
-});
 
 const title = {
   template: '%s | КПІ ім. Ігоря Сікорського',
@@ -52,7 +44,6 @@ export default function RootLayout({
       <body
         className={cn(
           'min-h-screen-dvh flex flex-col bg-background font-sans antialiased',
-          fontSans.variable,
         )}
       >
         {children}
