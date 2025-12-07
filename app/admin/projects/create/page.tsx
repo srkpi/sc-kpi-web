@@ -10,6 +10,7 @@ import * as z from 'zod';
 
 import { createProject } from '@/app/actions/project.actions';
 import { getSkillsList } from '@/app/actions/skills.actions';
+import { getStatusesList } from '@/app/actions/statuses.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,8 +23,16 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { Skill } from '@/types/skill';
+import { Status } from '@/types/status';
 
 const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
   ssr: false,
@@ -32,17 +41,19 @@ const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
 const CreateProjectPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [statuses, setStatuses] = useState<Status[]>([]);
 
   const router = useRouter();
 
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchSkills = async () => {
+    const fetchData = async () => {
       setSkills(await getSkillsList());
+      setStatuses(await getStatusesList());
     };
 
-    fetchSkills();
+    fetchData();
   }, []);
 
   const FormSchema = z.object({
@@ -59,10 +70,11 @@ const CreateProjectPage: FC = () => {
     skillsIds: z
       .array(z.number())
       .min(1, { message: 'Оберіть хоча б одну навичку' }),
+    statusId: z.number({ required_error: 'Оберіть статус' }),
   });
   type FormData = z.infer<typeof FormSchema>;
 
-  const form = useForm({
+  const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: '',
@@ -70,6 +82,7 @@ const CreateProjectPage: FC = () => {
       shortDescription: '',
       buttonLink: '',
       skillsIds: [] as number[],
+      statusId: 0,
     },
   });
 
@@ -124,6 +137,7 @@ const CreateProjectPage: FC = () => {
           name="skillsIds"
           render={({ field }) => (
             <FormItem>
+              <FormLabel>Навички</FormLabel>
               <MultipleSelector
                 value={field.value.map(val => {
                   const foundSkill = skills.find(skill => skill.id === val);
@@ -136,6 +150,33 @@ const CreateProjectPage: FC = () => {
                 options={skillsOptions}
                 placeholder="Оберіть навички"
               />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="statusId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Статус</FormLabel>
+              <Select
+                onValueChange={value => field.onChange(+value)}
+                value={field.value ? field.value.toString() : ''}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Оберіть статус" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {statuses.map(status => (
+                    <SelectItem key={status.id} value={status.id.toString()}>
+                      {status.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

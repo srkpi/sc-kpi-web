@@ -36,6 +36,11 @@ export const navbarLinks: Props[] = [
     title: 'Навички',
   },
   {
+    icon: <LaptopMinimalCheck width={28} height={28} />,
+    href: '/admin/statuses',
+    title: 'Статуси',
+  },
+  {
     icon: <PaperclipIcon width={28} height={28} />,
     href: '/admin/departments',
     title: 'Департаменти',
