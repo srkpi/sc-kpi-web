@@ -103,7 +103,7 @@ const ClubsPage = ({ clubs }: Props) => {
         )}
       </div>
 
-      <div className="flex flex-wrap justify-center md:justify-start gap-12 md:gap-7 mt-[60px]">
+      <div className="flex flex-wrap justify-center gap-12 md:gap-7 mt-[60px]">
         {filteredClubs.slice(0, visibleCount).map(club => (
           <ClubCard key={club.id} club={club} />
         ))}
