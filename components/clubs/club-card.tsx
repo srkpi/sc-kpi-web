@@ -41,10 +41,10 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
   const hidden = categories.length - visibleCount;
 
   return (
-    <div className="rounded-lg w-[290px] md:w-[400px] shadow-lg flex flex-col justify-between p-4 h-[650px] md:h-[680px]">
-      <div className="relative h-[300px] md:h-[338px] bg-muted rounded-lg flex items-center justify-center">
+    <div className="rounded-lg shadow-lg flex flex-col justify-between p-4">
+      <div className="relative rounded-lg flex items-center justify-center">
         <Image
-          className="w-[290px] h-[300px] md:w-[408px] md:h-[338px] object-cover rounded-lg"
+          className="object-cover rounded-lg w-full max-w-md aspect-square"
           src={image}
           alt="image"
           quality={100}
@@ -97,25 +97,26 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
       <h2 className="font-m-h1 md:font-h3 mt-4 text-left">{name}</h2>
 
       <div
-        className="font-p md:font-m-p mt-2 flex-grow overflow-hidden min-h-[60px] text-left"
+        className="font-p md:font-m-p mt-2 mb-4 flex-grow overflow-hidden min-h-[60px] text-left"
         dangerouslySetInnerHTML={{ __html: shortDescription }}
       />
 
-      <div className="flex justify-start mt-4 md:mt-auto space-x-2 md:space-x-1">
-        <Link href={buttonLink}>
+      <div className="flex w-full flex-wrap gap-2 mt-4 md:mt-auto">
+        <Link href={buttonLink} className="flex-1 min-w-0">
           <Button
             variant="default"
-            className="w-[130px] h-[40px] md:h-[50px] md:w-[197px] md:rounded-[6px]"
+            className="w-full min-w-0 px-2 h-[40px] md:h-[50px] md:rounded-[6px]"
           >
             Доєднатись
           </Button>
         </Link>
-        <Link href={`/clubs/${id}`}>
+
+        <Link href={`/clubs/${id}`} className="flex-1 min-w-0">
           <Button
             variant="outline"
-            className="w-[130px] md:w-[185px] h-[40px] md:h-[50px] md:rounded-[6px]"
+            className="w-full min-w-0 px-2 h-[40px] md:h-[50px] md:rounded-[6px]"
           >
-            Дізнатися більше
+            Детальніше
           </Button>
         </Link>
       </div>
