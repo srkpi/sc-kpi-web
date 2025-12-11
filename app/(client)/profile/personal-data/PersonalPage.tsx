@@ -29,8 +29,14 @@ interface Props {
 }
 
 export const PersonalPage: FC<Props> = ({ user }) => {
-  const [selectedFaculty, setSelectedFaculty] = useState<Faculty>();
-  const [selectedGroup, setSelectedGroup] = useState<Group>();
+  const [selectedFaculty, setSelectedFaculty] = useState<Faculty | undefined>(
+    user?.faculty ? { id: 0, name: user.faculty } : undefined,
+  );
+  const [selectedGroup, setSelectedGroup] = useState<Group | undefined>(
+    user?.group
+      ? { id: '', name: user.group, faculty: user.faculty || '' }
+      : undefined,
+  );
   const { isProfileMenuActive, setIsProfileMenuActive } = useProfileStore(
     state => state,
   );
