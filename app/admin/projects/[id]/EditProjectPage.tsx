@@ -12,7 +12,7 @@ import {
   updateProjectImage,
 } from '@/app/actions/project.actions';
 import { getSkillsList } from '@/app/actions/skills.actions';
-import CreateModal from '@/components/admin/create-project-modal';
+import { getStatusesList } from '@/app/actions/statuses.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,9 +25,17 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { Project } from '@/types/project';
 import { Skill } from '@/types/skill';
+import { Status } from '@/types/status';
 
 const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
   ssr: false,
@@ -41,12 +49,8 @@ const FormSchema = z.object({
   name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
   description: z.string().min(1, { message: 'Опис обов’язковий' }),
   shortDescription: z.string().min(1, { message: 'Стислий опис обов’язковий' }),
-  buttonLink: z
-    .string()
-    .trim()
-    .url('Посилання має бути валідним URL')
-    .min(1, { message: 'Посилання на вступ є обов’язковим' }),
   skillsIds: z.array(z.number()).min(1, 'Оберіть хоча б одну навичку'),
+  statusId: z.number({ required_error: 'Оберіть статус' }),
 });
 
 type FormData = z.infer<typeof FormSchema>;
@@ -54,14 +58,16 @@ type FormData = z.infer<typeof FormSchema>;
 export default function EditProjectPage({ project }: EditProjectPageProps) {
   const [file, setFile] = useState<File | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [statuses, setStatuses] = useState<Status[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchSkills = async () => {
+    const fetchData = async () => {
       setSkills(await getSkillsList());
+      setStatuses(await getStatusesList());
     };
 
-    fetchSkills();
+    fetchData();
   }, []);
 
   const form = useForm<FormData>({
@@ -69,9 +75,9 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
     defaultValues: {
       name: project.name,
       description: project.description,
-      buttonLink: project.buttonLink,
       shortDescription: project.shortDescription,
       skillsIds: project.skills.map(skill => skill.id),
+      statusId: project.status.id,
     },
   });
 
@@ -144,6 +150,33 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="statusId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Статус</FormLabel>
+                <Select
+                  onValueChange={value => field.onChange(+value)}
+                  value={field.value.toString()}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Оберіть статус" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {statuses.map(status => (
+                      <SelectItem key={status.id} value={status.id.toString()}>
+                        {status.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="flex gap-6">
             <FormField
               control={form.control}
@@ -151,19 +184,6 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel htmlFor="name">Назва</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="buttonLink"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -204,7 +224,6 @@ export default function EditProjectPage({ project }: EditProjectPageProps) {
           </div>
         </form>
       </Form>
-      <CreateModal id={project.id} variant="club" />
     </>
   );
 }
