@@ -62,11 +62,6 @@ const CreateProjectPage: FC = () => {
       .string()
       .min(1, { message: 'Стислий опис обов’язковий' }),
     description: z.string().min(1, { message: 'Опис обов’язковий' }),
-    buttonLink: z
-      .string()
-      .trim()
-      .url('Посилання має бути валідним URL')
-      .min(1, { message: 'Посилання на вступ є обов’язковим' }),
     skillsIds: z
       .array(z.number())
       .min(1, { message: 'Оберіть хоча б одну навичку' }),
@@ -80,7 +75,6 @@ const CreateProjectPage: FC = () => {
       name: '',
       description: '',
       shortDescription: '',
-      buttonLink: '',
       skillsIds: [] as number[],
       statusId: 0,
     },
@@ -188,20 +182,6 @@ const CreateProjectPage: FC = () => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel htmlFor="name">Назва</FormLabel>
-                <EditorComponent
-                  setText={text => form.setValue('name', text)}
-                  initialValue={field.value}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="buttonLink"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>

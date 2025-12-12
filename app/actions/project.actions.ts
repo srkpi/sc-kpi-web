@@ -27,7 +27,6 @@ export async function updateProject(
     name: string;
     description: string;
     shortDescription: string;
-    buttonLink: string;
     skillsIds: number[];
   },
 ) {
