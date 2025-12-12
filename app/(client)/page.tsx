@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { getDepartmentList } from '@/app/actions/department.actions';
 import { getServiceList } from '@/app/actions/service.actions';
-import ProjectCard from '@/components/projects/project-card';
+import ProjectsCarousel from '@/components/projects/projects-carousel';
 import SliderMainPageDepartments from '@/components/sliders/SliderMainPageDepartments';
 import { Button } from '@/components/ui/button';
 
@@ -35,6 +35,15 @@ export default async function Home() {
   const services = await getServiceList();
   const departments = await getDepartmentList();
   const projects = await getProjectList();
+
+  const projectsToDisplay = projects
+    .sort((a, b) => {
+      const aHas = Boolean(a.image);
+      const bHas = Boolean(b.image);
+      if (aHas === bHas) return 0;
+      return aHas ? -1 : 1;
+    })
+    .slice(0, 10);
 
   return (
     <div className="mb-[144px] md:mb-[200px]">
@@ -132,10 +141,12 @@ export default async function Home() {
         </section>
       )}
       {projects.length > 0 && (
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-8 _container mb-16">
-          {projects.map(project => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+        <section className="mb-16">
+          <h2 className="text-[24px] md:text-h1 text-center font-semibold text-blue mb-[30px] md:mb-[80px]">
+            Проєкти
+          </h2>
+
+          <ProjectsCarousel projects={projectsToDisplay} />
         </section>
       )}
       <section className="_container">

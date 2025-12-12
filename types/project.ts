@@ -9,5 +9,4 @@ export interface Project {
   status: Status;
   shortDescription: string;
   image?: string;
-  buttonLink: string;
 }
