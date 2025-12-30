@@ -62,6 +62,18 @@ const ProjectsPage = ({ projects }: Props) => {
         );
       }
 
+      filtered.sort((a, b) => {
+        if (a.image && !b.image) {
+          return -1;
+        }
+
+        if (!a.image && b.image) {
+          return 1;
+        }
+
+        return 0;
+      });
+
       setFilteredProjects(filtered);
     };
 
