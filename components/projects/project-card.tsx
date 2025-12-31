@@ -7,7 +7,7 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div className="bg-[#1A232A] p-[20px] md:p-[33px] rounded-[10px] w-full">
+    <div className="bg-[#151e29] p-[20px] md:p-[33px] rounded-[10px] w-full">
       {project.image && (
         <div className="w-full aspect-[4/3] overflow-hidden mb-2">
           <img

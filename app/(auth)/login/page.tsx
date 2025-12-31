@@ -107,7 +107,12 @@ export default function Page() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input type="email" placeholder="Пошта" {...field} />
+                        <Input
+                          type="email"
+                          placeholder="Пошта"
+                          className="bg-transparent md:bg-dark"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -122,6 +127,7 @@ export default function Page() {
                         <Input
                           type="password"
                           placeholder="Пароль"
+                          className="bg-transparent md:bg-dark"
                           {...field}
                         />
                       </FormControl>

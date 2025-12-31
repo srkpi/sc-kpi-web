@@ -65,7 +65,7 @@ const ResetPassword = () => {
                     {...register('email')}
                     type="email"
                     placeholder="Пошта"
-                    className={`${errors.email && 'border-destructive focus-visible:border-destructive'}`}
+                    className={`bg-transparent md:bg-dark ${errors.email && 'border-destructive focus-visible:border-destructive'}`}
                   />
                   {errors.email && (
                     <span className="text-destructive text-m-p md:text-p">

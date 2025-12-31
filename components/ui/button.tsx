@@ -20,6 +20,7 @@ const buttonVariants = cva(
           'leading-[19px] bg-transparent border-[1px] border-blue hover:bg-blue focus:bg-accent focus:border-accent',
         destructive:
           'leading-[19px] bg-transparent border-[1px] border-destructive hover:bg-destructive',
+        faq: 'leading-[19px] bg-transparent border-2 hover:bg-[#10164b]',
       },
       size: {
         default:

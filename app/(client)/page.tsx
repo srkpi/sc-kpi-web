@@ -52,7 +52,7 @@ export default async function Home() {
           <SliderMainPageDepartments departments={departments} />
         </section>
       )}
-      <section className="max-w-[1520px]  mx-auto _container px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px] flex flex-col gap-[30px] md:gap-[80px] items-center">
+      <section className="max-w-[1520px] mx-auto _container px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px] flex flex-col gap-[30px] md:gap-[80px] items-center">
         <div className="relative max-w-[450px] md:p-0 p-[14px] md:max-w-full w-full flex flex-col md:flex-row-reverse md:min-h-[350px] lg:min-h-[500px] rounded-[20px] overflow-hidden">
           <div className="md:w-1/2 aspect-[16/9] rounded-[20px] md:rounded-none overflow-hidden w-full relative md:block p-[14px]">
             <img
@@ -61,11 +61,11 @@ export default async function Home() {
               alt="Студрада КПІ"
             />
           </div>
-          <div className="md:w-1/2 p-[14px] mt-[-20px] pt-[30px] md:p-[30px] lg:p-[50px] bg-gradient-to-b from-[#ecedf833] to-transparrent flex flex-col">
-            <h1 className="w-full text-center font-bold mb-[14px] md:mb-[5px] leading-[110%] text-blue text-3xl sm:text-5xl xl:text-6xl 2xl:text-[5.2rem]">
+          <div className="md:w-1/2 p-[14px] mt-[-20px] pt-[30px] md:p-[30px] lg:p-[50px] bg-[#151e29] flex flex-col">
+            <h1 className="w-full text-center font-accent font-bold mb-[14px] md:mb-[5px] leading-[110%] text-blue text-3xl sm:text-5xl xl:text-6xl 2xl:text-[5.2rem]">
               Студрада КПІ
             </h1>
-            <p className="text-p md:text-h3 mb-[30px] w-full md:w-3/4 md:ml-auto md:mr-0">
+            <p className="text-p mt-5 md:text-h3 mb-[30px] w-full md:w-3/4 md:ml-auto md:mr-0">
               — це ком'юніті згуртованих та ініціативних студентів, які роблять
               КПІ кращим.
             </p>
@@ -80,7 +80,7 @@ export default async function Home() {
               студентську спільноту.
             </p>
             <p className="text-[18px] md:text-h3 mb-[50px] max-w-[530px]">
-              <span className="text-[20px] md:text-h1 text-blue font-medium">
+              <span className="text-[20px] md:text-h1 text-blue font-bold font-accent">
                 Кожен,
               </span>{' '}
               хто бажає приєднатися, може будь-коли заповнити форму за
@@ -154,40 +154,32 @@ export default async function Home() {
           <h2 className="text-[24px] md:text-h1 font-semibold text-blue mb-[30px] md:mb-[80px]">
             Документи
           </h2>
-          <div className="flex justify-around w-full gap-x-4 gap-y-[30px] md:gap-y-[80px] flex-wrap">
+          <div className="flex justify-around w-full gap-10 flex-wrap">
             {documents.map(document => (
               <div
                 key={document.title}
-                className="flex flex-col flex-auto items-center"
+                className="flex flex-col overflow-hidden bg-[#151e29] min-h-[300px] p-5 max-w-[350px] md:max-w-none md:w-[400px] rounded-[20px] flex-auto"
               >
-                <h4 className="text-[20px] md:text-[30px] font-medium self-center sm:text-center mb-[30px] md:mb-[50px]">
-                  {document.title}
-                </h4>
-                <div className="overflow-hidden bg-[linear-gradient(270deg,rgba(236,237,248,0.1)_0.26%,_rgba(236,237,248,0)_100%)] min-h-[300px] md:min-h-[500px] px-[14px] sm:px-[50px] py-[20px] max-w-[350px] md:max-w-none md:w-[400px] rounded-[20px] backdrop-blur-[10px] flex-auto">
-                  <div className="h-full w-full p-[12px] absolute top-0 left-0 -z-10">
-                    <div className="bg-blue h-full w-full rounded-[14px] blur-[10px] bg-gradient-to-r from-dark to-[#2634DA]"></div>
-                  </div>
-                  <Link
-                    className="select-none flex gap-4 items-center hover:translate-x-1 transition-all mb-[25px]"
-                    href={document.link}
-                    download
-                  >
-                    <FileInputIcon
-                      className="hidden md:inline-block"
-                      color="white"
-                      size={40}
-                    />
-                    <FileInputIcon
-                      className="inline-block md:hidden"
-                      color="white"
-                      size={30}
-                    />
-                    <span className="underline text-p">{document.title}</span>
-                  </Link>
-                  <p className="text-m-p md:text-p  font-light">
-                    {document.description}
-                  </p>
-                </div>
+                <Link
+                  className="select-none flex gap-4 items-center hover:translate-x-1 transition-all mb-[25px]"
+                  href={document.link}
+                  download
+                >
+                  <FileInputIcon
+                    className="hidden md:inline-block"
+                    color="white"
+                    size={40}
+                  />
+                  <FileInputIcon
+                    className="inline-block md:hidden"
+                    color="white"
+                    size={30}
+                  />
+                  <span className="underline text-p">{document.title}</span>
+                </Link>
+                <p className="text-m-p md:text-p font-light">
+                  {document.description}
+                </p>
               </div>
             ))}
           </div>

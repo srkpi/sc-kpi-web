@@ -1,4 +1,4 @@
-import { BicepsFlexed, Layers } from 'lucide-react';
+import { ClipboardList, Layers } from 'lucide-react';
 import { Metadata } from 'next';
 
 import SubClientLayout from '@/app/(client)/sub-client-layout';
@@ -14,7 +14,7 @@ const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
     label: 'Головна',
   },
   {
-    icon: BicepsFlexed,
+    icon: ClipboardList,
     href: '/projects',
     label: 'Проєкти',
   },

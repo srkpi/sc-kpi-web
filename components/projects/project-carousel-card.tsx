@@ -7,7 +7,7 @@ interface ProjectCardProps {
 
 export default function ProjectCarouselCard({ project }: ProjectCardProps) {
   return (
-    <div className="relative w-full h-full flex flex-col md:flex-row rounded-[10px] overflow-hidden bg-[#1A232A]">
+    <div className="relative w-full h-full flex flex-col md:flex-row rounded-[10px] overflow-hidden bg-[#151e29]">
       {project.image ? (
         <>
           <div className="w-full order-2 md:order-1 md:w-1/2 p-[20px] md:p-[33px] flex flex-col">

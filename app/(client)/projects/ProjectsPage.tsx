@@ -86,19 +86,19 @@ const ProjectsPage = ({ projects }: Props) => {
 
   return (
     <>
-      <div className="w-full gap-5 h-[30px] md:h-[48px] flex">
+      <div className="w-full grid grid-cols-1 gap-3 lg:flex md:items-center lg:gap-5 lg:h-[48px]">
         <Input
           placeholder="Пошук"
-          className="w-[400px] h-[30px] md:h-[48px] max-w-full rounded-[6px] md:max-w-[406px]"
+          className="w-full xl:w-[400px] h-[40px] max-w-full rounded-[6px] lg:max-w-[406px]"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
 
         <Select
-          value={selectedSkill?.toString()}
+          value={selectedSkill}
           onValueChange={value => setSelectedSkill(value)}
         >
-          <SelectTrigger className="max-w-[200px] md:max-w-[250px]">
+          <SelectTrigger className="w-full lg:max-w-[250px]">
             <SelectValue placeholder="Навички" />
           </SelectTrigger>
           <SelectContent>
@@ -113,10 +113,10 @@ const ProjectsPage = ({ projects }: Props) => {
           </SelectContent>
         </Select>
         <Select
-          value={selectedStatus?.toString()}
+          value={selectedStatus}
           onValueChange={value => setSelectedStatus(value)}
         >
-          <SelectTrigger className="max-w-[200px] md:max-w-[250px]">
+          <SelectTrigger className="w-full lg:max-w-[250px]">
             <SelectValue placeholder="Статус" />
           </SelectTrigger>
           <SelectContent>
@@ -134,6 +134,7 @@ const ProjectsPage = ({ projects }: Props) => {
           <Button
             variant="outline"
             size="sm"
+            className="w-full lg:w-auto h-[40px] lg:h-[45px]"
             onClick={e => {
               e.stopPropagation();
               setSelectedSkill('');
