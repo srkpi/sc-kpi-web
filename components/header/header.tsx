@@ -63,13 +63,13 @@ export function Header({ user }: Props) {
         </div>
       </div>
       {open && (
-        <div className="sm:hidden flex-col items-center gap-5 pt-[8px] pb-[30px] sm:[15px] lg:py-[23px] px-[14px] md:px-[32px] lg:px-[64px] xl:px-[100px]">
+        <div className="sm:hidden flex-col items-center pt-[8px] pb-[30px] sm:[15px] lg:py-[23px] px-[14px] md:px-[32px] lg:px-[64px] xl:px-[100px]">
           {!loggedIn && (
             <Link href="/login">
               <Button
                 variant="outline"
                 size="sm"
-                className="w-full font-regular mb-[30px]"
+                className="w-full font-regular mb-[20px]"
               >
                 Увійти
               </Button>
