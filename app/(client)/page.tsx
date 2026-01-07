@@ -86,7 +86,7 @@ export default async function Home() {
               хто бажає приєднатися, може будь-коли заповнити форму за
               посиланням нижче.
             </p>
-            <Link href="https://kpistats.onrender.com/sr_vstup">
+            <Link href="https://kpistats.onrender.com/sr_vstup?utm_source=about_btn">
               <Button className="self-center md:self-start py-2 md:py-4 px-8 md:px-6">
                 Приєднуйся до Студради КПІ
               </Button>
