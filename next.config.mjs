@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   output: 'standalone',
+  skipTrailingSlashRedirect: true,
   images: {
     qualities: [100],
     remotePatterns: [
