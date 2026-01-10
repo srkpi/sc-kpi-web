@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
 interface EditorComponentProps {

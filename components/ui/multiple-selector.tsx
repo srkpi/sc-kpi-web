@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import React from 'react';
 import { forwardRef, useEffect } from 'react';
 import { Command as CommandPrimitive, useCommandState } from 'cmdk';
 import { X } from 'lucide-react';
@@ -255,6 +255,7 @@ const MultipleSelector = React.forwardRef<
 
     useEffect(() => {
       if (value) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSelected(value);
       }
     }, [value]);
@@ -265,6 +266,7 @@ const MultipleSelector = React.forwardRef<
       }
       const newOption = transToGroupOption(arrayOptions || [], groupBy);
       if (JSON.stringify(newOption) !== JSON.stringify(options)) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setOptions(newOption);
       }
     }, [arrayDefaultOptions, arrayOptions, groupBy, onSearch, options]);
@@ -392,7 +394,7 @@ const MultipleSelector = React.forwardRef<
         };
       }
       return undefined;
-    }, [creatable, commandProps?.filter]);
+    }, [creatable, commandProps]);
 
     return (
       <Command

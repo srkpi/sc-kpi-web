@@ -17,6 +17,7 @@ const ClubCard: React.FC<ClubCardProps> = ({ club }) => {
 
   useEffect(() => {
     if (!measureRef.current || categories.length === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setVisibleCount(0);
       return;
     }

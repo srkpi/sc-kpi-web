@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChevronRight } from 'lucide-react';
 
 const ArrowRight = ({ onClick }: { onClick: () => void }) => {

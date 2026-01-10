@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
@@ -65,7 +65,7 @@ const CreateProjectPage: FC = () => {
     skillsIds: z
       .array(z.number())
       .min(1, { message: 'Оберіть хоча б одну навичку' }),
-    statusId: z.number({ required_error: 'Оберіть статус' }),
+    statusId: z.number({ error: 'Оберіть статус' }),
   });
   type FormData = z.infer<typeof FormSchema>;
 

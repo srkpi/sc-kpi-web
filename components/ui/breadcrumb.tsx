@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { FC } from 'react';
+import React from 'react';
+import { FC, Fragment } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { ArrowRight, MoreHorizontal } from 'lucide-react';
 
@@ -7,9 +7,7 @@ import { cn } from '@/lib/cn';
 
 const Breadcrumb = React.forwardRef<
   HTMLElement,
-  React.ComponentPropsWithoutRef<'nav'> & {
-    separator?: React.ReactNode;
-  }
+  React.ComponentPropsWithoutRef<'nav'> & { separator?: React.ReactNode }
 >(({ ...props }, ref) => <nav ref={ref} aria-label="breadcrumb" {...props} />);
 Breadcrumb.displayName = 'Breadcrumb';
 
@@ -45,9 +43,7 @@ BreadcrumbItem.displayName = 'BreadcrumbItem';
 
 const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,
-  React.ComponentPropsWithoutRef<'a'> & {
-    asChild?: boolean;
-  }
+  React.ComponentPropsWithoutRef<'a'> & { asChild?: boolean }
 >(({ asChild, className, ...props }, ref) => {
   const Comp = asChild ? Slot : 'a';
 
@@ -126,7 +122,7 @@ const Breadcrumbs: FC<{ items: BreadcrumbItemType[]; className?: string }> = ({
     <Breadcrumb className={className}>
       <BreadcrumbList>
         {items.map((item, index) => (
-          <React.Fragment key={index}>
+          <Fragment key={index}>
             <BreadcrumbItem className="flex items-center">
               {item.icon && (
                 <item.icon className="w-[15px] h-[13px] md:w-[20px] md:h-[20px]" />
@@ -139,7 +135,7 @@ const Breadcrumbs: FC<{ items: BreadcrumbItemType[]; className?: string }> = ({
               </BreadcrumbLink>
             </BreadcrumbItem>
             {isLastItem(index) && <BreadcrumbSeparator />}
-          </React.Fragment>
+          </Fragment>
         ))}
       </BreadcrumbList>
     </Breadcrumb>

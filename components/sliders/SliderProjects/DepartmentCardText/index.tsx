@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { formatProjectIndex } from '@/lib/helpers';
 import { DepartmentProject } from '@/types/departments';
 

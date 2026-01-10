@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
@@ -50,7 +50,7 @@ const FormSchema = z.object({
   description: z.string().min(1, { message: 'Опис обов’язковий' }),
   shortDescription: z.string().min(1, { message: 'Стислий опис обов’язковий' }),
   skillsIds: z.array(z.number()).min(1, 'Оберіть хоча б одну навичку'),
-  statusId: z.number({ required_error: 'Оберіть статус' }),
+  statusId: z.number({ error: 'Оберіть статус' }),
 });
 
 type FormData = z.infer<typeof FormSchema>;

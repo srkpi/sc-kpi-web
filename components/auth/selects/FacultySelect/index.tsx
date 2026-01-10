@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UseFormClearErrors, UseFormRegisterReturn } from 'react-hook-form';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import useSWR from 'swr';
