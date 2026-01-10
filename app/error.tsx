@@ -1,11 +1,22 @@
 'use client';
 
+import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import posthog from 'posthog-js';
 
 import { Button } from '@/components/ui/button';
 
-export default function ErrorPage() {
+export default function ErrorPage({
+  error,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    posthog.captureException(error);
+  }, [error]);
+
   return (
     <div className="w-screen h-full">
       <div className="h-screen">
