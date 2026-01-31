@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
@@ -10,6 +10,7 @@ import * as z from 'zod';
 
 import { createProject } from '@/app/actions/project.actions';
 import { getSkillsList } from '@/app/actions/skills.actions';
+import { getStatusesList } from '@/app/actions/statuses.actions';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,8 +23,16 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { Skill } from '@/types/skill';
+import { Status } from '@/types/status';
 
 const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
   ssr: false,
@@ -32,17 +41,19 @@ const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
 const CreateProjectPage: FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [statuses, setStatuses] = useState<Status[]>([]);
 
   const router = useRouter();
 
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchSkills = async () => {
+    const fetchData = async () => {
       setSkills(await getSkillsList());
+      setStatuses(await getStatusesList());
     };
 
-    fetchSkills();
+    fetchData();
   }, []);
 
   const FormSchema = z.object({
@@ -51,25 +62,21 @@ const CreateProjectPage: FC = () => {
       .string()
       .min(1, { message: 'Стислий опис обов’язковий' }),
     description: z.string().min(1, { message: 'Опис обов’язковий' }),
-    buttonLink: z
-      .string()
-      .trim()
-      .url('Посилання має бути валідним URL')
-      .min(1, { message: 'Посилання на вступ є обов’язковим' }),
     skillsIds: z
       .array(z.number())
       .min(1, { message: 'Оберіть хоча б одну навичку' }),
+    statusId: z.number({ error: 'Оберіть статус' }),
   });
   type FormData = z.infer<typeof FormSchema>;
 
-  const form = useForm({
+  const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: '',
       description: '',
       shortDescription: '',
-      buttonLink: '',
       skillsIds: [] as number[],
+      statusId: 0,
     },
   });
 
@@ -124,6 +131,7 @@ const CreateProjectPage: FC = () => {
           name="skillsIds"
           render={({ field }) => (
             <FormItem>
+              <FormLabel>Навички</FormLabel>
               <MultipleSelector
                 value={field.value.map(val => {
                   const foundSkill = skills.find(skill => skill.id === val);
@@ -140,6 +148,33 @@ const CreateProjectPage: FC = () => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="statusId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Статус</FormLabel>
+              <Select
+                onValueChange={value => field.onChange(+value)}
+                value={field.value ? field.value.toString() : ''}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Оберіть статус" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {statuses.map(status => (
+                    <SelectItem key={status.id} value={status.id.toString()}>
+                      {status.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <div className="flex gap-6">
           <FormField
             control={form.control}
@@ -147,20 +182,6 @@ const CreateProjectPage: FC = () => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel htmlFor="name">Назва</FormLabel>
-                <EditorComponent
-                  setText={text => form.setValue('name', text)}
-                  initialValue={field.value}
-                />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="buttonLink"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel htmlFor="buttonLink">Посилання на вступ</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>

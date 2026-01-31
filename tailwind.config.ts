@@ -41,6 +41,7 @@ const config = {
       },
       fontFamily: {
         sans: ['e-Ukraine', ...fontFamily.sans],
+        accent: ['"Dela Gothic One"', ...fontFamily.sans],
       },
       colors: {
         transparent: 'transparent',

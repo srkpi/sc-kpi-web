@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -16,7 +16,6 @@ const Slider = ({ departments }: SliderProps) => {
   const slideRef = useRef<HTMLDivElement>(null);
   const slideContentRef = useRef<HTMLDivElement>(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
-  const slidesToRender = [...departments, ...departments];
   const [startX, setStartX] = useState<number | null>(null);
 
   const moveNext = () => {
@@ -117,9 +116,9 @@ const Slider = ({ departments }: SliderProps) => {
           onMouseUp={handleMouseUp}
           ref={slideRef}
         >
-          {slidesToRender.map((department: Department) => (
+          {departments.map((department: Department) => (
             <div
-              key={department.id}
+              key={`sh-${department.id}`}
               id={`main-slider-${department.id}`}
               className="main-page-slider__item z-10 absolute bottom-[20%] translate-x-0 translate-y-0 rounded-[6px] sm:rounded-[12px] md:rounded-[16px] lg:rounded-[20px] bg-center bg-cover inline-block duration-500"
               style={{
@@ -171,9 +170,9 @@ const Slider = ({ departments }: SliderProps) => {
         </nav>
       </div>
       <div className="relative" ref={slideContentRef}>
-        {slidesToRender.map((department: Department) => (
+        {departments.map((department: Department) => (
           <div
-            key={department.id}
+            key={`sc-${department.id}`}
             id={`main-slider-content-${department.id}`}
             className="main-page-slider-content__item z-10 relative translate-x-0 translate-y-0 inline-block duration-300"
           >

@@ -1,5 +1,4 @@
 'use client';
-import React from 'react';
 
 import { Carousel } from '@/components/ui/carousel';
 import { Department } from '@/types/departments';

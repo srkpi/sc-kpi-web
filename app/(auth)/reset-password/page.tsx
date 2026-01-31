@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -65,7 +65,7 @@ const ResetPassword = () => {
                     {...register('email')}
                     type="email"
                     placeholder="Пошта"
-                    className={`${errors.email && 'border-destructive focus-visible:border-destructive'}`}
+                    className={`bg-transparent md:bg-dark ${errors.email && 'border-destructive focus-visible:border-destructive'}`}
                   />
                   {errors.email && (
                     <span className="text-destructive text-m-p md:text-p">

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Cable, Layers } from 'lucide-react';
 import { Metadata } from 'next';
 

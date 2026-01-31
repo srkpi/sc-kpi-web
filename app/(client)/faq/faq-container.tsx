@@ -1,5 +1,5 @@
 'use client';
-import * as React from 'react';
+
 import { FC, useMemo, useState } from 'react';
 import Link from 'next/link';
 
@@ -68,9 +68,22 @@ const FaqContainer: FC<Props> = ({ categories, faqs }) => {
               {categories?.map(category => (
                 <li key={category.id}>
                   <Button
-                    variant="outline"
+                    variant="faq"
                     size="sm"
-                    className={`w-[255px] ${category.name === selectedCategory ? 'bg-blue' : 'bg-transparent'} rounded-none not-italic font-normal leading-normal text-base p-1`}
+                    className={`
+                      w-[255px]
+                      ${
+                        category.name === selectedCategory
+                          ? 'border-[#98c4ee] border-l-[10px]'
+                          : 'border-[#10164b]'
+                      }
+                      rounded
+                      not-italic
+                      font-normal
+                      leading-normal
+                      text-base
+                      p-1
+                    `}
                     value={category.name}
                     onClick={event => {
                       setSelectedCategory(event.currentTarget.value);
@@ -93,6 +106,7 @@ const FaqContainer: FC<Props> = ({ categories, faqs }) => {
               key={faq.id}
               id={faq.id.toString()}
               value={faq.id.toString()}
+              className="border-2 border-[#10164b] data-[state=open]:border-[#98c4ee] transition-colors ease-in-out duration-100"
             >
               <AccordionTrigger>{faq.question}</AccordionTrigger>
               <AccordionContent>

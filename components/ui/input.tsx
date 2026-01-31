@@ -1,11 +1,11 @@
 'use client';
-import * as React from 'react';
+
+import React from 'react';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
 
 import { cn } from '@/lib/cn';
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
   iconPosition?: 'start' | 'end';
 }

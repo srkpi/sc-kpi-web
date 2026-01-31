@@ -3,6 +3,7 @@ import {
   CableIcon,
   LaptopMinimalCheck,
   LibraryIcon,
+  NotebookPen,
   PaletteIcon,
   PaperclipIcon,
   Presentation,
@@ -34,6 +35,11 @@ export const navbarLinks: Props[] = [
     icon: <LaptopMinimalCheck width={28} height={28} />,
     href: '/admin/skills',
     title: 'Навички',
+  },
+  {
+    icon: <NotebookPen width={28} height={28} />,
+    href: '/admin/statuses',
+    title: 'Статуси',
   },
   {
     icon: <PaperclipIcon width={28} height={28} />,

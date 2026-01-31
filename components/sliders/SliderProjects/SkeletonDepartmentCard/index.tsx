@@ -1,5 +1,3 @@
-import React from 'react';
-
 import ArrowLeft from '@/components/sliders/ArrowLeft';
 import ArrowRight from '@/components/sliders/ArrowRight';
 

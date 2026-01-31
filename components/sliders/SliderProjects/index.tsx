@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import ArrowLeft from '@/components/sliders/ArrowLeft';
 import ArrowRight from '@/components/sliders/ArrowRight';

@@ -6,7 +6,7 @@
 
 @font-face {
   font-family: 'e-Ukraine';
-  src: url('/fonts/e-Ukraine-Thin.otf') format('opentype');
+  src: url('/fonts/e-ukraine/e-Ukraine-Thin.otf') format('opentype');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -14,7 +14,7 @@
 
 @font-face {
   font-family: 'e-Ukraine';
-  src: url('/fonts/e-Ukraine-UltraLight.otf') format('opentype');
+  src: url('/fonts/e-ukraine/e-Ukraine-UltraLight.otf') format('opentype');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
@@ -22,7 +22,7 @@
 
 @font-face {
   font-family: 'e-Ukraine';
-  src: url('/fonts/e-Ukraine-Light.otf') format('opentype');
+  src: url('/fonts/e-ukraine/e-Ukraine-Light.otf') format('opentype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -30,7 +30,7 @@
 
 @font-face {
   font-family: 'e-Ukraine';
-  src: url('/fonts/e-Ukraine-Regular.otf') format('opentype');
+  src: url('/fonts/e-ukraine/e-Ukraine-Regular.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -38,7 +38,7 @@
 
 @font-face {
   font-family: 'e-Ukraine';
-  src: url('/fonts/e-Ukraine-Medium.otf') format('opentype');
+  src: url('/fonts/e-ukraine/e-Ukraine-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -46,15 +46,24 @@
 
 @font-face {
   font-family: 'e-Ukraine';
-  src: url('/fonts/e-Ukraine-Bold.otf') format('opentype');
+  src: url('/fonts/e-ukraine/e-Ukraine-Bold.otf') format('opentype');
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Delta Gothic One';
+  src: url('/fonts/dela-gothic-one/DelaGothicOne-Regular.ttf')
+    format('truetype');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @layer base {
   :root {
-    --dark: #101820;
+    --dark: #020f1f;
     --gray: #666;
 
     --blue: #374ffa;
@@ -62,7 +71,7 @@
 
     --viewport-height: 100vh;
 
-    --background: #101820;
+    --background: #020f1f;
     --foreground: 213 31% 91%;
 
     --muted: 223 47% 11%;
@@ -245,22 +254,6 @@
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
-  }
-  .bg-linear-auth {
-    background: linear-gradient(
-      152deg,
-      var(--blue) -39.56%,
-      var(--dark) 58.37%
-    );
-    @apply md:bg-linear-auth-md;
-  }
-  .bg-linear-auth-md {
-    background: linear-gradient(
-        0deg,
-        rgba(16, 24, 32, 0.3) 0%,
-        rgba(16, 24, 32, 0.3) 100%
-      ),
-      linear-gradient(90deg, var(--blue) 0%, var(--dark) 117.83%);
   }
   .no-scrollbar {
     -ms-overflow-style: none;

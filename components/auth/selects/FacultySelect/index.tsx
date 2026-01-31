@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UseFormClearErrors, UseFormRegisterReturn } from 'react-hook-form';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import useSWR from 'swr';
@@ -71,7 +71,7 @@ const FacultySelect = ({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         asChild
-        className="text-m-p md:text-p leading-[14px] md:leading-[16px] p-3 md:px-[23px] md:py-[22px] rounded-[10px] min-h-[40px] md:min-h-[65px] bg-dark"
+        className="bg-transparent md:bg-dark text-m-p md:text-p leading-[14px] md:leading-[16px] p-3 md:px-[23px] md:py-[22px] rounded-[10px] min-h-[40px] md:min-h-[65px]"
       >
         <Button
           variant="outline"

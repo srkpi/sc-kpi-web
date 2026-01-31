@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { Toaster } from '@/components/ui/toast/toaster';
 import { cn } from '@/lib/cn';
 
+import { PostHogProvider } from './providers';
+
 import './globals.css';
 
 const title = {
@@ -46,8 +48,10 @@ export default function RootLayout({
           'min-h-screen-dvh flex flex-col bg-background font-sans antialiased',
         )}
       >
-        {children}
-        <Toaster />
+        <PostHogProvider>
+          {children}
+          <Toaster />
+        </PostHogProvider>
       </body>
       <GoogleAnalytics gaId={process.env.GA_ID ?? ''} />
     </html>

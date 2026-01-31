@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -87,7 +87,12 @@ const RegisterPage = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input type="email" placeholder="Пошта" {...field} />
+                        <Input
+                          type="email"
+                          placeholder="Пошта"
+                          className="bg-transparent md:bg-dark"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -100,7 +105,11 @@ const RegisterPage = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="Прізвище" {...field} />
+                        <Input
+                          placeholder="Прізвище"
+                          className="bg-transparent md:bg-dark"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -113,7 +122,11 @@ const RegisterPage = () => {
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormControl>
-                          <Input placeholder="Ім'я" {...field} />
+                          <Input
+                            placeholder="Ім'я"
+                            className="bg-transparent md:bg-dark"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -125,7 +138,11 @@ const RegisterPage = () => {
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormControl>
-                          <Input placeholder="По батькові" {...field} />
+                          <Input
+                            placeholder="По батькові"
+                            className="bg-transparent md:bg-dark"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -174,6 +191,7 @@ const RegisterPage = () => {
                         <Input
                           type="password"
                           placeholder="Пароль"
+                          className="bg-transparent md:bg-dark"
                           {...field}
                         />
                       </FormControl>
@@ -190,6 +208,7 @@ const RegisterPage = () => {
                         <Input
                           type="password"
                           placeholder="Підтвердіть пароль"
+                          className="bg-transparent md:bg-dark"
                           {...field}
                         />
                       </FormControl>
