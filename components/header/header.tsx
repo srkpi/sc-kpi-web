@@ -27,12 +27,12 @@ export function Header({ user }: Props) {
       <div className="flex justify-between items-center py-[8px] sm:py-[15px] lg:py-[23px] px-[14px] md:px-[24px] lg:px-[64px] xl:px-[100px]">
         <Link href="/">
           <Image
-            className="object-cover align-top w-[67px] md:w-[85px] lg:w-[104px] h-auto mr-[12px]"
+            className="object-cover align-top w-[67px] md:w-[85px] lg:w-[134px] h-auto mr-[12px]"
             src="/images/Logo.svg"
             alt="logo"
             quality={100}
-            width={104}
-            height={38}
+            width={134}
+            height={40}
           />
         </Link>
         <div className="hidden sm:flex sm:gap-[32px] md:gap-[36px] lg:gap-[72px] xl:gap-[90px] ml-[12px]">

@@ -80,7 +80,7 @@ export default function Page() {
             Немає облікового запису?
           </h2>
           <p className="mb-5 md:mb-10 text-m-p md:text-p">
-            Приєднуйтесь до сайту студради! Тут ви зможетепереглянути
+            Приєднуйтесь до сайту студради! Тут ви зможете переглянути
             студентські об'єднання та опис до них
           </p>
           <Link className="self-stretch" href="/register">
