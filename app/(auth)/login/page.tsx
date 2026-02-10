@@ -21,7 +21,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/toast/use-toast';
 
 const loginSchema = z.object({
-  email: z.string().email('Некоректна пошта'),
+  email: z.email('Некоректна пошта'),
   password: z.string().min(8, 'Пароль має містити не менше 8 символів'),
   rememberMe: z.boolean(),
 });
@@ -84,7 +84,7 @@ export default function Page() {
             студентські об'єднання та опис до них
           </p>
           <Link className="self-stretch" href="/register">
-            <Button className="min-w-[200px] max-w-[580px] w-full bg-dark border-dark py-2 md:py-4">
+            <Button className="min-w-[200px] max-w-[580px] w-full py-2 md:py-4">
               Зареєструватися
             </Button>
           </Link>

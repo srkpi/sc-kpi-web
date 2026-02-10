@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const registerSchema = z
   .object({
-    email: z.string().email('Некоректна пошта'),
+    email: z.email('Некоректна пошта'),
     middleName: z
       .string()
       .max(20, 'По батькові має містити не більше 20 символів')

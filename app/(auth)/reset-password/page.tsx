@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -100,7 +101,7 @@ const ResetPassword = () => {
             Якщо ви пам’ятаєте пароль - поверніться до сторінки входу
           </p>
           <Link className="self-stretch" href="/login">
-            <Button className="min-w-[200px] max-w-[580px] w-full bg-dark border-dark py-2 md:py-4">
+            <Button className="min-w-[200px] max-w-[580px] w-full py-2 md:py-4">
               Увійти
             </Button>
           </Link>

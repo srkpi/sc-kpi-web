@@ -158,6 +158,7 @@ const RegisterPage = () => {
                       selectedFaculty={selectedFaculty}
                       registerProps={register('faculty')}
                       clearErrors={form.clearErrors}
+                      avoidCollisions
                     />
                     {errors.faculty && (
                       <span className="text-destructive text-m-p md:text-p">
@@ -173,6 +174,7 @@ const RegisterPage = () => {
                       setSelectedGroup={setSelectedGroup}
                       registerProps={register('group')}
                       clearErrors={form.clearErrors}
+                      avoidCollisions
                     />
                     {errors.group && (
                       <span className="text-destructive text-m-p md:text-p">
@@ -270,7 +272,7 @@ const RegisterPage = () => {
             та опис до них
           </p>
           <Link className="self-stretch" href="/login">
-            <Button className="min-w-[200px] max-w-[580px] w-full bg-dark border-dark py-2 md:py-4">
+            <Button className="min-w-[200px] max-w-[580px] w-full py-2 md:py-4">
               Увійти
             </Button>
           </Link>
