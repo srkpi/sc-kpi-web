@@ -7,6 +7,7 @@ import { getServiceList } from '@/app/actions/service.actions';
 import ProjectsCarousel from '@/components/projects/projects-carousel';
 import SliderMainPageDepartments from '@/components/sliders/SliderMainPageDepartments';
 import { Button } from '@/components/ui/button';
+import { shuffle } from '@/lib/helpers';
 
 import { getProjectList } from '../actions/project.actions';
 
@@ -35,7 +36,8 @@ export default async function Home() {
   const departments = await getDepartmentList();
   const projects = await getProjectList();
 
-  const projectsToDisplay = projects
+  const shuffledDepartments = shuffle(departments);
+  const projectsToDisplay = shuffle(projects)
     .sort((a, b) => {
       const aHas = Boolean(a.image);
       const bHas = Boolean(b.image);
@@ -48,7 +50,7 @@ export default async function Home() {
     <div className="mb-[144px] md:mb-[200px]">
       {departments.length >= 2 && (
         <section className="overflow-hidden pb-[70px]">
-          <SliderMainPageDepartments departments={departments} />
+          <SliderMainPageDepartments departments={shuffledDepartments} />
         </section>
       )}
       <section className="max-w-[1520px] mx-auto _container px-0 md:px-[32px] lg:px-[64px] xl:px-[100px] mb-[60px] flex flex-col gap-[30px] md:gap-[80px] items-center">
