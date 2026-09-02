@@ -4,12 +4,12 @@ import Link from 'next/link';
 
 import { getDepartmentList } from '@/app/actions/department.actions';
 import { getServiceList } from '@/app/actions/service.actions';
-import ProjectsCarousel from '@/components/projects/projects-carousel';
+// import ProjectsCarousel from '@/components/projects/projects-carousel';
 import SliderMainPageDepartments from '@/components/sliders/SliderMainPageDepartments';
 import { Button } from '@/components/ui/button';
 import { shuffle } from '@/lib/helpers';
 
-import { getProjectList } from '../actions/project.actions';
+// import { getProjectList } from '../actions/project.actions';
 
 const documents = [
   {
@@ -34,17 +34,17 @@ export const metadata: Metadata = {
 export default async function Home() {
   const services = await getServiceList();
   const departments = await getDepartmentList();
-  const projects = await getProjectList();
+  // const projects = await getProjectList();
 
   const shuffledDepartments = shuffle(departments);
-  const projectsToDisplay = shuffle(projects)
-    .sort((a, b) => {
-      const aHas = Boolean(a.image);
-      const bHas = Boolean(b.image);
-      if (aHas === bHas) return 0;
-      return aHas ? -1 : 1;
-    })
-    .slice(0, 10);
+  // const projectsToDisplay = shuffle(projects)
+  //   .sort((a, b) => {
+  //     const aHas = Boolean(a.image);
+  //     const bHas = Boolean(b.image);
+  //     if (aHas === bHas) return 0;
+  //     return aHas ? -1 : 1;
+  //   })
+  //   .slice(0, 10);
 
   return (
     <div className="mb-[144px] md:mb-[200px]">
@@ -141,7 +141,7 @@ export default async function Home() {
           ))}
         </section>
       )}
-      {projects.length > 0 && (
+      {/* {projects.length > 0 && (
         <section className="mb-16">
           <h2 className="text-[24px] md:text-h1 text-center font-semibold text-blue mb-[30px] md:mb-[80px]">
             Проєкти
@@ -149,7 +149,7 @@ export default async function Home() {
 
           <ProjectsCarousel projects={projectsToDisplay} />
         </section>
-      )}
+      )} */}
       <section className="_container">
         <div className="flex flex-col gap-3 sm:gap-4 md:gap-5 items-center">
           <h2 className="text-[24px] md:text-h1 font-semibold text-blue mb-[30px] md:mb-[80px]">
