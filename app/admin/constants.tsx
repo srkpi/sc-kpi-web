@@ -1,6 +1,7 @@
 import {
   BriefcaseBusinessIcon,
   CableIcon,
+  FileTextIcon,
   LaptopMinimalCheck,
   LibraryIcon,
   NotebookPen,
@@ -55,5 +56,10 @@ export const navbarLinks: Props[] = [
     icon: <BriefcaseBusinessIcon width={28} height={28} />,
     href: '/admin/services',
     title: 'Служби',
+  },
+  {
+    icon: <FileTextIcon width={28} height={28} />,
+    href: '/admin/reports',
+    title: 'Звітність',
   },
 ];
