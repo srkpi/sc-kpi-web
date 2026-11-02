@@ -1,3 +1,4 @@
+import Tag from '@/components/ui/tag';
 import { Project } from '@/types/project';
 import { skillColors } from '@/types/skill';
 
@@ -24,18 +25,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       ></div>
 
       <div className="flex flex-wrap gap-2 md:gap-3 mb-5">
-        {project.skills.map(skill => {
-          const color = skillColors[skill.name] || '#E3A374';
-          return (
-            <span
-              key={skill.id}
-              style={{ color: color, borderColor: color }}
-              className="border-2 px-[10px] md:px-[12px] py-[5px] md:py-[6px] rounded-lg text-[10px] md:text-sm font-medium"
-            >
-              {skill.name}
-            </span>
-          );
-        })}
+        {project.skills.map(skill => (
+          <Tag key={skill.id} color={skillColors[skill.name] || '#E3A374'}>
+            {skill.name}
+          </Tag>
+        ))}
       </div>
 
       <div

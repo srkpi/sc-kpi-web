@@ -14,6 +14,10 @@ export const linkItems: LinkItem[] = [
     href: process.env.NEXT_PUBLIC_ANALYTICS_URL || '#',
   },
   {
+    name: 'Звітність',
+    href: '/reports',
+  },
+  {
     name: 'FAQ',
     href: '/faq',
   },
