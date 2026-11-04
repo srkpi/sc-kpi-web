@@ -20,7 +20,8 @@ export const metadata: Metadata = {
     'Керівництво, напрями роботи та департаменти Студентської ради КПІ ім. Ігоря Сікорського.',
 };
 
-const JOIN_APPLICATION_LINK = 'https://example.com/apply';
+const JOIN_APPLICATION_LINK = 'https://example.com/apply'; // поки хардкод, потім заміню адекватно
+export const dynamic = 'force-dynamic';
 
 export default async function Page() {
   const [managers, areas, departments] = await Promise.all([
