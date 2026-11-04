@@ -25,7 +25,7 @@ export function Header({ user }: Props) {
   return (
     <header className="fixed bg-dark z-[100] w-full">
       <div className="flex justify-between items-center py-[8px] sm:py-[15px] lg:py-[23px] px-[14px] md:px-[24px] lg:px-[64px] xl:px-[100px]">
-        <Link href="/">
+        <Link href="/" className="shrink-0">
           <Image
             className="object-cover align-top w-[67px] md:w-[85px] lg:w-[134px] h-auto mr-[12px]"
             src="/images/Logo.svg"

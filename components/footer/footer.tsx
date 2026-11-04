@@ -9,6 +9,9 @@ import {
   supportItems,
 } from '@/components/footer/constants';
 import { linkItems } from '@/constants/link-items';
+import { LinkItem } from '@/types/link-item';
+
+const mainItems: LinkItem[] = [{ name: 'Головна', href: '/' }, ...linkItems];
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -25,7 +28,7 @@ const Footer = () => {
             height={73}
           />
         </div>
-        <FooterColumn name="Основні сторінки" items={linkItems} />
+        <FooterColumn name="Основні сторінки" items={mainItems} />
         <FooterColumn name="Підтримка" items={supportItems} />
         <div className="hidden lg:flex lg:flex-col">
           <FooterColumn items={otherItems} />
