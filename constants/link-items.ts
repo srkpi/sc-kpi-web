@@ -2,6 +2,10 @@ import { LinkItem } from '@/types/link-item';
 
 export const linkItems: LinkItem[] = [
   {
+    name: 'Структура',
+    href: '/structure',
+  },
+  {
     name: "Cтудентські об'єднання",
     href: '/clubs',
   },
