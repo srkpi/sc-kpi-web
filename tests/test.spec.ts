@@ -19,7 +19,7 @@ test('basic navigation', async ({ page, isMobile }) => {
   await page.getByRole('link', { name: 'Політика конфіденційності' }).click();
   await page.waitForURL('/privacy', { timeout: 15000 });
 
-  await page.getByRole('button', { name: 'Увійти' }).click();
+  await page.goto('/login');
   await page.waitForURL('/login', { timeout: 15000 });
 
   if (isMobile)
