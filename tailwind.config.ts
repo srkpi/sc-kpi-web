@@ -51,6 +51,21 @@ const config = {
         greyBlue: '#5C6FCF',
         dark: 'var(--dark)',
         blue: 'var(--blue)',
+        brand: '#404deb',
+        layer: {
+          l3: '#20262e',
+          l4: '#2f3339',
+        },
+        subtle: {
+          l0: '#8b98a6',
+          l1: '#c5cfd9',
+        },
+        tag: {
+          red: '#eb748c',
+          yellow: '#e9c069',
+          green: '#81e78b',
+          blue: '#6fb7ec',
+        },
 
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

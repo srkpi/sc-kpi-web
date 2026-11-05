@@ -1,4 +1,4 @@
-import { Cable, Layers } from 'lucide-react';
+import { House } from 'lucide-react';
 import { Metadata } from 'next';
 
 import FaqContainer from '@/app/(client)/faq/faq-container';
@@ -8,12 +8,11 @@ import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
-    icon: Layers,
+    icon: House,
     href: '/',
     label: 'Головна',
   },
   {
-    icon: Cable,
     href: '/faq',
     label: 'FAQ',
   },
