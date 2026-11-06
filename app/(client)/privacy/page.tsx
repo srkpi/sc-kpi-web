@@ -1,4 +1,4 @@
-import { FileCheck2, Layers } from 'lucide-react';
+import { House } from 'lucide-react';
 import { Metadata } from 'next';
 
 import SubClientLayout from '@/app/(client)/sub-client-layout';
@@ -6,12 +6,11 @@ import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
-    icon: Layers,
+    icon: House,
     href: '/',
     label: 'Головна',
   },
   {
-    icon: FileCheck2,
     href: '/privacy',
     label: 'Політика конфіденційності',
   },
