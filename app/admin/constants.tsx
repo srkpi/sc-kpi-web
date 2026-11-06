@@ -2,11 +2,13 @@ import {
   BriefcaseBusinessIcon,
   CableIcon,
   LaptopMinimalCheck,
+  Layers,
   LibraryIcon,
   NotebookPen,
   PaletteIcon,
   PaperclipIcon,
   Presentation,
+  Users,
 } from 'lucide-react';
 
 type Props = {
@@ -55,5 +57,15 @@ export const navbarLinks: Props[] = [
     icon: <BriefcaseBusinessIcon width={28} height={28} />,
     href: '/admin/services',
     title: 'Служби',
+  },
+  {
+    icon: <Users width={28} height={28} />,
+    href: '/admin/managers',
+    title: 'Керівництво',
+  },
+  {
+    icon: <Layers width={28} height={28} />,
+    href: '/admin/areas',
+    title: 'Напрями',
   },
 ];

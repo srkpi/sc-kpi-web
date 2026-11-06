@@ -4,11 +4,15 @@ import Image from 'next/image';
 import ProjectsCarousel from '@/components/structure/ProjectsCarousel';
 import { Button } from '@/components/ui/button';
 import { fullName } from '@/lib/full-name';
+import { stripHtml } from '@/lib/html';
 import { StructureDepartment } from '@/types/structure-department';
 
 interface DepartmentPanelProps {
   department: StructureDepartment;
 }
+
+const HTML_CONTENT =
+  'text-m-p lg:text-l-p [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_a]:underline';
 
 const DepartmentPanel: FC<DepartmentPanelProps> = ({ department }) => {
   const {
@@ -33,7 +37,10 @@ const DepartmentPanel: FC<DepartmentPanelProps> = ({ department }) => {
           Чим ми займаємося?
         </h3>
         <p className="whitespace-pre-line text-m-p lg:text-l-p">
-          {description}
+          <div
+            className={HTML_CONTENT}
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         </p>
 
         {sections.length > 0 && (
@@ -49,12 +56,15 @@ const DepartmentPanel: FC<DepartmentPanelProps> = ({ department }) => {
           </ul>
         )}
 
-        {gains && (
+        {stripHtml(gains) && (
           <>
             <h3 className="mb-2 mt-6 text-p font-semibold lg:text-h3">
               Що ти отримаєш?
             </h3>
-            <p className="whitespace-pre-line text-m-p lg:text-l-p">{gains}</p>
+            <div
+              className={HTML_CONTENT}
+              dangerouslySetInnerHTML={{ __html: gains }}
+            />
           </>
         )}
       </div>

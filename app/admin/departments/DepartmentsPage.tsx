@@ -17,6 +17,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/components/ui/toast/use-toast';
+import { stripHtml } from '@/lib/html';
 import { Department } from '@/types/departments';
 
 interface Props {
@@ -72,9 +73,7 @@ export default function DepartmentsPage({ departments }: Props) {
         <TableBody>
           {filteredDepartments.map(department => (
             <TableRow key={department.id}>
-              <TableCell>
-                <div dangerouslySetInnerHTML={{ __html: department.name }} />
-              </TableCell>
+              <TableCell>{stripHtml(department.name)}</TableCell>
               <TableCell>
                 <div
                   dangerouslySetInnerHTML={{

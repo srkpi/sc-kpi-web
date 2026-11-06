@@ -5,6 +5,11 @@ import { revalidatePath } from 'next/cache';
 import { apiClient } from '@/lib/client';
 import { Department } from '@/types/departments';
 
+const revalidateDepartments = () => {
+  revalidatePath('/admin/departments');
+  revalidatePath('/structure');
+};
+
 export async function getDepartmentList() {
   const res = await apiClient.get<Department[]>('/departments');
   return res.data;
@@ -12,7 +17,7 @@ export async function getDepartmentList() {
 
 export async function deleteDepartment(id: number) {
   await apiClient.delete(`/departments/${id}`);
-  revalidatePath('/admin/departments');
+  revalidateDepartments();
 }
 
 export async function getDepartmentById(id: string) {
@@ -21,9 +26,10 @@ export async function getDepartmentById(id: string) {
 }
 
 export async function createDepartment(formData: FormData) {
-  await apiClient.post('/departments', formData);
+  const res = await apiClient.post<Department>('/departments', formData);
 
-  revalidatePath('/admin/departments');
+  revalidateDepartments();
+  return res.data;
 }
 
 export async function updateDepartment(
@@ -33,6 +39,10 @@ export async function updateDepartment(
     shortDescription: string;
     buttonLink: string;
     description: string;
+    gains: string;
+    headFirstName: string;
+    headLastName: string;
+    headMiddleName?: string;
   },
 ) {
   await apiClient.patch('/departments', {
@@ -40,7 +50,7 @@ export async function updateDepartment(
     ...data,
   });
 
-  revalidatePath('/admin/departments');
+  revalidateDepartments();
 }
 
 export async function updateDepartmentImage(id: number, file: File) {
@@ -52,10 +62,24 @@ export async function updateDepartmentImage(id: number, file: File) {
       'Content-Type': 'multipart/form-data',
     },
   });
+  revalidateDepartments();
+}
+
+export async function updateDepartmentHeadImage(id: number, file: File) {
+  const formData = new FormData();
+  formData.append('image', file);
+
+  await apiClient.patch(`/departments/head-image/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  revalidateDepartments();
 }
 
 export async function createDepartmentProject(formData: FormData) {
   await apiClient.post('/departments/projects', formData);
+  revalidateDepartments();
 }
 
 export async function updateProject(
@@ -79,10 +103,35 @@ export async function updateProject(
     });
   }
 
-  revalidatePath('/admin/departments');
+  revalidateDepartments();
 }
 
 export async function deleteDepartmentProject(projectId: number) {
   await apiClient.delete(`/departments/projects/${projectId}`);
-  revalidatePath(`/admin/departments/${projectId}`);
+  revalidateDepartments();
+}
+
+export async function createDepartmentSection(data: {
+  departmentId: number;
+  name: string;
+  description: string;
+}) {
+  await apiClient.post('/departments/sections', data);
+  revalidateDepartments();
+}
+
+export async function updateDepartmentSection(
+  id: number,
+  data: {
+    name: string;
+    description: string;
+  },
+) {
+  await apiClient.put('/departments/sections', { id, ...data });
+  revalidateDepartments();
+}
+
+export async function deleteDepartmentSection(sectionId: number) {
+  await apiClient.delete(`/departments/sections/${sectionId}`);
+  revalidateDepartments();
 }

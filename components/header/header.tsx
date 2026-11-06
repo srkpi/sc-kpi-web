@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { UserIcon } from 'lucide-react';
+import { LayoutDashboard, Menu, UserIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -12,9 +11,10 @@ import { User } from '@/types/auth/user';
 
 interface Props {
   user: User | null;
+  isAdmin?: boolean;
 }
 
-export function Header({ user }: Props) {
+export function Header({ user, isAdmin = false }: Props) {
   const [open, setOpen] = useState(false);
   const loggedIn = !!user;
 
@@ -38,9 +38,24 @@ export function Header({ user }: Props) {
         <div className="hidden sm:flex sm:gap-[32px] md:gap-[36px] lg:gap-[72px] xl:gap-[90px] ml-[12px]">
           <Links />
           {loggedIn ? (
-            <Link href="/profile">
-              <UserIcon size={24} />
-            </Link>
+            <div className="flex items-center gap-[16px]">
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  title="Адмін-панель"
+                  aria-label="Адмін-панель"
+                  className="flex items-center gap-2 hover:text-blue ease-in-out duration-100"
+                >
+                  <LayoutDashboard size={24} />
+                  <span className="hidden xl:inline font-semibold text-m-h1">
+                    Адмінка
+                  </span>
+                </Link>
+              )}
+              <Link href="/profile">
+                <UserIcon size={24} />
+              </Link>
+            </div>
           ) : (
             <Link href="/login">
               <Button variant="outline" size="sm">
@@ -73,6 +88,14 @@ export function Header({ user }: Props) {
               >
                 Увійти
               </Button>
+            </Link>
+          )}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="block mb-[20px] font-semibold text-l-p hover:text-blue"
+            >
+              Адмін-панель
             </Link>
           )}
           <Links />
