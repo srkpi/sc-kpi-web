@@ -1,7 +1,7 @@
 import React from 'react';
 import { FC, Fragment } from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import { ArrowRight, MoreHorizontal } from 'lucide-react';
+import { ChevronsRight, Ellipsis } from 'lucide-react';
 
 import { cn } from '@/lib/cn';
 
@@ -18,7 +18,7 @@ const BreadcrumbList = React.forwardRef<
   <ol
     ref={ref}
     className={cn(
-      'flex flex-wrap items-center gap-1.5 break-words text-m-p text-muted-foreground sm:gap-2.5 sm:text-p',
+      'flex flex-wrap items-center gap-2 break-words text-l-p text-subtle-l0 md:gap-3 md:text-p',
       className,
     )}
     {...props}
@@ -33,7 +33,7 @@ const BreadcrumbItem = React.forwardRef<
   <li
     ref={ref}
     className={cn(
-      'inline-flex items-center gap-1.5 text-m-p font-regular sm:text-p',
+      'inline-flex h-5 items-center gap-1.5 text-l-p font-regular md:gap-2 md:text-p',
       className,
     )}
     {...props}
@@ -51,7 +51,7 @@ const BreadcrumbLink = React.forwardRef<
     <Comp
       ref={ref}
       className={cn(
-        'transition-colors hover:cursor-pointer text-m-p underline sm:text-p',
+        'inline-flex items-center gap-[inherit] text-l-p transition-colors hover:cursor-pointer hover:text-subtle-l1 md:text-p',
         className,
       )}
       {...props}
@@ -69,7 +69,10 @@ const BreadcrumbPage = React.forwardRef<
     role="link"
     aria-disabled="true"
     aria-current="page"
-    className={cn('font-normal text-m-p sm:text-p', className)}
+    className={cn(
+      'inline-flex items-center gap-[inherit] font-regular text-l-p text-subtle-l1 md:text-p',
+      className,
+    )}
     {...props}
   />
 ));
@@ -83,10 +86,10 @@ const BreadcrumbSeparator = ({
   <li
     role="presentation"
     aria-hidden="true"
-    className={cn('[&>svg]:size-3.5', className)}
+    className={cn('flex items-center [&>svg]:size-6', className)}
     {...props}
   >
-    {children ?? <ArrowRight />}
+    {children ?? <ChevronsRight />}
   </li>
 );
 BreadcrumbSeparator.displayName = 'BreadcrumbSeparator';
@@ -98,45 +101,95 @@ const BreadcrumbEllipsis = ({
   <span
     role="presentation"
     aria-hidden="true"
-    className={cn('flex h-9 w-9 items-center justify-center', className)}
+    className={cn('flex size-6 items-center justify-center', className)}
     {...props}
   >
-    <MoreHorizontal className="h-4 w-4" />
+    <Ellipsis className="size-6" />
     <span className="sr-only">More</span>
   </span>
 );
 BreadcrumbEllipsis.displayName = 'BreadcrumbEllipsis';
 
 export type BreadcrumbItemType = {
-  icon: React.ElementType;
+  icon?: React.ElementType;
   href: string;
   label: string;
 };
+
+const VISIBLE_TAIL_DESKTOP = 3;
+const VISIBLE_TAIL_MOBILE = 2;
 
 const Breadcrumbs: FC<{ items: BreadcrumbItemType[]; className?: string }> = ({
   items,
   className,
 }) => {
-  const isLastItem = (index: number) => index < items.length - 1;
+  const lastIndex = items.length - 1;
+  const isHiddenOn = (index: number, tail: number) =>
+    index > 0 && index < items.length - tail;
+
+  const hasHiddenDesktop = items.some((_, i) =>
+    isHiddenOn(i, VISIBLE_TAIL_DESKTOP),
+  );
+  const hasHiddenMobile = items.some((_, i) =>
+    isHiddenOn(i, VISIBLE_TAIL_MOBILE),
+  );
+
+  const visibilityClass = (index: number) => {
+    const hiddenDesktop = isHiddenOn(index, VISIBLE_TAIL_DESKTOP);
+    const hiddenMobile = isHiddenOn(index, VISIBLE_TAIL_MOBILE);
+
+    if (hiddenDesktop && hiddenMobile) return 'hidden';
+    if (hiddenMobile) return 'hidden md:flex';
+    if (hiddenDesktop) return 'flex md:hidden';
+    return undefined;
+  };
+
+  const ellipsisClass = cn(
+    hasHiddenMobile && !hasHiddenDesktop && 'flex md:hidden',
+    !hasHiddenMobile && hasHiddenDesktop && 'hidden md:flex',
+    !hasHiddenMobile && !hasHiddenDesktop && 'hidden',
+  );
+
   return (
     <Breadcrumb className={className}>
       <BreadcrumbList>
-        {items.map((item, index) => (
-          <Fragment key={index}>
-            <BreadcrumbItem className="flex items-center">
-              {item.icon && (
-                <item.icon className="w-[15px] h-[13px] md:w-[20px] md:h-[20px]" />
+        {items.map((item, index) => {
+          const isFirst = index === 0;
+          const isLast = index === lastIndex;
+          const Icon = item.icon;
+          const visibility = visibilityClass(index);
+          const content = (
+            <>
+              {Icon && <Icon className="size-5 shrink-0" />}
+              {item.label}
+            </>
+          );
+
+          return (
+            <Fragment key={`${item.href}-${index}`}>
+              {!isFirst && <BreadcrumbSeparator className={visibility} />}
+              <BreadcrumbItem className={visibility}>
+                {isLast ? (
+                  <BreadcrumbPage>{content}</BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink href={item.href}>{content}</BreadcrumbLink>
+                )}
+              </BreadcrumbItem>
+              {isFirst && (hasHiddenDesktop || hasHiddenMobile) && (
+                <>
+                  <BreadcrumbSeparator className={ellipsisClass} />
+                  <li
+                    role="presentation"
+                    aria-hidden="true"
+                    className={cn('items-center', ellipsisClass)}
+                  >
+                    <BreadcrumbEllipsis />
+                  </li>
+                </>
               )}
-              <BreadcrumbLink
-                className={`${isLastItem(index) && 'no-underline hover:no-underline'}`}
-                href={item.href}
-              >
-                {item.label}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            {isLastItem(index) && <BreadcrumbSeparator />}
-          </Fragment>
-        ))}
+            </Fragment>
+          );
+        })}
       </BreadcrumbList>
     </Breadcrumb>
   );

@@ -1,4 +1,4 @@
-import { Layers, User as UserIcon } from 'lucide-react';
+import { House } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
 import { Sidebar } from '@/app/(client)/profile/Sidebar';
@@ -7,12 +7,11 @@ import { BreadcrumbItemType, Breadcrumbs } from '@/components/ui/breadcrumb';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
-    icon: Layers,
+    icon: House,
     href: '/',
     label: 'Головна',
   },
   {
-    icon: UserIcon,
     href: '/profile',
     label: 'Персональний аккаунт',
   },

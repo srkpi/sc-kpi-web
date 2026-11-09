@@ -1,4 +1,4 @@
-import { ClipboardList, Layers } from 'lucide-react';
+import { House } from 'lucide-react';
 import { Metadata } from 'next';
 
 import SubClientLayout from '@/app/(client)/sub-client-layout';
@@ -9,12 +9,11 @@ import ProjectsPage from './ProjectsPage';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
-    icon: Layers,
+    icon: House,
     href: '/',
     label: 'Головна',
   },
   {
-    icon: ClipboardList,
     href: '/projects',
     label: 'Проєкти',
   },
