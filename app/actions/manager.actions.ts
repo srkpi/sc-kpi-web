@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import { apiClient } from '@/lib/client';
+import { sortManagers } from '@/lib/sort';
 import { Manager } from '@/types/manager';
 
 const revalidateManagers = () => {
@@ -12,7 +13,7 @@ const revalidateManagers = () => {
 
 export async function getManagerList() {
   const res = await apiClient.get<Manager[]>('/managers');
-  return res.data;
+  return sortManagers(res.data);
 }
 
 export async function getManagerById(id: string) {

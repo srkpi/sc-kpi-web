@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import { apiClient } from '@/lib/client';
+import { sortById } from '@/lib/sort';
 import { Area } from '@/types/area';
 
 const revalidateAreas = () => {
@@ -12,7 +13,7 @@ const revalidateAreas = () => {
 
 export async function getAreaList() {
   const res = await apiClient.get<Area[]>('/areas');
-  return res.data;
+  return sortById(res.data);
 }
 
 export async function getAreaById(id: string) {

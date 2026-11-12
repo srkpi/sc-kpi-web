@@ -1,6 +1,7 @@
 import { unstable_rethrow } from 'next/navigation';
 
 import { stripHtml } from '@/lib/html';
+import { sortById, sortManagers } from '@/lib/sort';
 import { Area } from '@/types/area';
 import { Manager } from '@/types/manager';
 import { StructureDepartment } from '@/types/structure-department';
@@ -21,13 +22,14 @@ async function fetchList<T>(path: string): Promise<T[]> {
   }
 }
 
-export const getManagers = () => fetchList<Manager>('/managers');
-export const getAreas = () => fetchList<Area>('/areas');
+export const getManagers = async () =>
+  sortManagers(await fetchList<Manager>('/managers'));
+export const getAreas = async () => sortById(await fetchList<Area>('/areas'));
 
 export const getDepartments = async (): Promise<StructureDepartment[]> => {
   const departments = await fetchList<StructureDepartment>('/departments');
 
-  return departments.map(department => ({
+  return sortById(departments).map(department => ({
     ...department,
     name: stripHtml(department.name),
     sections: department.sections?.map(section => ({

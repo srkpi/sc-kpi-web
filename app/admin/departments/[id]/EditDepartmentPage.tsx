@@ -49,9 +49,21 @@ const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
 
 const FormSchema = z.object({
   name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
-  description: z.string().min(1, { message: 'Опис обов’язковий' }),
-  shortDescription: z.string().min(1, { message: 'Стислий опис обов’язковий' }),
-  gains: z.string(),
+  description: z
+    .string()
+    .min(1, { message: 'Опис обов’язковий' })
+    .max(STRUCTURE_LIMITS.departmentName, {
+      message: `Максимум ${STRUCTURE_LIMITS.departmentName} символів`,
+    }),
+  shortDescription: z
+    .string()
+    .min(1, { message: 'Стислий опис обов’язковий' })
+    .max(STRUCTURE_LIMITS.departmentShortDescription, {
+      message: `Максимум ${STRUCTURE_LIMITS.departmentShortDescription} символів`,
+    }),
+  gains: z.string().max(STRUCTURE_LIMITS.departmentGains, {
+    message: `Максимум ${STRUCTURE_LIMITS.departmentGains} символів`,
+  }),
   headLastName: requiredText(STRUCTURE_LIMITS.personName),
   headFirstName: requiredText(STRUCTURE_LIMITS.personName),
   headMiddleName: z

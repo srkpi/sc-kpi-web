@@ -6,4 +6,5 @@ export interface Manager {
   position: string;
   duties: string;
   image?: string | null;
+  order?: number;
 }

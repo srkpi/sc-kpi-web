@@ -30,7 +30,7 @@ const DepartmentPanel: FC<DepartmentPanelProps> = ({ department }) => {
   return (
     <div
       role="tabpanel"
-      className="grid min-w-0 flex-1 gap-6 rounded-[10px] border border-[#98c4ee] p-4 lg:grid-cols-[minmax(0,1fr)_240px] lg:p-6"
+      className="grid min-w-0 flex-1 gap-6 rounded-[10px] border border-[#98c4ee] p-4 lg:grid-cols-[minmax(0,1fr)_180px] lg:p-6"
     >
       <div className="min-w-0 lg:col-start-1 lg:row-start-1">
         <h3 className="mb-2 text-p font-semibold lg:text-h3">
@@ -44,13 +44,15 @@ const DepartmentPanel: FC<DepartmentPanelProps> = ({ department }) => {
         </p>
 
         {sections.length > 0 && (
-          <ul className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-3">
+          <ul className="mt-5 grid grid-cols-1 gap-3 md:max-w-[90%] md:grid-cols-3">
             {sections.map(section => (
               <li key={section.id} className="rounded-[10px] bg-gray p-4">
                 <h4 className="mb-2 text-p font-semibold break-words">
                   {section.name}
                 </h4>
-                <p className="text-m-p lg:text-l-p">{section.description}</p>
+                <p className="text-m-p break-words lg:text-l-p">
+                  {section.description}
+                </p>
               </li>
             ))}
           </ul>
@@ -99,9 +101,13 @@ const DepartmentPanel: FC<DepartmentPanelProps> = ({ department }) => {
           </div>
         </div>
         {buttonLink && (
-          <Button asChild size="sm" className="mt-5 w-full">
+          <Button
+            asChild
+            size="sm"
+            className="mt-5 h-auto min-h-9 w-full whitespace-normal py-2 text-center text-m-p"
+          >
             <a href={buttonLink} target="_blank" rel="noopener noreferrer">
-              Хочу приєднатися!
+              <span className="px-3">Хочу приєднатися!</span>
             </a>
           </Button>
         )}

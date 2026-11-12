@@ -24,10 +24,10 @@ export function Header({ user, isAdmin = false }: Props) {
 
   return (
     <header className="fixed bg-dark z-[100] w-full">
-      <div className="flex justify-between items-center py-[8px] sm:py-[15px] lg:py-[23px] px-[14px] md:px-[24px] lg:px-[64px] xl:px-[100px]">
-        <Link href="/" className="shrink-0">
+      <div className="flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] py-[8px] sm:py-[15px] lg:py-[23px] px-[14px] md:px-[24px] lg:px-[64px] xl:px-[100px]">
+        <Link href="/" className="shrink-0 justify-self-start">
           <Image
-            className="object-cover align-top w-[67px] md:w-[85px] lg:w-[134px] h-auto mr-[12px]"
+            className="object-cover align-top w-[67px] md:w-[85px] lg:w-[134px] h-auto"
             src="/images/Logo.svg"
             alt="logo"
             quality={100}
@@ -35,10 +35,14 @@ export function Header({ user, isAdmin = false }: Props) {
             height={40}
           />
         </Link>
-        <div className="hidden sm:flex sm:gap-[32px] md:gap-[36px] lg:gap-[72px] xl:gap-[90px] ml-[12px]">
+
+        <div className="hidden sm:flex flex-1 justify-center px-[12px] lg:flex-none lg:justify-self-center">
           <Links />
+        </div>
+
+        <div className="hidden sm:flex items-center justify-end gap-[16px] lg:gap-[24px]">
           {loggedIn ? (
-            <div className="flex items-center gap-[16px]">
+            <>
               {isAdmin && (
                 <Link
                   href="/admin"
@@ -55,7 +59,7 @@ export function Header({ user, isAdmin = false }: Props) {
               <Link href="/profile">
                 <UserIcon size={24} />
               </Link>
-            </div>
+            </>
           ) : (
             <Link href="/login">
               <Button variant="outline" size="sm">
@@ -64,6 +68,7 @@ export function Header({ user, isAdmin = false }: Props) {
             </Link>
           )}
         </div>
+
         <div className="flex items-center h-full gap-[9px] sm:hidden">
           {loggedIn && (
             <Link href="/profile" className="sm:hidden">

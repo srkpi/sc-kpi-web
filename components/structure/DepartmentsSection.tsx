@@ -72,7 +72,11 @@ const DepartmentsSection: FC<DepartmentsSectionProps> = ({ departments }) => {
                     />
                   </span>
                 )}
-                <span className={isActive ? undefined : 'hidden lg:inline'}>
+                <span
+                  className={
+                    isActive ? 'text-center' : 'text-center hidden lg:inline'
+                  }
+                >
                   {department.name}
                 </span>
               </Button>

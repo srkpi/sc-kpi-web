@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 
 import { apiClient } from '@/lib/client';
+import { sortById } from '@/lib/sort';
 import { Department } from '@/types/departments';
 
 const revalidateDepartments = () => {
@@ -12,7 +13,7 @@ const revalidateDepartments = () => {
 
 export async function getDepartmentList() {
   const res = await apiClient.get<Department[]>('/departments');
-  return res.data;
+  return sortById(res.data);
 }
 
 export async function deleteDepartment(id: number) {

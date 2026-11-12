@@ -1,11 +1,15 @@
-// Тимчасові ліміти довжини текстів для адмінки структури.
-// Значення ще не погоджені із замовником, змінюються в одному місці.
 export const STRUCTURE_LIMITS = {
   personName: 60,
-  position: 100,
-  managerDuties: 300,
-  areaName: 80,
-  areaDescription: 250,
-  sectionName: 80,
-  sectionDescription: 250,
+  position: 50,
+  managerDuties: 150,
+  areaName: 50,
+  areaDescription: 150,
+  sectionName: 50,
+  sectionDescription: 150,
+  departmentName: 50,
+  departmentShortDescription: 150,
+  departmentDescription: 1500,
+  departmentGains: 1000,
+  projectName: 50,
+  projectDescription: 150,
 } as const;
