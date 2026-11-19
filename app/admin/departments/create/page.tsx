@@ -11,6 +11,7 @@ import {
   createDepartment,
   updateDepartmentHeadImage,
 } from '@/app/actions/department.actions';
+import CharCounter from '@/components/admin/char-counter';
 import ImageUpload from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,25 +26,36 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/toast/use-toast';
 import { STRUCTURE_LIMITS } from '@/constants/structure-limits';
-import { requiredText } from '@/lib/required-text';
+import { stripHtml } from '@/lib/html';
+import { optionalHtml, requiredHtml, requiredText } from '@/lib/required-text';
 
 const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
   ssr: false,
 });
 
 const FormSchema = z.object({
-  name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
-  shortDescription: z.string().min(1, { message: 'Стислий опис обов’язковий' }),
-  description: z.string().min(1, { message: 'Опис обов’язковий' }),
-  gains: z.string(),
-  headLastName: requiredText(STRUCTURE_LIMITS.personName),
-  headFirstName: requiredText(STRUCTURE_LIMITS.personName),
-  headMiddleName: z
+  name: z
     .string()
     .trim()
-    .max(STRUCTURE_LIMITS.personName, {
-      message: `Максимум ${STRUCTURE_LIMITS.personName} символів`,
+    .min(1, { message: 'Назва обов’язкова' })
+    .max(STRUCTURE_LIMITS.departmentName, {
+      message: `Максимум ${STRUCTURE_LIMITS.departmentName} символів`,
+    })
+    .refine(value => !/<[^>]+>/.test(value), {
+      message: 'Назва не може містити HTML-теги',
     }),
+  shortDescription: requiredHtml(
+    STRUCTURE_LIMITS.departmentShortDescription,
+    'Стислий опис обов’язковий',
+  ),
+  description: requiredHtml(
+    STRUCTURE_LIMITS.departmentDescription,
+    'Опис обов’язковий',
+  ),
+  gains: optionalHtml(STRUCTURE_LIMITS.departmentGains),
+  headLastName: requiredText(STRUCTURE_LIMITS.personName),
+  headFirstName: requiredText(STRUCTURE_LIMITS.personName),
+  headMiddleName: optionalHtml(STRUCTURE_LIMITS.personName),
   buttonLink: z
     .string()
     .trim()
@@ -73,6 +85,24 @@ const CreateDepartmentPage: FC = () => {
       buttonLink: '',
     },
   });
+
+  const [
+    name,
+    shortDescription,
+    description,
+    gains,
+    headLastName,
+    headFirstName,
+    headMiddleName,
+  ] = form.watch([
+    'name',
+    'shortDescription',
+    'description',
+    'gains',
+    'headLastName',
+    'headFirstName',
+    'headMiddleName',
+  ]);
 
   const handleFormSubmit = async (data: FormValues) => {
     const { headMiddleName, ...rest } = data;
@@ -131,6 +161,10 @@ const CreateDepartmentPage: FC = () => {
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
+                  <CharCounter
+                    length={name.length}
+                    max={STRUCTURE_LIMITS.departmentName}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -141,11 +175,15 @@ const CreateDepartmentPage: FC = () => {
               render={({ field }) => (
                 <FormItem className="my-6 grid w-full items-center gap-2">
                   <FormLabel htmlFor="shortDescription">
-                    Стислий опис департамент
+                    Стислий опис департаменту
                   </FormLabel>
                   <EditorComponent
                     setText={text => form.setValue('shortDescription', text)}
                     initialValue={field.value}
+                  />
+                  <CharCounter
+                    length={stripHtml(shortDescription).length}
+                    max={STRUCTURE_LIMITS.departmentShortDescription}
                   />
                   <FormMessage />
                 </FormItem>
@@ -189,6 +227,10 @@ const CreateDepartmentPage: FC = () => {
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
+                  <CharCounter
+                    length={headLastName.length}
+                    max={STRUCTURE_LIMITS.personName}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -202,6 +244,10 @@ const CreateDepartmentPage: FC = () => {
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
+                  <CharCounter
+                    length={headFirstName.length}
+                    max={STRUCTURE_LIMITS.personName}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -217,6 +263,10 @@ const CreateDepartmentPage: FC = () => {
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
+                  <CharCounter
+                    length={headMiddleName.length}
+                    max={STRUCTURE_LIMITS.personName}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -233,6 +283,10 @@ const CreateDepartmentPage: FC = () => {
                   setText={text => form.setValue('description', text)}
                   initialValue={field.value}
                 />
+                <CharCounter
+                  length={stripHtml(description).length}
+                  max={STRUCTURE_LIMITS.departmentDescription}
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -247,6 +301,10 @@ const CreateDepartmentPage: FC = () => {
                 <EditorComponent
                   setText={text => form.setValue('gains', text)}
                   initialValue={field.value}
+                />
+                <CharCounter
+                  length={stripHtml(gains).length}
+                  max={STRUCTURE_LIMITS.departmentGains}
                 />
                 <FormMessage />
               </FormItem>

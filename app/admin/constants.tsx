@@ -66,6 +66,6 @@ export const navbarLinks: Props[] = [
   {
     icon: <Layers width={28} height={28} />,
     href: '/admin/areas',
-    title: 'Напрями',
+    title: 'Напрямки роботи',
   },
 ];

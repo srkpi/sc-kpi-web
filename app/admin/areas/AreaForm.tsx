@@ -70,7 +70,7 @@ const AreaForm: FC<AreaFormProps> = ({ area }) => {
     try {
       if (area) {
         await updateArea(area.id, data, file);
-        toast({ title: 'Напрям успішно оновлено' });
+        toast({ title: 'Напрямок успішно оновлено' });
         router.refresh();
         return;
       }
@@ -85,14 +85,14 @@ const AreaForm: FC<AreaFormProps> = ({ area }) => {
       formData.append('json', JSON.stringify(data));
 
       await createArea(formData);
-      toast({ title: 'Напрям успішно додано' });
+      toast({ title: 'Напрямок успішно додано' });
       router.push('/admin/areas');
     } catch {
       toast({
         variant: 'destructive',
         title: isEdit
-          ? 'Не вдалося оновити напрям'
-          : 'Не вдалося додати напрям',
+          ? 'Не вдалося оновити напрямок'
+          : 'Не вдалося додати напрямок',
       });
     }
   };

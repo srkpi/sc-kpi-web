@@ -1,4 +1,4 @@
-import { Layers, Users } from 'lucide-react';
+import { House, Users } from 'lucide-react';
 import { Metadata } from 'next';
 
 import SubClientLayout from '@/app/(client)/sub-client-layout';
@@ -10,17 +10,18 @@ import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
 import { getAreas, getDepartments, getManagers } from '@/lib/structure-api';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
-  { icon: Layers, href: '/', label: 'Головна' },
+  { icon: House, href: '/', label: 'Головна' },
   { icon: Users, href: '/structure', label: 'Структура Студради' },
 ];
 
 export const metadata: Metadata = {
   title: 'Структура Студради',
   description:
-    'Керівництво, напрями роботи та департаменти Студентської ради КПІ ім. Ігоря Сікорського.',
+    'Керівництво, напрямки роботи та департаменти Студентської ради КПІ ім. Ігоря Сікорського.',
 };
 
-const JOIN_APPLICATION_LINK = 'https://example.com/apply'; // поки хардкод, потім заміню адекватно
+const JOIN_APPLICATION_LINK =
+  'https://kpistats.onrender.com/sr_vstup?utm_source=about_btn';
 export const dynamic = 'force-dynamic';
 
 export default async function Page() {

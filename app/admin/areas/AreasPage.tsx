@@ -33,14 +33,14 @@ export default function AreasPage({ areas }: Props) {
   const { toast } = useToast();
 
   const handleDelete = async (area: Area) => {
-    if (!window.confirm(`Видалити напрям «${area.name}»?`)) return;
+    if (!window.confirm(`Видалити напрямок «${area.name}»?`)) return;
 
     try {
       await deleteArea(area.id);
-      toast({ title: 'Напрям успішно видалено' });
+      toast({ title: 'Напрямок успішно видалено' });
       router.refresh();
     } catch {
-      toast({ variant: 'destructive', title: 'Не вдалося видалити напрям' });
+      toast({ variant: 'destructive', title: 'Не вдалося видалити напрямок' });
     }
   };
 
@@ -53,7 +53,7 @@ export default function AreasPage({ areas }: Props) {
 
   return (
     <>
-      <h1 className="text-h1 font-semibold mb-[54px]">Напрями роботи</h1>
+      <h1 className="text-h1 font-semibold mb-[54px]">Напрямки роботи</h1>
       <Input
         className="w-full text-p pl-16 h-[72px] mb-[78px]"
         placeholder="Пошук..."
@@ -98,7 +98,7 @@ export default function AreasPage({ areas }: Props) {
       <Link href="/admin/areas/create">
         <Button className="bg-white h-[58px] gap-3 hover:bg-white text-blue mt-[24px] mb-[20px]">
           <Plus color="#374FFA" size={26}></Plus>
-          Додати напрям
+          Додати напрямок
         </Button>
       </Link>
     </>

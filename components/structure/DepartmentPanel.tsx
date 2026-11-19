@@ -36,12 +36,12 @@ const DepartmentPanel: FC<DepartmentPanelProps> = ({ department }) => {
         <h3 className="mb-2 text-p font-semibold lg:text-h3">
           Чим ми займаємося?
         </h3>
-        <p className="whitespace-pre-line text-m-p lg:text-l-p">
+        <div className="text-m-p lg:text-l-p">
           <div
             className={HTML_CONTENT}
             dangerouslySetInnerHTML={{ __html: description }}
           />
-        </p>
+        </div>
 
         {sections.length > 0 && (
           <ul className="mt-5 grid grid-cols-1 gap-3 md:max-w-[90%] md:grid-cols-3">
@@ -106,7 +106,11 @@ const DepartmentPanel: FC<DepartmentPanelProps> = ({ department }) => {
             size="sm"
             className="mt-5 h-auto min-h-9 w-full whitespace-normal py-2 text-center text-m-p"
           >
-            <a href={buttonLink} target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://kpistats.onrender.com/sr_vstup?utm_source=about_btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <span className="px-3">Хочу приєднатися!</span>
             </a>
           </Button>

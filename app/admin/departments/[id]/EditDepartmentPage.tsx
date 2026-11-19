@@ -39,7 +39,7 @@ import {
 import { useToast } from '@/components/ui/toast/use-toast';
 import { STRUCTURE_LIMITS } from '@/constants/structure-limits';
 import { stripHtml } from '@/lib/html';
-import { requiredText } from '@/lib/required-text';
+import { optionalHtml, requiredHtml, requiredText } from '@/lib/required-text';
 import { Department } from '@/types/departments';
 import { DepartmentSection } from '@/types/structure-department';
 
@@ -49,21 +49,15 @@ const EditorComponent = dynamic(() => import('@/components/ui/editor'), {
 
 const FormSchema = z.object({
   name: z.string().trim().min(1, { message: 'Назва обов’язкова' }),
-  description: z
-    .string()
-    .min(1, { message: 'Опис обов’язковий' })
-    .max(STRUCTURE_LIMITS.departmentName, {
-      message: `Максимум ${STRUCTURE_LIMITS.departmentName} символів`,
-    }),
-  shortDescription: z
-    .string()
-    .min(1, { message: 'Стислий опис обов’язковий' })
-    .max(STRUCTURE_LIMITS.departmentShortDescription, {
-      message: `Максимум ${STRUCTURE_LIMITS.departmentShortDescription} символів`,
-    }),
-  gains: z.string().max(STRUCTURE_LIMITS.departmentGains, {
-    message: `Максимум ${STRUCTURE_LIMITS.departmentGains} символів`,
-  }),
+  description: requiredHtml(
+    STRUCTURE_LIMITS.departmentDescription,
+    'Опис обов’язковий',
+  ),
+  shortDescription: requiredHtml(
+    STRUCTURE_LIMITS.departmentShortDescription,
+    'Стислий опис обов’язковий',
+  ),
+  gains: optionalHtml(STRUCTURE_LIMITS.departmentGains),
   headLastName: requiredText(STRUCTURE_LIMITS.personName),
   headFirstName: requiredText(STRUCTURE_LIMITS.personName),
   headMiddleName: z
