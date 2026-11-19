@@ -47,17 +47,21 @@ const ImageUpload = ({ photoSrc = '', onFileUpload }: Props) => {
   };
 
   return (
-    <div className="flex gap-[24px] h-[100px]">
-      <Image
-        width={100}
-        height={100}
-        quality={100}
-        src={previewImage ?? ''}
-        alt="Image"
-        className="rounded-[18px]"
-        ref={imageRef}
-      />
-      <div className="flex flex-col justify-center items-start">
+    <div className="flex gap-[24px] min-h-[100px]">
+      {previewImage ? (
+        <Image
+          width={100}
+          height={100}
+          quality={100}
+          src={previewImage}
+          alt="Image"
+          className="size-[100px] shrink-0 rounded-[18px] object-cover"
+          ref={imageRef}
+        />
+      ) : (
+        <div className="size-[100px] shrink-0 rounded-[18px] bg-greyBlue/30" />
+      )}
+      <div className="flex flex-col justify-center items-start max-w-[420px]">
         <p className="text-p mb-[20px] font-light">
           Розмір та формат зображення, яка найкраще підійде для завантаження:
           25MB, JPG, PNG, JPEG.
