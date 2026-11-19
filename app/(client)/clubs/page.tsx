@@ -1,4 +1,4 @@
-import { BicepsFlexed, Layers } from 'lucide-react';
+import { House } from 'lucide-react';
 import { Metadata } from 'next';
 
 import ClubsPage from '@/app/(client)/clubs/ClubsPage';
@@ -8,12 +8,11 @@ import { BreadcrumbItemType } from '@/components/ui/breadcrumb';
 
 const BREADCRUMBS_ITEMS: BreadcrumbItemType[] = [
   {
-    icon: Layers,
+    icon: House,
     href: '/',
     label: 'Головна',
   },
   {
-    icon: BicepsFlexed,
     href: '/clubs',
     label: "Cтудентські об'єднання",
   },

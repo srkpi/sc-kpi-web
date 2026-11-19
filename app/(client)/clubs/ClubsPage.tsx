@@ -103,7 +103,7 @@ const ClubsPage = ({ clubs }: Props) => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 md:gap-7 mt-[30px] md:mt-[60px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 min-[1600px]:grid-cols-3 gap-x-6 gap-y-8 mt-[30px] md:mt-[60px]">
         {filteredClubs.slice(0, visibleCount).map(club => (
           <ClubCard key={club.id} club={club} />
         ))}

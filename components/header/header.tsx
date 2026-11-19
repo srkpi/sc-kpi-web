@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import Links from '@/components/header/components/links';
-import { Button } from '@/components/ui/button';
 import { User } from '@/types/auth/user';
 
 interface Props {
@@ -41,7 +40,7 @@ export function Header({ user, isAdmin = false }: Props) {
         </div>
 
         <div className="hidden sm:flex items-center justify-end gap-[16px] lg:gap-[24px]">
-          {loggedIn ? (
+          {loggedIn && (
             <>
               {isAdmin && (
                 <Link
@@ -60,12 +59,6 @@ export function Header({ user, isAdmin = false }: Props) {
                 <UserIcon size={24} />
               </Link>
             </>
-          ) : (
-            <Link href="/login">
-              <Button variant="outline" size="sm">
-                Увійти
-              </Button>
-            </Link>
           )}
         </div>
 
@@ -84,21 +77,10 @@ export function Header({ user, isAdmin = false }: Props) {
       </div>
       {open && (
         <div className="sm:hidden flex-col items-center pt-[8px] pb-[30px] sm:[15px] lg:py-[23px] px-[14px] md:px-[32px] lg:px-[64px] xl:px-[100px]">
-          {!loggedIn && (
-            <Link href="/login">
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full font-regular mb-[20px]"
-              >
-                Увійти
-              </Button>
-            </Link>
-          )}
           {isAdmin && (
             <Link
               href="/admin"
-              className="block mb-[20px] font-semibold text-l-p hover:text-blue"
+              className="block mb-[20px] text-center font-semibold text-l-p hover:text-blue"
             >
               Адмін-панель
             </Link>
